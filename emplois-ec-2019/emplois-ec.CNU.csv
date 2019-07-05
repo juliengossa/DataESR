@@ -1,0 +1,57 @@
+"Section.CNU";"Groupe";"effectifs.MCF";"effectifs.PR";"emplois.MCF";"emplois.PR";"taux.promotion";"durée.cycle.promotion";"taux.renouvellement";"durée.cycle.renouvellement"
+"01 : Droit privé et sciences criminelles";"Droit, économie et gestion";1219;600;106;51;0.0418;24;0.0583;17
+"02 : Droit public";"Droit, économie et gestion";813;483;65;42;0.0517;19;0.0502;20
+"03 : Histoire du droit et des institutions";"Droit, économie et gestion";148;109;10;5;0.0338;30;0.0389;26
+"04 : Science politique";"Droit, économie et gestion";262;130;33;5;0.0191;52;0.0842;12
+"05 : Sciences économiques";"Droit, économie et gestion";1185;547;81;42;0.0354;28;0.0468;21
+"06 : Sciences de gestion";"Droit, économie et gestion";1627;484;162;71;0.0436;23;0.0767;13
+"07 : Sciences du langage : linguistique et phonétique générales";"Lettres et sciences humaines";531;240;41;31;0.0584;17;0.0532;19
+"08 : Langues et littératures anciennes";"Lettres et sciences humaines";189;102;12;10;0.0529;19;0.0412;24
+"09 : Langue et littérature française";"Lettres et sciences humaines";603;320;47;48;0.0796;13;0.0509;20
+"10 : Littératures comparées";"Lettres et sciences humaines";123;85;8;5;0.0407;25;0.0385;26
+"11 : Langues et littératures anglaises et anglo-saxonnes";"Lettres et sciences humaines";1293;388;100;45;0.0348;29;0.0595;17
+"12 : Langues et littératures germaniques et scandinaves";"Lettres et sciences humaines";294;93;15;4;0.0136;74;0.0388;26
+"13 : Langues et littératures slaves";"Lettres et sciences humaines";91;34;8;3;0.033;30;0.064;16
+"14 : Langues et littératures romanes : espagnol, italien, portugais, autres langues romanes";"Lettres et sciences humaines";728;238;47;28;0.0385;26;0.0487;21
+"15 : Langues et littératures arabes, chinoises, japonaises, hébraique, d'autres domaines linguistiques";"Lettres et sciences humaines";281;108;38;10;0.0356;28;0.0977;10
+"16 : Psychologie, psychologie clinique, psychologie sociale";"Lettres et sciences humaines";963;397;97;32;0.0332;30;0.0713;14
+"17 : Philosophie";"Lettres et sciences humaines";224;160;25;19;0.0848;12;0.0651;15
+"18 : Architecture (ses théories et ses pratiques), arts appliqués, arts plastiques, arts du spectacle, épistémologie des enseignements artistiques, esthétique, musicologie, musique, sciences de l'art";"Lettres et sciences humaines";514;204;47;29;0.0564;18;0.0655;15
+"19 : Sociologie, démographie";"Lettres et sciences humaines";627;246;52;30;0.0478;21;0.0596;17
+"20 : Ethnologie, préhistoire, anthropologie biologique";"Lettres et sciences humaines";133;71;8;6;0.0451;22;0.0392;26
+"21 : Histoire, civilisations, archéologie et art des mondes anciens et médiévaux";"Lettres et sciences humaines";489;256;29;32;0.0654;15;0.0389;26
+"22 : Histoire et civilisations : histoire des mondes modernes, histoire du monde contemporain , de l'art , de la musique";"Lettres et sciences humaines";663;392;45;42;0.0633;16;0.0427;23
+"23 : Géographie physique, humaine, économique et régionale";"Lettres et sciences humaines";587;265;36;15;0.0256;39;0.0423;24
+"24 : Aménagement de l'espace, urbanisme";"Lettres et sciences humaines";164;99;12;5;0.0305;33;0.0456;22
+"25 : Mathématiques";"Sciences";823;498;43;29;0.0352;28;0.0326;31
+"26 : Mathématiques appliquées et applications des mathématiques";"Sciences";1147;629;67;43;0.0375;27;0.0377;27
+"27 : Informatique";"Sciences";2403;968;129;72;0.03;33;0.0383;26
+"28 : Milieux denses et matériaux";"Sciences";858;490;15;31;0.0361;28;0.0111;90
+"29 : Constituants élémentaires";"Sciences";221;175;8;4;0.0181;55;0.0202;50
+"30 : Milieux dilués et optique";"Sciences";374;250;13;7;0.0187;53;0.0208;48
+"31 : Chimie théorique, physique, analytique";"Sciences";668;326;26;23;0.0344;29;0.0262;38
+"32 : Chimie organique, minérale, industrielle";"Sciences";845;388;23;9;0.0107;93;0.0187;53
+"33 : Chimie des matériaux";"Sciences";574;329;12;12;0.0209;48;0.0133;75
+"34 : Astronomie, astrophysique";"Sciences";116;69;6;8;0.069;14;0.0324;31
+"35 : Structure et évolution de la terre et des autres planètes";"Sciences";330;179;16;15;0.0455;22;0.0314;32
+"36 : Terre solide : géodynamique des enveloppes supérieure, paléo-biosphère";"Sciences";268;125;3;6;0.0224;45;0.0076;132
+"37 : Météorologie, océanographie physique de l'environnement";"Sciences";132;59;3;3;0.0227;44;0.0157;64
+"60 : Mécanique, génie mécanique, génie civil";"Sciences";1607;784;105;43;0.0268;37;0.0439;23
+"61 : Génie informatique, automatique et traitement du signal";"Sciences";1206;548;59;34;0.0282;35;0.0336;30
+"62 : Energétique, génie des procédés";"Sciences";703;393;26;15;0.0213;47;0.0237;42
+"63 : Génie électrique, électronique, photonique et systèmes";"Sciences";1117;571;41;24;0.0215;47;0.0243;41
+"64 : Biochimie et biologie moléculaire";"Sciences";773;296;42;25;0.0323;31;0.0393;25
+"65 : Biologie cellulaire";"Sciences";752;274;30;12;0.016;62;0.0292;34
+"66 : Physiologie";"Sciences";544;197;9;11;0.0202;50;0.0121;83
+"67 : Biologie des populations et écologie";"Sciences";499;195;22;10;0.02;50;0.0317;32
+"68 : Biologie des organismes";"Sciences";344;153;10;5;0.0145;69;0.0201;50
+"69 : Neurosciences";"Sciences";287;118;14;6;0.0209;48;0.0346;29
+"70 : Sciences de l'éducation";"Lettres et sciences humaines";504;173;69;33;0.0655;15;0.1019;10
+"71 : Sciences de l'information et de la communication";"Lettres et sciences humaines";613;170;60;14;0.0228;44;0.0766;13
+"72 : Epistémologie, histoire des sciences et des techniques";"Lettres et sciences humaines";66;22;2;1;0.0152;66;0.0227;44
+"73 : Cultures et langues régionales";"Lettres et sciences humaines";34;22;3;3;0.0882;11;0.0536;19
+"74 : Sciences et techniques des activités physiques et sportives";"Lettres et sciences humaines";642;166;82;22;0.0343;29;0.1015;10
+"76 : Théologie catholique";"Lettres et sciences humaines";17;13;3;1;0.0588;17;0.1;10
+"85 : Sciences physico-chimiques et ingénierie appliquée à la santé";"Pharmacie";323;110;20;7;0.0217;46;0.0462;22
+"86 : Sciences du médicament et des autres produits de santé";"Pharmacie";389;180;22;12;0.0308;32;0.0387;26
+"87 : Sciences biologiques, fondamentales et cliniques";"Pharmacie";300;95;4;6;0.02;50;0.0101;99
