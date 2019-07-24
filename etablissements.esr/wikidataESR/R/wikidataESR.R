@@ -24,21 +24,14 @@ library(network)
 library(dplyr)
 library(scales)
 
-
-#source("wikidata.R")
-
-wdesr.env <- new.env()
-wdesr.env$etablissements <- data.frame()
-
-
 #' Load the data of a university
 #'
 #' @param wdid the wikidata id of the university
 #'
 #' @return a dataframe with the data of the university
 #'
-#' @examples wdesr_load_etab("Q3551576")
-wdesr_load_etab <- function(wdid) {
+#' @examples wdesr_load_item("Q3551576")
+wdesr_load_item <- function(wdid) {
 
   item <<- WikidataR::get_item(id = wdid)
 
@@ -77,13 +70,13 @@ wdesr_load_etab <- function(wdid) {
 #'
 #' @return a dataframe with the data of the universities
 #'
-#' @examples wdesr_load_etabs(c("Q3551576","Q2013017"))
-wdesr_load_etabs <- function(wdids) {
+#' @examples wdesr_load_items(c("Q3551576","Q2013017"))
+wdesr_load_items <- function(wdids) {
   for(subids in wdids) {
     for(wdid in subids) {
       print(paste("Loading:",wdid))
-      r <- wdesr_load_etab(wdid)
-      wdesr.env$etablissements <- rbind(wdesr.env$etablissements,r)
+      r <- wdesr_load_item(wdid)
+      wdesr.env$items <- rbind(wdesr.env$items,r)
     }
   }
 }
@@ -100,21 +93,9 @@ wdesr_load_etabs <- function(wdids) {
 #'
 #' @examples wdesr_get_data(c("Q3551576","Q2013017"))
 wdesr_get_data <- function(wdids) {
-  wdesr_load_etabs(wdids[! wdids %in% wdesr.env$etablissements$id])
+  wdesr_load_items(wdids[! wdids %in% wdesr.env$items$id])
 
-  return(subset(wdesr.env$etablissements, id %in% wdids))
-}
-
-#' Clear the local WDESR cache
-#'
-#' Must be used whenever the data of wikidata are modified during a R session.
-#'
-#' @return nothing
-#' @export
-#'
-#' @examples wdesr_clear_cache()
-wdesr_clear_cache <- function() {
-  wdesr.env$etablissements <- data.frame()
+  return(subset(wdesr.env$items, id %in% wdids))
 }
 
 
@@ -124,12 +105,13 @@ wdesr_clear_cache <- function() {
 #' @param props the set of properties to follow
 #' @param depth the depth of the graph (more or less) (default to 3)
 #' @param active_only TRUE to filter dissolved universities (default to FALSE)
+#' @param stop_at a list of type of nodes that must not be visited furthermore (default to "EPST")
 #'
 #' @return a list of edges and vertices
 #' @export
 #'
 #' @examples wdesr_get_graph("Q61716176",c('composante','associé'), 1)
-wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE ) {
+wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at = c("EPST") ) {
 
   edges <- data.frame()
 
@@ -158,16 +140,20 @@ wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE ) {
       )
     edges <- rbind(edges,edge)
 
-    if(depth==0) {
-      df.to$depth <- -1
-      vertices <- unique(rbind(vertices,df.to))
+    df.to$depth <- depth - 1
+
+    if(depth==1) {
+      vertices <- rbind(vertices,subset(df.to, !id %in% vertices$id))
+
     } else {
-      for(id in df.to$id) {
-        if (!id %in% vertices$id) {
-          sub <- wdesr_get_graph(id,props,depth-1,active_only)
+      #stops <- subset(df.to, !id %in% vertices$id & nature %in% stop_at)
+      #if (nrow(stops) > 0) vertices <- rbind(vertices, stops)
+      vertices <- rbind(vertices, subset(df.to, !id %in% vertices$id & nature %in% stop_at))
+
+      for(id in subset(df.to, !id %in% vertices$id & !nature %in% stop_at)$id) {
+          sub <- wdesr_get_graph(id,props,depth-1,active_only,stop_at)
           edges <- rbind(edges,sub$edges)
-          vertices <- unique(rbind(vertices,sub$vertices))
-        }
+          vertices <- rbind(vertices,subset(sub$vertices, !id %in% vertices$id))
       }
     }
   }
@@ -257,6 +243,9 @@ wdesr_ggplot_graph <- function( df.g,
                                 edge_label = TRUE,
                                 arrow_gap = 0.05 ) {
 
+  if( nrow(df.g$vertices) == 0 | nrow(df.g$edges) == 0 )
+    stop("Empty ESR graph: something went wrong with the graph production parameters")
+
   df.g$vertices <- df.g$vertices %>% mutate_all(as.character) %>% arrange(id)
   df.g$edges$weight <- scales::rescale(as.numeric(df.g$edges$depth),c(1,2))
   geom_node_fun <- wdesr_node_geom(node_type)
@@ -286,7 +275,7 @@ wdesr_ggplot_graph <- function( df.g,
     label = wdesr_node_label_aes(node_label,alias,label,fondation,dissolution),
     fill = nature),
     size = scales::rescale(as.numeric(df.g$vertices$depth),label_sizes))
-  g <- g + scale_alpha_manual(labels=c("Dissout","Actif"), values = (c(0.6,1)), name='statut')
+  g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
   #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
   g <- g + xlim(-0.2,1.2)
   g <- g + theme_blank()

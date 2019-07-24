@@ -19,9 +19,6 @@ library(WikidataR)
 library(stringr)
 library(stringi)
 
-wd.env <- new.env()
-wd.env$instance_ofs <- data.frame("id"=character(),"label"=character())
-
 #' Get the instance of an item
 #'
 #' @param item a wikidata item
@@ -32,12 +29,14 @@ wd.env$instance_ofs <- data.frame("id"=character(),"label"=character())
 wd_get_item_instance_of <- function(item) {
   instance_of_id <- wd_get_item_statement_as_list(item,"P31")[[1]][[1]]
   if(is.null(instance_of_id)) return(NA)
-  if (!instance_of_id %in% wd.env$instance_ofs$id) {
+  if (!instance_of_id %in% wdesr.env$instance_ofs$id) {
     it <- WikidataR::get_item(id = instance_of_id)
-    wd.env$instance_ofs <- rbind(wd.env$instance_ofs,cbind("id"=instance_of_id,"label"=wd_get_item_label(it)))
+    wdesr.env$instance_ofs <- rbind(
+      wdesr.env$instance_ofs,
+      cbind("id"=instance_of_id,"label"=wd_get_item_alias(it)))
   }
 
-  return(subset(wd.env$instance_ofs, id == instance_of_id, label)[[1]])
+  return(subset(wdesr.env$instance_ofs, id == instance_of_id, label)[[1]])
 }
 
 #' Get the label of a wikidata item
@@ -64,10 +63,7 @@ wd_get_item_label <- function(item) {
 #'
 #' @examples wd_get_item_alias(item)
 wd_get_item_alias <- function(item) {
-  a <- c(item[[1]]$aliases$fr$value,item[[1]]$aliases$en$value)
-  if(length(a) == 0)
-    return(wd_get_item_label(item))
-    #return(abbreviate(stringi::stri_enc_toascii(wd_get_item_label(item)),12))
+  a <- c(item[[1]]$aliases$fr$value, item[[1]]$labels$fr$value, wd_get_item_label(item))
   return(a[stringr::str_length(a) == min(stringr::str_length(a))][1])
 }
 
