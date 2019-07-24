@@ -4,7 +4,8 @@
 \alias{wdesr_get_graph}
 \title{Get a graph from a root id, following a given set of properties}
 \usage{
-wdesr_get_graph(wdid, props, depth = 3, active_only = FALSE)
+wdesr_get_graph(wdid, props, depth = 3, active_only = FALSE,
+  stop_at = c("EPST"))
 }
 \arguments{
 \item{wdid}{the wikidata id of the root}
@@ -14,6 +15,8 @@ wdesr_get_graph(wdid, props, depth = 3, active_only = FALSE)
 \item{depth}{the depth of the graph (more or less) (default to 3)}
 
 \item{active_only}{TRUE to filter dissolved universities (default to FALSE)}
+
+\item{stop_at}{a list of type of nodes that must not be visited furthermore (default to "EPST")}
 }
 \value{
 a list of edges and vertices
