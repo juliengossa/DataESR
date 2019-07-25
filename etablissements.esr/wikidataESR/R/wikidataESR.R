@@ -279,7 +279,7 @@ wdesr_ggplot_graph <- function( df.g,
     size = scales::rescale(as.numeric(df.g$vertices$depth),label_sizes))
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
   #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
-  g <- g + xlim(-0.2,1.2) + ylim(-0.1,1.1)
+  g <- g + xlim(-0.2,1.2) + ylim(-0.03,1.03)
   g <- g + theme_blank()
 
   return(g)

@@ -65,7 +65,7 @@ plot_histoire <- function(racines) {
   wdesr.env <- wdesr_get_cache()
   ggs.width <- 8
   ggs.heigth <- 6
-  ggs.dpi <- 100
+  ggs.dpi <- 150
   ggs.path <- "../plots/histoire/"
   
   for(racine in racines) {
@@ -75,16 +75,32 @@ plot_histoire <- function(racines) {
     ## histoire
     try( {
       wdesr_load_and_plot(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10,
-                          node_size = 30, label_sizes = 4, arrow_gap = 0.11,
+                          node_size = 25, label_sizes = 3, arrow_gap = 0.08,
                           node_label = "alias_date", node_type = "text",
                           edge_label = TRUE)
       alias <- subset(wdesr.env$items, id == racine)$alias
-      ggsave(paste(ggs.path,alias,'-',racine,"-superetendu.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
+      ggsave(paste(ggs.path,alias,'-',racine,"-histoire.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
     } )
   }
+  
+  # Paris sera toujours une exception
+  racine <- "Q209842"
+  wdesr_load_and_plot(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10,
+                      node_size = 10, label_sizes = 2.5, arrow_gap = 0.03,
+                      node_label = "alias", node_type = "text",
+                      edge_label = TRUE)
+  alias <- subset(wdesr.env$items, id == racine)$alias
+  ggsave(paste(ggs.path,alias,'-',racine,"-histoire-etendu.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
+
+  wdesr_load_and_plot(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10, active_only = TRUE,
+                      node_size = 10, label_sizes = 2.5, arrow_gap = 0.03,
+                      node_label = "alias", node_type = "text",
+                      edge_label = TRUE)
+  alias <- subset(wdesr.env$items, id == racine)$alias
+  ggsave(paste(ggs.path,alias,'-',racine,"-histoire.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
 }
 
-anciennes_univ <- read.table("anciennes-univ.csv", sep = ";", header = TRUE, quote="")
+anciennes_univ <- read.table("anciennes_univ.csv", sep = ";", header = TRUE, quote="")
 plot_histoire(anciennes_univ$id)
 
 # Cache
