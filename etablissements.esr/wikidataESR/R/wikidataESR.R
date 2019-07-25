@@ -76,7 +76,7 @@ wdesr_load_items <- function(wdids) {
     for(wdid in subids) {
       print(paste("Loading:",wdid))
       r <- wdesr_load_item(wdid)
-      wdesr.env$items <- rbind(wdesr.env$items,r)
+      wdesr.cache$items <- rbind(wdesr.cache$items,r)
     }
   }
 }
@@ -93,9 +93,9 @@ wdesr_load_items <- function(wdids) {
 #'
 #' @examples wdesr_get_data(c("Q3551576","Q2013017"))
 wdesr_get_data <- function(wdids) {
-  wdesr_load_items(wdids[! wdids %in% wdesr.env$items$id])
+  wdesr_load_items(wdids[! wdids %in% wdesr.cache$items$id])
 
-  return(subset(wdesr.env$items, id %in% wdids))
+  return(subset(wdesr.cache$items, id %in% wdids))
 }
 
 

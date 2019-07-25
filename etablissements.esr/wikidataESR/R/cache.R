@@ -26,8 +26,8 @@
 #' @seealso \code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
 #' @examples wdesr_clear_cache()
 wdesr_clear_cache <- function() {
-  wdesr.env$instance_ofs <- data.frame("id"=character(),"label"=character())
-  wdesr.env$items <- data.frame()
+  wdesr.cache$instance_ofs <- data.frame("id"=character(),"label"=character())
+  wdesr.cache$items <- data.frame()
 }
 
 #' Get the cache
@@ -36,16 +36,16 @@ wdesr_clear_cache <- function() {
 #' This function returns this cache.
 #' It contains two dataframes: instances_ofs and items.
 #'
-#' @return the environement items cache
+#' @return the environement of the cache
 #' @export
 #'
 #' @seealso \code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
 #' @examples
-#' wdesr.env <- wdesr_get_cache()
-#' wdesr.env$instance_ofs
-#' wdesr.env$items
+#' wdesr.cache <- wdesr_get_cache()
+#' wdesr.cache$instance_ofs
+#' wdesr.cache$items
 wdesr_get_cache <- function() {
-  return(wdesr.env)
+  return(wdesr.cache)
 }
 
 
@@ -60,7 +60,7 @@ wdesr_get_cache <- function() {
 #' @seealso \code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
 #' @examples wdesr_save_cache()
 wdesr_save_cache <- function() {
-  save(instance_ofs, items, envir = wdesr.env, file = "wdesr-cache.RData")
+  save(instance_ofs, items, envir = wdesr.cache, file = "wdesr-cache.RData")
 }
 
 
@@ -69,16 +69,27 @@ wdesr_save_cache <- function() {
 #' To improve the performances, items are cached.
 #' This function loads this cache.
 #'
-#' @return nothing
+#' @return the environment of the cache
 #' @export
 #'
 #' @seealso \code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
 #'
 #' @examples wdesr_load_cache()
-wdesr_load_cache <- function() {
-  load(file = "wdesr-cache.RData", envir = wdesr.env )
+wdesr_load_cache <- function(file = "wdesr-cache.RData", default_cache = FALSE) {
+  if (default_cache) {
+    warning("Using default cache might lead to using deprecated data. Consider building your own cache.")
+    wdesr.cache$instance_ofs <- wikidataESR:::instance_ofs
+    wdesr.cache$items <- wikidataESR:::items
+  } else {
+    load(file = "wdesr-cache.RData", envir = wdesr.cache )
+  }
+
+  return(wdesr.cache)
 }
 
+
+
 # Initialization of the cache
-wdesr.env <- new.env()
+wdesr.cache <- new.env()
 wdesr_clear_cache()
+#wdesr_load_cache(default=TRUE)

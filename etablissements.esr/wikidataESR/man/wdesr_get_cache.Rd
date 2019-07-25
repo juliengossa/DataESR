@@ -7,7 +7,7 @@
 wdesr_get_cache()
 }
 \value{
-the environement items cache
+the environement of the cache
 }
 \description{
 To improve the performances, items are cached.
@@ -15,9 +15,9 @@ This function returns this cache.
 It contains two dataframes: instances_ofs and items.
 }
 \examples{
-wdesr.env <- wdesr_get_cache()
-wdesr.env$instance_ofs
-wdesr.env$items
+wdesr.cache <- wdesr_get_cache()
+wdesr.cache$instance_ofs
+wdesr.cache$items
 }
 \seealso{
 \code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}

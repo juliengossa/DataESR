@@ -4,10 +4,10 @@
 \alias{wdesr_load_cache}
 \title{Load the cache}
 \usage{
-wdesr_load_cache()
+wdesr_load_cache(file = "wdesr-cache.RData", default_cache = FALSE)
 }
 \value{
-nothing
+the environment of the cache
 }
 \description{
 To improve the performances, items are cached.
