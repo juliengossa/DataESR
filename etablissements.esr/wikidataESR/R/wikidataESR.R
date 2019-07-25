@@ -265,8 +265,10 @@ wdesr_ggplot_graph <- function( df.g,
   g <- g + geom_edges(aes(linetype = type),#, size = weight),
                       arrow = arrow(length = unit(8, "pt"), type = "closed"),
                       alpha=1,
-                      color="darkgrey") +
-    if(edge_label) g <- g + geom_edgetext(aes(label=date))
+                      color="darkgrey")
+
+  if(edge_label) g <- g + geom_edgetext(aes(label=date), size = min(label_sizes))
+
   g <- g + geom_nodes(aes(
     color=nature,
     alpha = (dissolution != "NA")),
@@ -277,7 +279,7 @@ wdesr_ggplot_graph <- function( df.g,
     size = scales::rescale(as.numeric(df.g$vertices$depth),label_sizes))
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
   #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
-  g <- g + xlim(-0.2,1.2)
+  g <- g + xlim(-0.2,1.2) + ylim(-0.1,1.1)
   g <- g + theme_blank()
 
   return(g)
