@@ -9,28 +9,42 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
+#
+# Author: Julien Gossa <gossa@unistra.fr>
 
+
+#' wikidataESR: A package for retrieving and plotting ESR data from wikidata.
+#'
+#' Wikidata is a convenient tool to model universities information.
+#' This package intends to help using data about the french universities,
+#' namely Enseignement Supérieur et Recherche (ESR).
+#' Its main purpose is to plot graphs about ESR universities relationship.
+#'
+#' @docType package
+#' @name wikidataESR
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#'
 #' @author Julien Gossa, \email{gossa@unistra.fr}
-#' @references \url{https://www.wikidata.org}
-#' @keywords wikidata, ESR
+NULL
 
-#library(igraph)
-library(WikidataR)
-library(plotly)
-library(ggnetwork)
-library(ggplot2)
-library(intergraph)
-library(network)
-library(dplyr)
-library(scales)
 
-#' Load the data of a university
+
+#' Load the data of one university.
 #'
-#' @param wdid the wikidata id of the university
+#' @param wdid The wikidata id of the university.
 #'
-#' @return a dataframe with the data of the university
+#' @return A dataframe with the data of the university.
 #'
 #' @examples wdesr_load_item("Q3551576")
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+#' @noRd
 wdesr_load_item <- function(wdid) {
 
   item <<- WikidataR::get_item(id = wdid)
@@ -64,13 +78,19 @@ wdesr_load_item <- function(wdid) {
   )
 }
 
-#' Load the data of a set of universities
+#' Load the data of a set of universities.
 #'
-#' @param wdids a set of wikidata ids
+#' @param wdids A set of wikidata ids.
 #'
-#' @return a dataframe with the data of the universities
+#' @return A dataframe with the data of the universities.
 #'
 #' @examples wdesr_load_items(c("Q3551576","Q2013017"))
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+#' @noRd
 wdesr_load_items <- function(wdids) {
   for(subids in wdids) {
     for(wdid in subids) {
@@ -81,17 +101,24 @@ wdesr_load_items <- function(wdids) {
   }
 }
 
-#' Loader
+#' Loader of universities data.
 #'
 #' Get the data of a set of universities.
+#'
 #' Data are cached: use \code{\link{wdesr_clear_cache}} to refresh data from wikidata.
 #'
-#' @param wdids a set of wikidata ids
+#' @param wdids A set of wikidata ids.
 #'
-#' @return a dataframe with the data of the universities
+#' @return A dataframe with the data of the universities.
 #' @export
 #'
-#' @examples wdesr_get_data(c("Q3551576","Q2013017"))
+#' @examples items <- wdesr_get_data(c("Q3551576","Q2013017"))
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_get_data <- function(wdids) {
   wdesr_load_items(wdids[! wdids %in% wdesr.cache$items$id])
 
@@ -99,18 +126,32 @@ wdesr_get_data <- function(wdids) {
 }
 
 
-#' Get a graph from a root id, following a given set of properties
+#' Get a graph of universities.
 #'
-#' @param wdid the wikidata id of the root
-#' @param props the set of properties to follow
-#' @param depth the depth of the graph (more or less) (default to 3)
-#' @param active_only TRUE to filter dissolved universities (default to FALSE)
-#' @param stop_at a list of type of nodes that must not be visited furthermore (default to "EPST")
+#' From a root wikipedia id, the function follows a given set of properties,
+#' building vertice and edges along the way.
 #'
-#' @return a list of edges and vertices
+#' Data are cached: use \code{\link{wdesr_clear_cache}} to refresh data from wikidata.
+#'
+#' @param wdid The wikidata id of the root.
+#' @param props The set of properties to follow.
+#' @param depth The depth of the graph (more or less) (default to 3).
+#' @param active_only TRUE to filter dissolved universities (default to FALSE).
+#' @param stop_at A list of type of nodes that must not be visited furthermore (default to "EPST").
+#'
+#' @return A list of edges and vertices.
 #' @export
 #'
-#' @examples wdesr_get_graph("Q61716176",c('composante','associé'), 1)
+#' @examples
+#' g <- wdesr_get_graph("Q61716176",c('composante','associé'), 1)
+#' g$edges
+#' g$vertice
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at = c("EPST") ) {
 
   edges <- data.frame()
@@ -166,15 +207,21 @@ wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at
 #'
 #' Build the label of the nodes.
 #'
-#' @param node_label either "alias", "alias_date", "long", or "long_date" (default to "alias")
-#' @param alias the alias of the item
-#' @param label the label of the item
-#' @param fondation the foundation date of the item
-#' @param dissolution the dissolution date of the item
+#' @param node_label Either "alias", "alias_date", "long", or "long_date" (default to "alias").
+#' @param alias The alias of the item.
+#' @param label The label of the item.
+#' @param fondation The foundation date of the item.
+#' @param dissolution The dissolution date of the item.
 #'
 #' @return a label for a node, as a string
 #'
 #' @examples node_label_aes("alias", alias, label, fondation, dissolution)
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+#' @noRd
 wdesr_node_label_aes <- function(node_label = "alias", alias, label, fondation, dissolution) {
   switch(node_label,
          alias = {
@@ -193,11 +240,18 @@ wdesr_node_label_aes <- function(node_label = "alias", alias, label, fondation, 
 #'
 #' Get the suitable geom_nodeX function according the node_type
 #'
-#' @param node_type Either "text", "text_repel", "label", or "label_repel" (default to "text")
+#' @param node_type Either "text", "text_repel", "label", or "label_repel" (default to "text").
 #'
-#' @return the suitable geom_nodeX function according the node_type
+#' @return The suitable geom_nodeX function according the node_type.
 #'
 #' @examples wdesr_node_geom("text_repel")
+#'
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+#' @noRd
 wdesr_node_geom <- function(node_type = "text") {
   switch(node_type,
          text = {geom_nodetext},
@@ -213,17 +267,17 @@ wdesr_node_geom <- function(node_type = "text") {
 #'
 #' A wrapper for ggplot2 to plot graph as returned by \code{\link{wdesr_get_graph}}.
 #'
-#' @param df.g a dataframe representing a graph, as returned by wdesr_get_graph
-#' @param layout the layout to use to plot the graph as in \code{\link[sna]{gplot.layout}}
-#' @param active_only TRUE to filter the dissolved nodes (default to FALSE)
-#' @param node_sizes the size of the nodes, either a single value or a range c(min,max)
-#' @param label_sizes the size of the nodes, either a single value or a range c(min,max)
-#' @param node_label define the label for the nodess. Either "alias", "alias_date", "long", or "long_date" (default to "alias")
-#' @param node_type define the type of drawing for the nodes. Either "text", "text_repel", "label", or "label_repel" (default to "text")
-#' @param edge_label TRUE to plot dates on edges (default to "TRUE")
-#' @param arrow_gap a parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}
+#' @param df.g A dataframe representing a graph, as returned by wdesr_get_graph.
+#' @param layout The layout to use to plot the graph as in \code{\link[sna]{gplot.layout}}.
+#' @param active_only TRUE to filter the dissolved nodes (default to FALSE).
+#' @param node_sizes The size of the nodes, either a single value or a range c(min,max).
+#' @param label_sizes The size of the nodes, either a single value or a range c(min,max).
+#' @param node_label Define the label for the nodess. Either "alias", "alias_date", "long", or "long_date" (default to "alias").
+#' @param node_type Define the type of drawing for the nodes. Either "text", "text_repel", "label", or "label_repel" (default to "text").
+#' @param edge_label TRUE to plot dates on edges (default to "TRUE").
+#' @param arrow_gap A parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}.
 #'
-#' @return a ggplot2
+#' @return A ggplot2.
 #' @export
 #'
 #' @examples
@@ -233,6 +287,12 @@ wdesr_node_geom <- function(node_type = "text") {
 #'   node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
 #'   node_label = "alias", node_type = "text",
 #'   edge_label = FALSE)
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+
 wdesr_ggplot_graph <- function( df.g,
                                 layout = "kamadakawai",
                                 active_only = FALSE,
@@ -310,13 +370,13 @@ wdesr_ggplot_graph <- function( df.g,
 #'
 #' Conveniently call \code{\link{wdesr_get_graph}} and then \code{\link{wdesr_ggplot_graph}}.
 #'
-#' @param wdid the wikidata id of the root
-#' @param props the properties to follows
-#' @param depth the depth of the following
-#' @param plot_type either "ggplot" or "plotly" (default to ggplot)
-#' @param ... additionnal parameters for the plot; see \code{\link{wdesr_ggplot_graph}} for details
-#' @param active_only TRUE to filter dissolved universities (default to FALSE)
-#' @return a ggplot or a plotly
+#' @param wdid The wikidata id of the root.
+#' @param props The properties to follows.
+#' @param depth The depth of the following
+#' @param plot_type Either "ggplot" or "plotly" (default to ggplot).
+#' @param ... Additionnal parameters for the plot; see \code{\link{wdesr_ggplot_graph}} for details.
+#' @param active_only TRUE to filter dissolved universities (default to FALSE).
+#' @return A ggplot or a plotly.
 #' @export
 #'
 #' @examples
@@ -324,6 +384,11 @@ wdesr_ggplot_graph <- function( df.g,
 #'   node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
 #'   node_label = "alias", node_type = "text",
 #'   edge_label = FALSE)
+#' @references
+#' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' - \url{https://www.wikidata.org}
+#' @seealso \code{\link{wdesr_clear_cache}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
 
 wdesr_load_and_plot <- function( wdid,
                                  props          = c('composante','associé'),

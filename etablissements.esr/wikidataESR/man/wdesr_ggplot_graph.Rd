@@ -9,26 +9,26 @@ wdesr_ggplot_graph(df.g, layout = "kamadakawai", active_only = FALSE,
   node_type = "text", edge_label = TRUE, arrow_gap = 0.05)
 }
 \arguments{
-\item{df.g}{a dataframe representing a graph, as returned by wdesr_get_graph}
+\item{df.g}{A dataframe representing a graph, as returned by wdesr_get_graph.}
 
-\item{layout}{the layout to use to plot the graph as in \code{\link[sna]{gplot.layout}}}
+\item{layout}{The layout to use to plot the graph as in \code{\link[sna]{gplot.layout}}.}
 
-\item{active_only}{TRUE to filter the dissolved nodes (default to FALSE)}
+\item{active_only}{TRUE to filter the dissolved nodes (default to FALSE).}
 
-\item{node_sizes}{the size of the nodes, either a single value or a range c(min,max)}
+\item{node_sizes}{The size of the nodes, either a single value or a range c(min,max).}
 
-\item{label_sizes}{the size of the nodes, either a single value or a range c(min,max)}
+\item{label_sizes}{The size of the nodes, either a single value or a range c(min,max).}
 
-\item{node_label}{define the label for the nodess. Either "alias", "alias_date", "long", or "long_date" (default to "alias")}
+\item{node_label}{Define the label for the nodess. Either "alias", "alias_date", "long", or "long_date" (default to "alias").}
 
-\item{node_type}{define the type of drawing for the nodes. Either "text", "text_repel", "label", or "label_repel" (default to "text")}
+\item{node_type}{Define the type of drawing for the nodes. Either "text", "text_repel", "label", or "label_repel" (default to "text").}
 
-\item{edge_label}{TRUE to plot dates on edges (default to "TRUE")}
+\item{edge_label}{TRUE to plot dates on edges (default to "TRUE").}
 
-\item{arrow_gap}{a parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}}
+\item{arrow_gap}{A parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}.}
 }
 \value{
-a ggplot2
+A ggplot2.
 }
 \description{
 A wrapper for ggplot2 to plot graph as returned by \code{\link{wdesr_get_graph}}.
@@ -40,4 +40,16 @@ wdesr_ggplot_graph(df.alsace,
   node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
   node_label = "alias", node_type = "text",
   edge_label = FALSE)
+}
+\references{
+\itemize{
+\item \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+\item \url{https://www.wikidata.org}
+}
+}
+\seealso{
+\code{\link{wdesr_clear_cache}}
+}
+\author{
+Julien Gossa, \email{gossa@unistra.fr}
 }

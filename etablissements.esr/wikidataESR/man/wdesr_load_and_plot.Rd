@@ -8,20 +8,20 @@ wdesr_load_and_plot(wdid, props = c("composante", "associé"),
   depth = 3, active_only = FALSE, plot_type = "ggplot", ...)
 }
 \arguments{
-\item{wdid}{the wikidata id of the root}
+\item{wdid}{The wikidata id of the root.}
 
-\item{props}{the properties to follows}
+\item{props}{The properties to follows.}
 
-\item{depth}{the depth of the following}
+\item{depth}{The depth of the following}
 
-\item{active_only}{TRUE to filter dissolved universities (default to FALSE)}
+\item{active_only}{TRUE to filter dissolved universities (default to FALSE).}
 
-\item{plot_type}{either "ggplot" or "plotly" (default to ggplot)}
+\item{plot_type}{Either "ggplot" or "plotly" (default to ggplot).}
 
-\item{...}{additionnal parameters for the plot; see \code{\link{wdesr_ggplot_graph}} for details}
+\item{...}{Additionnal parameters for the plot; see \code{\link{wdesr_ggplot_graph}} for details.}
 }
 \value{
-a ggplot or a plotly
+A ggplot or a plotly.
 }
 \description{
 Conveniently call \code{\link{wdesr_get_graph}} and then \code{\link{wdesr_ggplot_graph}}.
@@ -31,4 +31,16 @@ wdesr_load_and_plot("Q61716176",c('composante','associé'), 1,
   node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
   node_label = "alias", node_type = "text",
   edge_label = FALSE)
+}
+\references{
+\itemize{
+\item \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+\item \url{https://www.wikidata.org}
+}
+}
+\seealso{
+\code{\link{wdesr_clear_cache}}
+}
+\author{
+Julien Gossa, \email{gossa@unistra.fr}
 }

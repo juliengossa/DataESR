@@ -1,3 +1,22 @@
+# This file is part of wikidataESR.
+#
+# wikidataESR is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# wikidataESR is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# Author: Julien Gossa <gossa@unistra.fr>
+#
+# Ce script permet de créer un large nombre de graphes.
+# Le résultat peut être trouvé là : https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/plots
+# Deux dossiers doivent être créés pour qu'il fonctionne (../plots/histoire and ../plots/regroupements)
+# 
+# Ce code peut servir d'exemple pour construire d'autres applications.
 
 library(wikidataESR)
 
@@ -8,12 +27,16 @@ library(scales)
 library(dplyr)
 
 
-# Batches
-
+# Chargement du cache s'il existe. 
+# Sinon, les données seront téléchargées sur wikidate.
 wdesr_load_cache()
 
 ## Regroupements
+# Ces graphiques partent d'un regroupement (COMUE, association, site) 
+# et suivent les propriétés 'composante' et 'associé' pour retrouver
+# tous les établissements qui y sont rattachés.
 
+# Cette fonction produit les graphes de regroupement
 plot_regroupements <- function(racines) {
   wdesr.env <- wdesr_get_cache()
   ggs.width <- 13
@@ -55,11 +78,15 @@ plot_regroupements <- function(racines) {
   }
 }
 
+# Lecture des id wikidata des racines pour les regroupements, puis plot.
 regroupements <- read.table("regroupements.csv", sep = ";", header = TRUE, quote="")
 plot_regroupements(regroupements$id)
 
 
 ## Histoire
+# Ces graphiques partent d'une université disparue dans les années '70
+# et suivent les propriétés 'successeur', 'séparé_de', 'composante_de' et 'associé_de' pour retrouver
+# tous les établissements qui y sont rattachés.
 
 plot_histoire <- function(racines) {
   wdesr.env <- wdesr_get_cache()
@@ -75,7 +102,7 @@ plot_histoire <- function(racines) {
     ## histoire
     try( {
       wdesr_load_and_plot(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10,
-                          node_size = 25, label_sizes = 3, arrow_gap = 0.08,
+                          node_size = 25, label_sizes = 3, arrow_gap = 0.09,
                           node_label = "alias_date", node_type = "text",
                           edge_label = TRUE)
       alias <- subset(wdesr.env$items, id == racine)$alias
@@ -100,9 +127,9 @@ plot_histoire <- function(racines) {
   ggsave(paste(ggs.path,alias,'-',racine,"-histoire.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
 }
 
+## Charge les racines et puis plote les graphiques.
 anciennes_univ <- read.table("anciennes_univ.csv", sep = ";", header = TRUE, quote="")
 plot_histoire(anciennes_univ$id)
 
-# Cache
-
+# Enregistre le cache pour éviter d'avoir à retélécharger les données la prochaine fois.
 wdesr_save_cache()

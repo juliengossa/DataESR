@@ -2,23 +2,35 @@
 % Please edit documentation in R/cache.R
 \name{wdesr_get_cache}
 \alias{wdesr_get_cache}
-\title{Get the cache}
+\title{Get the cache.}
 \usage{
 wdesr_get_cache()
 }
 \value{
-the environement of the cache
+The WDESR cache.
 }
 \description{
-To improve the performances, items are cached.
+To improve the performances, wikidata items are cached.
 This function returns this cache.
-It contains two dataframes: instances_ofs and items.
+It contains two dataframes: instance_ofs and items.
 }
 \examples{
 wdesr.cache <- wdesr_get_cache()
 wdesr.cache$instance_ofs
 wdesr.cache$items
 }
+\references{
+\itemize{
+\item \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+}
+}
 \seealso{
-\code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
+\itemize{
+\item \code{\link{wdesr_clear_cache}}
+\item \code{\link{wdesr_save_cache}}
+\item \code{\link{wdesr_load_cache}}
+}
+}
+\author{
+Julien Gossa, \email{gossa@unistra.fr}
 }

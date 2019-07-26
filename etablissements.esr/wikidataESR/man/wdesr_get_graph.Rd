@@ -2,28 +2,47 @@
 % Please edit documentation in R/wikidataESR.R
 \name{wdesr_get_graph}
 \alias{wdesr_get_graph}
-\title{Get a graph from a root id, following a given set of properties}
+\title{Get a graph of universities.}
 \usage{
 wdesr_get_graph(wdid, props, depth = 3, active_only = FALSE,
   stop_at = c("EPST"))
 }
 \arguments{
-\item{wdid}{the wikidata id of the root}
+\item{wdid}{The wikidata id of the root.}
 
-\item{props}{the set of properties to follow}
+\item{props}{The set of properties to follow.}
 
-\item{depth}{the depth of the graph (more or less) (default to 3)}
+\item{depth}{The depth of the graph (more or less) (default to 3).}
 
-\item{active_only}{TRUE to filter dissolved universities (default to FALSE)}
+\item{active_only}{TRUE to filter dissolved universities (default to FALSE).}
 
-\item{stop_at}{a list of type of nodes that must not be visited furthermore (default to "EPST")}
+\item{stop_at}{A list of type of nodes that must not be visited furthermore (default to "EPST").}
 }
 \value{
-a list of edges and vertices
+A list of edges and vertices.
 }
 \description{
-Get a graph from a root id, following a given set of properties
+From a root wikipedia id, the function follows a given set of properties,
+building vertice and edges along the way.
+}
+\details{
+Data are cached: use \code{\link{wdesr_clear_cache}} to refresh data from wikidata.
 }
 \examples{
-wdesr_get_graph("Q61716176",c('composante','associé'), 1)
+g <- wdesr_get_graph("Q61716176",c('composante','associé'), 1)
+g$edges
+g$vertice
+
+}
+\references{
+\itemize{
+\item \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+\item \url{https://www.wikidata.org}
+}
+}
+\seealso{
+\code{\link{wdesr_clear_cache}}
+}
+\author{
+Julien Gossa, \email{gossa@unistra.fr}
 }

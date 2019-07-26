@@ -2,20 +2,38 @@
 % Please edit documentation in R/cache.R
 \name{wdesr_load_cache}
 \alias{wdesr_load_cache}
-\title{Load the cache}
+\title{Load the cache.}
 \usage{
 wdesr_load_cache(file = "wdesr-cache.RData", default_cache = FALSE)
+}
+\arguments{
+\item{file}{The name of the file to read the cache from (default to "wdesr-cache.RData").}
+
+\item{default_cache}{TRUE to load the cache embeded with the package instead of a local cache (default to FALSE).
+Be aware that this cache might be outdated compared to wikidata.}
 }
 \value{
 the environment of the cache
 }
 \description{
-To improve the performances, items are cached.
+To improve the performances, wikidata items are cached.
 This function loads this cache.
 }
 \examples{
 wdesr_load_cache()
 }
+\references{
+\itemize{
+\item \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+}
+}
 \seealso{
-\code{\link{wdesr_clear_cache}} \code{\link{wdesr_get_cache}} \code{\link{wdesr_save_cache}} \code{\link{wdesr_load_cache}}
+\itemize{
+\item \code{\link{wdesr_clear_cache}}
+\item \code{\link{wdesr_get_cache}}
+\item \code{\link{wdesr_load_cache}}
+}
+}
+\author{
+Julien Gossa, \email{gossa@unistra.fr}
 }
