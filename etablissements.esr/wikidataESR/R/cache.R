@@ -13,6 +13,23 @@
 # Author: Julien Gossa <gossa@unistra.fr>
 
 
+#' Instance_of of french ESR institutions.
+#'
+#' A dataset containing the main instance_of (nature) french ESR institutions,
+#' together with some additionnal informations.
+#'
+#' @format A data frame with 6 variables:
+#' - id: the wikipedia id of the item;
+#' - libellé: the libellé (label) of the item;
+#' - recommandé: whether this item is recommanded to use ("oui") or not ("non");
+#' - niveau: level of the item (1:international, 2:national, 3:group of institutions, 4:institions, 5:intermediary level, 6:sub-institutions);
+#' - wikipedia: url to the wikipedia notice;
+#' - note: note to help the user.
+
+#' @source \url{https://www.wikidata.org}
+"wdesr.natures"
+
+
 #' Clear the local WDESR cache.
 #'
 #' To improve the performances, wikidata items are cached.
