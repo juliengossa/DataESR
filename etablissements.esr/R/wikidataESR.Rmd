@@ -1,0 +1,134 @@
+---
+title: "Tenter d'y voir clair dans l'ESR : modélisation les établissements dans WikiData et exploitation des données avec WikiDataESR."
+author: "Julien Gossa, Bastien Tagliana, Pierre Zoschke"
+date: "20/07/2019"
+#output: html_document
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(wikidataESR)
+library(ggplot2)
+library(knitr)
+wdesr_load_cache()
+
+natures_to_table <- function (natures) {
+  df <- natures
+  df$wikidata.id <- paste(
+    '[',natures$id,
+    '](https://www.wikidata.org/wiki/',
+    natures$id,')',sep='')
+  df$wikipedia <- ifelse(df$wikipedia!="",
+    paste('[ref](',df$wikipedia,')',sep=''),
+    "")
+  
+  return(subset(df,,c('wikidata.id','libellé','niveau','note','wikipedia')))
+}
+```
+
+Les réformes successives touchant l’organisation de l'enseignement supérieur et de la recherche (ESR) depuis une quinzaine d’années ont profondément modifié le paysage universitaire français. Aujourd'hui, les transformations institutionelles sont si nombreuses et si rapides, qu'il est devenu impossible de connaitre la structure actuelle des établissements de l'ESR.
+
+Il existe trois sources principales d'informations sur les établissements de l'ESR français :
+
+- [data.gouv.fr](https://www.data.gouv.fr/fr/) : le portail des données publiques du gouvernement français ;
+- [#DataESR](https://data.esr.gouv.fr/FR/) : le portail des données publiques du ministère de l'enseignement supérieur, de la recherche et de l'innovation ;
+- [WikiData](https://www.wikidata.org/wiki/Wikidata:Main_Page) : une base de connaissances libre et gratuite, dans la famille WikiMédia, qui compte notamment WikiPédia.
+
+Les deux premières sources ne sont pas communautaires, et proposent essentiellement des jeux de données brutes. En revanche, WikiData permet l'édition collaborative, plus adaptée au rythme actuel des transformations. Il permet également de structurer les données grace à un très large choix de relations. La contrepartie de ces deux avantages est la difficulté à uniformiser les données, passage indispensable à leur exploitation.
+
+C'est pourquoi ce document est un guide visant l’harmonisation des informations sur l’organisation de l’enseignement supérieur français disponibles publiquement sur la base de donnée collaborative WikiData.
+
+La première partie présente une proposition de modélisation des différentes relations entre établissements de l'ESR grâce aux relations WikiData. La seconde partie présente [WikiDataESR](https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR), une librairie [R](https://www.r-project.org/) conçue pour exploiter ces données. Enfin, une troisième partie disserte sur les transformation des établissements de l'ESR.
+
+## Proposition de modélisation
+
+Le principe de la modélisation des informations dans WikiData est relativement simple : 
+
+- chaque établissement de l'ESR, passé, présent ou futur, doit faire l'objet d'un **élément** (_item_) unique ;
+- chaque élément dispose de plusieurs **propriétés** (_properties_), dont la **valeur** (_value_) est l'information ;
+- le cas échéant, les propriétés peuvent avoir un **qualificatif** (_qualifier_) précisant cette information.
+
+Pour l'utilisation particulière de WikiData, on pourra se reporter à cette [introduction](https://www.wikidata.org/wiki/Wikidata:Introduction/fr). 
+
+### Entête des éléments
+
+Les éléments présentent quatre informations indispensables :
+
+- un **identifiant** unique, attribué automatiquement, qu'on retrouve dans l'URL de la page ;
+- un **libellé** (_label_) unique, ou nom principal ; 
+- une **description** (_description_) ;
+- autant d'**alias** que nécessaire, ou noms alternatifs.
+
+Par exemple, pour l'[UCA](https://www.wikidata.org/wiki/Q19370961) :
+
+- Q19370961 [www.wikidata.org/wiki/Q19370961](https://www.wikidata.org/wiki/Q19370961)
+- Université Côte d'Azur
+- communauté d'universités et établissements (ComUE) créée en 2015 à Nice, dans la région Provence-Alpes-Côte d'Azur
+- Comue Université Côte d'Azur ; Comue UCA
+
+### Propriétés 
+
+Les propriétés permettent de modéliser les relations entre les établissements de l'ESR. La proposition suivante permet d'harmoniser les informations :
+
+```{r proprietes, echo = FALSE, results='asis'}
+df <- read.table("proprietes.csv", sep=";", header=TRUE, quote="")
+kable(df,background="blue")
+```
+
+### Erreurs fréquentes
+
+Afin d'harmoniser au mieux les informations, il est utile d'éviter plusieurs erreurs fréquentes.
+
+- Utiliser un seul élément pour représenter plusieurs établissements.
+
+Il est recommandé d'utiliser autant d'éléments que de nécessaires, sans tenter de réutiliser ceux qui existent. Cela vaut aussi bien pour les établissements composites (regroupements) que pour les établissements qui changent de statuts au cours du temps.
+
+- Utiliser une nature inappropriée.
+
+Il existe de très nombreuses natures d'établissement de l'ESR, ou qui s'en approchent. Il est recommandé d'éviter d'utiliser des natures génériques ("centre de recherche"), et de stipuler la nature la plus précise possible de l'établissement ("UMR"). Dans l'idéal, la nature se confond avec la forme juridique. Stipuler plusieurs nature doit être réservé au cas où l'établissement a effectivement une nature composite.
+
+Une liste de natures recommandées et déconseillées est donnée en annexe.
+
+- Utiliser une propriété innapropriée.
+
+Les organisations des regroupements de l'ESR étant particulièrement complexes, il est indispensable d'utiliser les propriétés les mieux adaptées, notamment pour différencier les membres pleinement intégrés (appelés ici "composante") des membres seulement associés. 
+
+De plus, même si les tutelles (EPST, EPCA, EPIC...) sont membres des regroupements, il est recommandé de les déclarer sous forme d'affiliation pour les différencier des établissements composantes ou associés. 
+
+Enfin, les adhésions aux diverses associations (CPU, CURIF, LERU, COUPERIN...) doivent être déclarées avec "membre de", toujours pour les différencier des autres types de relations.
+
+## Annexes 
+
+### Liste des natures recommandées
+
+Les natures d'établissement peuvent être hiérarchisés en différents niveaux :
+
+- 1 international : organisations internationales ;
+- 2 national : institutions nationales (p. ex. : CNRS) ;
+- 3 régional/regroupement : institutions régionales (p. ex. : COMUEs) ;
+- 4 institutions/université : institutions locales (p. ex. : universités) ;
+- 5 intermédiaire : institutions locales de moindre taille (p. ex. : école indépendante), ou premier sous-niveau des institutions (p. ex. : collégium)
+- 6 terrain : sous-partie d'une institution (p. ex. : UFR/UMR)
+
+```{r natures, echo = FALSE, results='asis'}
+df <- natures_to_table(subset(wdesr.natures,recommandé=="oui"))
+kable(df)
+```
+
+### Liste des natures déconseillées
+
+La plupart des natures dans cette liste sont déconseillées parce que des natures plus précises existent.
+
+```{r natures-unreco, echo = FALSE, results='asis'}
+df <- natures_to_table(subset(wdesr.natures,recommandé=="non"))
+kable(df)
+```
+
+
+```{r pressure, echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=4}
+wdesr_load_and_plot("Q61716176",c('composante','associé'), 1,
+                    node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
+                    node_label = "alias", node_type = "text",
+                    edge_label = FALSE)
+```
