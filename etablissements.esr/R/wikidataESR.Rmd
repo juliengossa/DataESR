@@ -1,15 +1,7 @@
----
-title: "Tenter d'y voir clair dans l'ESR : modélisation les établissements dans WikiData et exploitation des données avec WikiDataESR."
-author: "Julien Gossa, Bastien Tagliana, Pierre Zoschke"
-date: "20/07/2019"
-#output: html_document
-output: rmarkdown::github_document
----
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(wikidataESR)
-library(ggplot2)
 library(knitr)
 wdesr_load_cache()
 
@@ -125,10 +117,11 @@ df <- natures_to_table(subset(wdesr.natures,recommandé=="non"))
 kable(df)
 ```
 
-
-```{r pressure, echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=4}
-wdesr_load_and_plot("Q61716176",c('composante','associé'), 1,
-                    node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
-                    node_label = "alias", node_type = "text",
-                    edge_label = FALSE)
-```
+<!-- 
+`{r pressure, echo=FALSE, warning=FALSE, message=FALSE, fig.width=6, fig.height=4}
+`wdesr_load_and_plot("Q61716176",c('composante','associé'), 1,
+`                    node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
+`                    node_label = "alias", node_type = "text",
+`                    edge_label = FALSE)
+`
+-->

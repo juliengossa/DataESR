@@ -1,0 +1,9 @@
+---
+title: "README"
+author: "Julien Gossa"
+date: "28/07/2019"
+output: github_document
+---
+
+```{r child = 'R/wikidataESR.Rmd'}
+```
