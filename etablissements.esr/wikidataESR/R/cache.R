@@ -136,9 +136,21 @@ wdesr_load_cache <- function(file = "wdesr-cache.RData", default_cache = FALSE) 
   return(wdesr.cache)
 }
 
-
-
 # Initialization of the cache
 wdesr.cache <- new.env()
 wdesr_clear_cache()
 #wdesr_load_cache(default=TRUE)
+
+
+#' Maintainance function to build local cache and datasets
+#'
+#' @return nothing
+#'
+#' @examples wdes_make_local_data()
+#' @noRd
+wdes_make_local_data <- function() {
+  wdesr.natures <- read.table("wdesr.natures.csv",header=TRUE,sep=';',quote='"')
+  usethis::use_data(wdesr.natures)
+
+  usethis::use_data(items,instance_ofs, internal = TRUED)
+}
