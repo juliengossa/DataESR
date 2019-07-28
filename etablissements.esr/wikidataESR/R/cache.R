@@ -150,7 +150,7 @@ wdesr_clear_cache()
 #' @noRd
 wdes_make_local_data <- function() {
   wdesr.natures <- read.table("wdesr.natures.csv",header=TRUE,sep=';',quote='"')
-  usethis::use_data(wdesr.natures)
+  usethis::use_data(wdesr.natures, overwrite = TRUE)
 
-  usethis::use_data(items,instance_ofs, internal = TRUED)
+  usethis::use_data(items,instance_ofs, internal = TRUE, overwrite = TRUE)
 }
