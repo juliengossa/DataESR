@@ -13,21 +13,37 @@
 # Author: Julien Gossa <gossa@unistra.fr>
 
 
-#' Instance_of of french ESR institutions.
+#' Status of french ESR institutions.
 #'
-#' A dataset containing the main instance_of (nature) french ESR institutions,
+#' A dataset containing the main status (_statuts_) french ESR institutions,
 #' together with some additionnal informations.
 #'
 #' @format A data frame with 6 variables:
 #' - id: the wikipedia id of the item;
 #' - libellé: the libellé (label) of the item;
 #' - recommandé: whether this item is recommanded to use ("oui") or not ("non");
-#' - niveau: level of the item (1:international, 2:national, 3:group of institutions, 4:institutions, 5:intermediary level, 6:sub-institutions);
+#' - niveau: level of the item (1:national, 2:group of institutions, 3:institutions, 4:intermediary level, 5:sub-institutions, 6:non-institutions);
 #' - wikipedia: url to the wikipedia notice;
 #' - note: note to help the user.
 
 #' @source \url{https://www.wikidata.org}
-"wdesr.natures"
+"wdesr.status"
+
+
+#' Maintainance function to build local cache and datasets
+#'
+#' @return nothing
+#'
+#' @examples wdesr_make_package_data()
+#' @noRd
+wdesr_make_package_data <- function() {
+  wdesr.status <- read.table("wdesr.status.csv",header=TRUE,sep=';',quote='"',stringsAsFactors=FALSE)
+  usethis::use_data(wdesr.status, overwrite = TRUE, internal = TRUE)
+
+  write.table(wdesr.status, file = "wdesr.status.csv", sep=';', quote = TRUE, row.names = FALSE)
+
+  #usethis::use_data(items,instance_ofs, internal = TRUE, overwrite = TRUE)
+}
 
 
 #' Clear the local WDESR cache.
@@ -48,7 +64,8 @@
 #' - \code{\link{wdesr_load_cache}}
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_clear_cache <- function() {
-  wdesr.cache$instance_ofs <- data.frame("id"=character(),"label"=character())
+
+  wdesr.cache$status <- wikidataESR:::wdesr.status
   wdesr.cache$items <- data.frame()
 
   return(wdesr.cache)
@@ -65,7 +82,7 @@ wdesr_clear_cache <- function() {
 #'
 #' @examples
 #' wdesr.cache <- wdesr_get_cache()
-#' wdesr.cache$instance_ofs
+#' wdesr.cache$status
 #' wdesr.cache$items
 #' @references
 #' - \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
@@ -99,7 +116,7 @@ wdesr_get_cache <- function() {
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 #'
 wdesr_save_cache <- function(file = "wdesr-cache.RData") {
-  save(instance_ofs, items, envir = wdesr.cache, file = file)
+  save(status, items, envir = wdesr.cache, file = file)
 }
 
 
@@ -109,8 +126,8 @@ wdesr_save_cache <- function(file = "wdesr-cache.RData") {
 #' This function loads this cache.
 #'
 #' @param file The name of the file to read the cache from (default to "wdesr-cache.RData").
-#' @param default_cache TRUE to load the cache embeded with the package instead of a local cache (default to FALSE).
-#'   Be aware that this cache might be outdated compared to wikidata.
+#' @param package_statuts TRUE to load the status (_statuts_) cache embeded within the package instead of the local cache (default to FALSE).
+#'    Usefull whenever status embeded within the package have been updated.
 #'
 #' @return the environment of the cache
 #' @export
@@ -124,33 +141,15 @@ wdesr_save_cache <- function(file = "wdesr-cache.RData") {
 #' - \code{\link{wdesr_load_cache}}
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 #'
-wdesr_load_cache <- function(file = "wdesr-cache.RData", default_cache = FALSE) {
-  if (default_cache) {
-    warning("Using default cache might lead to using deprecated data. Consider building your own cache.")
-    wdesr.cache$instance_ofs <- wikidataESR:::instance_ofs
-    wdesr.cache$items <- wikidataESR:::items
-  } else {
-    load(file = "wdesr-cache.RData", envir = wdesr.cache )
-  }
+wdesr_load_cache <- function(file = "wdesr-cache.RData", package_statuts = FALSE) {
 
+  load(file = "wdesr-cache.RData", envir = wdesr.cache )
+
+  if (package_statuts) {
+    wdesr.cache$status <- wdesr.status
+  }
   return(wdesr.cache)
 }
 
-# Initialization of the cache
+# Creating an empty cache.
 wdesr.cache <- new.env()
-wdesr_clear_cache()
-#wdesr_load_cache(default=TRUE)
-
-
-#' Maintainance function to build local cache and datasets
-#'
-#' @return nothing
-#'
-#' @examples wdes_make_local_data()
-#' @noRd
-wdes_make_local_data <- function() {
-  wdesr.natures <- read.table("wdesr.natures.csv",header=TRUE,sep=';',quote='"')
-  usethis::use_data(wdesr.natures, overwrite = TRUE)
-
-  usethis::use_data(items,instance_ofs, internal = TRUE, overwrite = TRUE)
-}

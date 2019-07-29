@@ -31,6 +31,65 @@
 NULL
 
 
+#' Get the ESR status of a wikidata item
+#'
+#' The status (_statut_) is the _legal status_ of an ESR institution.
+#' It is based on the instance_of property (P31) and converted thanks to a local dataset.
+#'
+#' @param item A wikidata item, as returned by wikidataR.
+#'
+#' @return The status the item.
+#'
+#' @examples
+#' wdesr_get_item_status(item)
+#'
+#' @references \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
+#' @seealso \code{\link{wdesr.status}}, \code{\link[WikidataR]{WikidataR}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+#' @noRd
+wdesr_get_item_status <- function(item) {
+  item_id <- item[[1]]$id
+  instance_of_id <- wd_get_item_statement_as_list(item,"P31")[[1]][[1]]
+  if(is.null(instance_of_id)) {
+    warning("The instance of wikidata item ", item_id, " is not set.\n",
+            "  Default level (size of the node) is set to 7.\n",
+            "  Please check the property P31 at https://www.wikidata.org/wiki/",item_id,"\n",
+            "  using the guideline at https://github.com/juliengossa/DataESR/tree/master/etablissements.esr")
+
+    instance_of_id <- "NOID"
+  }
+
+  if (!instance_of_id %in% wdesr.cache$status$id) {
+    it <- WikidataR::get_item(id = instance_of_id)
+    label <- wd_get_item_alias(it)
+
+    warning("The instance of wikidata item ", item_id, " is unknown by wikidataESR: ",label,".\n",
+            "  Default level (size of the node) is set to 4.\n",
+            "  Please check the property P31 at https://www.wikidata.org/wiki/",item_id,"\n",
+            "  using the guideline at https://github.com/juliengossa/DataESR/tree/master/etablissements.esr")
+
+    wdesr.cache$status <- rbind(
+      wdesr.cache$status,
+      c(id         = instance_of_id,
+        libellé    = label,
+        recommandé = "",
+        niveau     = 5,
+        wikipedia  = "",
+        note       = "statut inexistant dans la base wikidataESR"))
+  }
+
+  status <- subset(wdesr.cache$status, id == instance_of_id)
+
+  if (status$recommandé == "non")
+    warning("The instance of wikidata item ", item_id, " is not recommended: ",status$libellé,".\n",
+            "  Reason is: ", ifelse(status$note != "",status$note, "Statut pas assez précis"),".\n",
+            "  Please check https://www.wikidata.org/wiki/",item_id,"\n",
+            "  using the guideline at https://github.com/juliengossa/DataESR/tree/master/etablissements.esr")
+
+  return(status)
+}
+
+
 
 #' Load the data of one university.
 #'
@@ -47,33 +106,35 @@ NULL
 #' @noRd
 wdesr_load_item <- function(wdid) {
 
-  item <<- WikidataR::get_item(id = wdid)
+  item <- WikidataR::get_item(id = wdid)
+  status <- wdesr_get_item_status(item)
 
   return(
     data.frame(
-    id          = wdid,
-    label       = wd_get_item_label(item),
-    alias       = wd_get_item_alias(item),
-    nature      = wd_get_item_instance_of(item),
+      id          = wdid,
+      label       = wd_get_item_label(item),
+      alias       = wd_get_item_alias(item),
+      statut      = status$libellé,
+      niveau      = status$niveau,
 
-    fondation   = wd_get_item_statement_as_year(item,"P571"),
-    dissolution = wd_get_item_statement_as_year(item,"P576"),
+      fondation   = wd_get_item_statement_as_year(item,"P571"),
+      dissolution = wd_get_item_statement_as_year(item,"P576"),
 
-    associé      = wd_get_item_statement_as_list(item,"P527"),
-    associé_de   = wd_get_item_statement_as_list(item,"P361"),
+      associé      = wd_get_item_statement_as_list(item,"P527"),
+      associé_de   = wd_get_item_statement_as_list(item,"P361"),
 
-    composante    = wd_get_item_statement_as_list(item,"P355"),
-    composante_de = wd_get_item_statement_as_list(item,"P749"),
+      composante    = wd_get_item_statement_as_list(item,"P355"),
+      composante_de = wd_get_item_statement_as_list(item,"P749"),
 
-    prédécesseur     = wd_get_item_statement_as_list(item,"P1365"),
-    prédécesseur_pit = wd_get_item_statement_qualifier_as_list(item,"P1365","P585"),
-    successeur       = wd_get_item_statement_as_list(item,"P1366"),
-    successeur_pit   = wd_get_item_statement_qualifier_as_list(item,"P1366","P585"),
+      prédécesseur     = wd_get_item_statement_as_list(item,"P1365"),
+      prédécesseur_pit = wd_get_item_statement_qualifier_as_list(item,"P1365","P585"),
+      successeur       = wd_get_item_statement_as_list(item,"P1366"),
+      successeur_pit   = wd_get_item_statement_qualifier_as_list(item,"P1366","P585"),
 
-    séparé_de        = wd_get_item_statement_as_list(item,"P807"),
-    séparé_de_pit    = wd_get_item_statement_qualifier_as_list(item,"P807","P585"),
+      séparé_de        = wd_get_item_statement_as_list(item,"P807"),
+      séparé_de_pit    = wd_get_item_statement_qualifier_as_list(item,"P807","P585"),
 
-    membre_de = wd_get_item_statement_as_list(item,"P463")
+      membre_de = wd_get_item_statement_as_list(item,"P463")
     )
   )
 }
@@ -94,7 +155,7 @@ wdesr_load_item <- function(wdid) {
 wdesr_load_items <- function(wdids) {
   for(subids in wdids) {
     for(wdid in subids) {
-      print(paste("Loading:",wdid))
+      print(paste("Loading: ",wdid))
       r <- wdesr_load_item(wdid)
       wdesr.cache$items <- rbind(wdesr.cache$items,r)
     }
@@ -120,6 +181,10 @@ wdesr_load_items <- function(wdids) {
 #' @seealso \code{\link{wdesr_clear_cache}}
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_get_data <- function(wdids) {
+  if (is.null(wdesr.cache$status)) {
+    wdesr_clear_cache()
+  }
+
   wdesr_load_items(wdids[! wdids %in% wdesr.cache$items$id])
 
   return(subset(wdesr.cache$items, id %in% wdids))
@@ -187,17 +252,18 @@ wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at
       vertices <- rbind(vertices,subset(df.to, !id %in% vertices$id))
 
     } else {
-      #stops <- subset(df.to, !id %in% vertices$id & nature %in% stop_at)
+      #stops <- subset(df.to, !id %in% vertices$id & status %in% stop_at)
       #if (nrow(stops) > 0) vertices <- rbind(vertices, stops)
-      vertices <- rbind(vertices, subset(df.to, !id %in% vertices$id & nature %in% stop_at))
+      vertices <- rbind(vertices, subset(df.to, !id %in% vertices$id & statut %in% stop_at))
 
-      for(id in subset(df.to, !id %in% vertices$id & !nature %in% stop_at)$id) {
+      for(id in subset(df.to, !id %in% vertices$id & !statut %in% stop_at)$id) {
           sub <- wdesr_get_graph(id,props,depth-1,active_only,stop_at)
           edges <- rbind(edges,sub$edges)
           vertices <- rbind(vertices,subset(sub$vertices, !id %in% vertices$id))
       }
     }
   }
+  vertices <- vertices %>% mutate_all(as.character) %>% arrange(id)
   return(list('edges'=unique(edges), 'vertices'=unique(vertices)))
 }
 
@@ -296,7 +362,7 @@ wdesr_node_geom <- function(node_type = "text") {
 wdesr_ggplot_graph <- function( df.g,
                                 layout = "kamadakawai",
                                 active_only = FALSE,
-                                node_sizes = 20,
+                                node_sizes = c(10,30),
                                 label_sizes = c(4,6),
                                 node_label = "alias",
                                 node_type = "text",
@@ -306,7 +372,6 @@ wdesr_ggplot_graph <- function( df.g,
   if( nrow(df.g$vertices) == 0 | nrow(df.g$edges) == 0 )
     stop("Empty ESR graph: something went wrong with the graph production parameters")
 
-  df.g$vertices <- df.g$vertices %>% mutate_all(as.character) %>% arrange(id)
   df.g$edges$weight <- scales::rescale(as.numeric(df.g$edges$depth),c(1,2))
   geom_node_fun <- wdesr_node_geom(node_type)
 
@@ -330,13 +395,13 @@ wdesr_ggplot_graph <- function( df.g,
   if(edge_label) g <- g + geom_edgetext(aes(label=date), size = min(label_sizes))
 
   g <- g + geom_nodes(aes(
-    color=nature,
+    color=statut,
     alpha = (dissolution != "NA")),
-    size = scales::rescale(as.numeric(df.g$vertices$depth),node_sizes))
+    size = scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes))
   g <- g + geom_node_fun(aes(
     label = wdesr_node_label_aes(node_label,alias,label,fondation,dissolution),
-    fill = nature),
-    size = scales::rescale(as.numeric(df.g$vertices$depth),label_sizes))
+    fill = statut),
+    size = scales::rescale(-as.numeric(df.g$vertices$niveau),label_sizes))
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
   #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
   g <- g + xlim(-0.2,1.2) + ylim(-0.03,1.03)
@@ -358,8 +423,8 @@ wdesr_ggplot_graph <- function( df.g,
 #     #geom_edgetext(aes(color = type, label=date)) +
 #     geom_nodetext(aes(
 #       label = alias,
-#       text = paste(label,nature,paste('(',fondation,'-',dissolution,')',sep=''),paste("wikidata id:",id),sep='\n'),
-#       color=nature)) +
+#       text = paste(label,status,paste('(',fondation,'-',dissolution,')',sep=''),paste("wikidata id:",id),sep='\n'),
+#       color=status)) +
 #     theme_blank()
 #
 #   ggplotly(tooltip="text")

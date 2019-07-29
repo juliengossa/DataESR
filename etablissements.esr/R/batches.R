@@ -92,7 +92,7 @@ plot_histoire <- function(racines) {
   wdesr.env <- wdesr_get_cache()
   ggs.width <- 8
   ggs.heigth <- 6
-  ggs.dpi <- 150
+  ggs.dpi <- 200
   ggs.path <- "../plots/histoire/"
   
   for(racine in racines) {

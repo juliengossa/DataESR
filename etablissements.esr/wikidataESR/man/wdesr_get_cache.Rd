@@ -16,7 +16,7 @@ It contains two dataframes: instance_ofs and items.
 }
 \examples{
 wdesr.cache <- wdesr_get_cache()
-wdesr.cache$instance_ofs
+wdesr.cache$status
 wdesr.cache$items
 }
 \references{

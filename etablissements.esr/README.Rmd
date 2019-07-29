@@ -1,9 +1,15 @@
 ---
-title: "README"
+title: "Tenter d'y voir clair dans l'ESR : guide de style wikidata"
 author: "Julien Gossa"
 date: "28/07/2019"
 output: github_document
 ---
 
-```{r child = 'R/wikidataESR.Rmd'}
+```{r child = 'R/guideline.Rmd'}
 ```
+
+## Exploitation des données
+
+A partir de `wikidata`, il est possible d'exploiter les données grace à la librairie [R/wikidataESR](wikidataESR).
+
+Des exemples de productions sont visibles [ici](plots).

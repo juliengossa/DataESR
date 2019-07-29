@@ -13,31 +13,6 @@
 # Author: Julien Gossa <gossa@unistra.fr>
 
 
-#' Get the instance of a wikidata item
-#'
-#' @param item A wikidata item, as returned by wikidataR.
-#'
-#' @return The instance of the item.
-#'
-#' @examples
-#' wd_get_item_instance_of(item)
-#'
-#' @references \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
-#' @seealso \code{\link[WikidataR]{WikidataR}}
-#' @author Julien Gossa, \email{gossa@unistra.fr}
-#' @noRd
-wd_get_item_instance_of <- function(item) {
-  instance_of_id <- wd_get_item_statement_as_list(item,"P31")[[1]][[1]]
-  if(is.null(instance_of_id)) return(NA)
-  if (!instance_of_id %in% wdesr.env$instance_ofs$id) {
-    it <- WikidataR::get_item(id = instance_of_id)
-    wdesr.env$instance_ofs <- rbind(
-      wdesr.env$instance_ofs,
-      cbind("id"=instance_of_id,"label"=wd_get_item_alias(it)))
-  }
-
-  return(subset(wdesr.env$instance_ofs, id == instance_of_id, label)[[1]])
-}
 
 #' Get the label of a wikidata item.
 #'

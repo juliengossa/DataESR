@@ -4,13 +4,13 @@
 \alias{wdesr_load_cache}
 \title{Load the cache.}
 \usage{
-wdesr_load_cache(file = "wdesr-cache.RData", default_cache = FALSE)
+wdesr_load_cache(file = "wdesr-cache.RData", package_statuts = FALSE)
 }
 \arguments{
 \item{file}{The name of the file to read the cache from (default to "wdesr-cache.RData").}
 
-\item{default_cache}{TRUE to load the cache embeded with the package instead of a local cache (default to FALSE).
-Be aware that this cache might be outdated compared to wikidata.}
+\item{package_statuts}{TRUE to load the status (\emph{statuts}) cache embeded within the package instead of the local cache (default to FALSE).
+Usefull whenever status embeded within the package have been updated.}
 }
 \value{
 the environment of the cache
