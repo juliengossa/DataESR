@@ -160,15 +160,10 @@ Il est souvent utile d’aller plus en profondeur pour explorer plus de
 relations. Cela se fait en modifiant l’argument `depth` :
 
 ``` r
-wdesr_load_cache()
 wdesr_load_and_plot("Q61716176", c('composante','associé'), depth = 3)
 ```
 
 ![](README_files/figure-gfm/wdesr-depth-1.png)<!-- -->
-
-``` r
-wdesr_save_cache()
-```
 
 ### Plus de contrôle
 

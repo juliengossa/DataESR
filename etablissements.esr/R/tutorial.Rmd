@@ -98,15 +98,13 @@ Il est enfin possible d'accéder directement au cache avec `wdesr_get_cache()`
 ### Plus de profondeur 
 
 ```{r wdesr-load, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
-wdesr_load_cache()
+#wdesr_load_cache()
 ```
 
 Il est souvent utile d'aller plus en profondeur pour explorer plus de relations. Cela se fait en modifiant l'argument `depth` :
 
 ```{r wdesr-depth, warning=FALSE, message=FALSE, results='hide'}
-wdesr_load_cache()
 wdesr_load_and_plot("Q61716176", c('composante','associé'), depth = 3)
-wdesr_save_cache()
 ```
 
 ```{r wdesr-save, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
