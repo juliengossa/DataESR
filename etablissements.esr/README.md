@@ -1,6 +1,6 @@
 Tenter d’y voir clair dans l’ESR : guide de style wikidata
 ================
-Julien Gossa
+Julien Gossa, Bastien Tagliana et Pierre Zoschke
 28/07/2019
 
 Les réformes successives touchant l’organisation de l’enseignement
