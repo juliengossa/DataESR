@@ -219,11 +219,39 @@ wdesr_get_data <- function(wdids) {
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at = c("EPST") ) {
 
-  edges <- data.frame()
+  wgge <- new.env()
+  wgge$edges <- data.frame(from=character(),to=character(),stringsAsFactors = FALSE)
+  wgge$vertices <- data.frame()
+
+  wdesr_get_subgraph(wgge, wdid, props, depth, active_only, stop_at)
+
+  wgge$vertices <- wgge$vertices %>% mutate_all(as.character) %>% arrange(id)
+
+  #wgge$edges <- wgge$edges[row.names(unique(wgge$edges[,1:2])),]
+
+  #res <- list('edges'=unique(wgge$edges), 'vertices'=unique(wgge$vertices))
+
+  res <- list('edges'=wgge$edges, 'vertices'=wgge$vertices)
+
+  return(res)
+}
+
+#' Get a sub graph of universities.
+#' @return A list of edges and vertices.
+#' @noRd
+#'
+#' @seealso \code{\link{wdesr_get_graph}}
+#' @author Julien Gossa, \email{gossa@unistra.fr}
+wdesr_get_subgraph <- function(wgge, wdid, props, depth = 3, active_only = FALSE, stop_at = c("EPST") ) {
 
   df.from <- wdesr_get_data(c(wdid))
-  vertices <- df.from
-  vertices$depth <- depth
+
+  #df.from$depth <- depth
+  wgge$vertices <- rbind(wgge$vertices, df.from)
+
+  #print(wdid)
+  #print(wgge$vertices$id)
+  #print(wgge$vertices[,1:2])
 
   for(p in props) {
     if(is.null(unlist(df.from[,p])))
@@ -233,38 +261,37 @@ wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at
 
     df.to <- wdesr_get_data(unlist(df.from[,p]))
 
+    # Remove dissolved
     if (active_only) df.to <- subset(df.to, is.na(dissolution))
+
+    # Remove existing to -> from edges
+    tmp <- subset(wgge$edges, to == wdid)$from
+    df.to <- subset(df.to, !id %in% tmp)
+
     if (nrow(df.to) == 0) next()
 
-
-    edge <- data.frame(
+    edges <- data.frame(
       from  = df.from$id,
       to    = df.to$id,
       type  = p,
       date  = ifelse(ppit %in% colnames(df.from),unlist(df.from[,ppit]),NA),
       depth = depth
       )
-    edges <- rbind(edges,edge)
+    wgge$edges <- rbind(wgge$edges,edges)
 
-    df.to$depth <- depth - 1
+    #df.to$depth <- depth - 1
 
     if(depth==1) {
-      vertices <- rbind(vertices,subset(df.to, !id %in% vertices$id))
-
+      wgge$vertices <- rbind(wgge$vertices, subset(df.to, !id %in% wgge$vertices$id))
     } else {
-      #stops <- subset(df.to, !id %in% vertices$id & status %in% stop_at)
-      #if (nrow(stops) > 0) vertices <- rbind(vertices, stops)
-      vertices <- rbind(vertices, subset(df.to, !id %in% vertices$id & statut %in% stop_at))
+      wgge$vertices <- rbind(wgge$vertices, subset(df.to, !id %in% wgge$vertices$id & statut %in% stop_at))
 
-      for(id in subset(df.to, !id %in% vertices$id & !statut %in% stop_at)$id) {
-          sub <- wdesr_get_graph(id,props,depth-1,active_only,stop_at)
-          edges <- rbind(edges,sub$edges)
-          vertices <- rbind(vertices,subset(sub$vertices, !id %in% vertices$id))
+      for(id in subset(df.to, !statut %in% stop_at)$id) {
+        if (!id %in% wgge$vertices$id)
+          wdesr_get_subgraph(wgge, id,props,depth-1,active_only,stop_at)
       }
     }
   }
-  vertices <- vertices %>% mutate_all(as.character) %>% arrange(id)
-  return(list('edges'=unique(edges), 'vertices'=unique(vertices)))
 }
 
 
@@ -372,7 +399,7 @@ wdesr_ggplot_graph <- function( df.g,
   if( nrow(df.g$vertices) == 0 | nrow(df.g$edges) == 0 )
     stop("Empty ESR graph: something went wrong with the graph production parameters")
 
-  df.g$edges$weight <- scales::rescale(as.numeric(df.g$edges$depth),c(1,2))
+  #df.g$edges$weight <- scales::rescale(as.numeric(df.g$edges$depth),c(1,2))
   geom_node_fun <- wdesr_node_geom(node_type)
 
   net <<- network::network(df.g$edges,
@@ -383,7 +410,7 @@ wdesr_ggplot_graph <- function( df.g,
   ggnet <<- ggnetwork(net,
                       layout = layout,
                       weights = "weight",
-                      radii  = scales::rescale(-as.numeric(df.g$vertices$depth)),
+                      radii  = scales::rescale(-as.numeric(df.g$vertices$niveau)),
                       arrow.gap = arrow_gap)
 
   g <- ggplot(ggnet, aes(x = x, y = y, xend = xend, yend = yend))
@@ -397,11 +424,13 @@ wdesr_ggplot_graph <- function( df.g,
   g <- g + geom_nodes(aes(
     color=statut,
     alpha = (dissolution != "NA")),
-    size = scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes))
+    size = scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes)
+    )
   g <- g + geom_node_fun(aes(
     label = wdesr_node_label_aes(node_label,alias,label,fondation,dissolution),
     fill = statut),
-    size = scales::rescale(-as.numeric(df.g$vertices$niveau),label_sizes))
+    size = scales::rescale(-as.numeric(df.g$vertices$niveau),label_sizes)
+    )
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
   #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
   g <- g + xlim(-0.2,1.2) + ylim(-0.03,1.03)

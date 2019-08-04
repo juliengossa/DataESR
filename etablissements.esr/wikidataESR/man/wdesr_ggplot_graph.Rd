@@ -5,8 +5,9 @@
 \title{Plot an ESR graph.}
 \usage{
 wdesr_ggplot_graph(df.g, layout = "kamadakawai", active_only = FALSE,
-  node_sizes = 20, label_sizes = c(4, 6), node_label = "alias",
-  node_type = "text", edge_label = TRUE, arrow_gap = 0.05)
+  node_sizes = c(10, 30), label_sizes = c(4, 6),
+  node_label = "alias", node_type = "text", edge_label = TRUE,
+  arrow_gap = 0.05)
 }
 \arguments{
 \item{df.g}{A dataframe representing a graph, as returned by wdesr_get_graph.}
