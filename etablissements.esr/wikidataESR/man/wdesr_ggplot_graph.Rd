@@ -7,7 +7,7 @@
 wdesr_ggplot_graph(df.g, layout = "kamadakawai", active_only = FALSE,
   node_sizes = c(10, 30), label_sizes = c(4, 6),
   node_label = "alias", node_type = "text", edge_label = TRUE,
-  arrow_gap = 0.05)
+  arrow_gap = 0.05, size_guide = FALSE)
 }
 \arguments{
 \item{df.g}{A dataframe representing a graph, as returned by wdesr_get_graph.}
@@ -27,6 +27,8 @@ wdesr_ggplot_graph(df.g, layout = "kamadakawai", active_only = FALSE,
 \item{edge_label}{TRUE to plot dates on edges (default to "TRUE").}
 
 \item{arrow_gap}{A parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}.}
+
+\item{size_guide}{TRUE to plot the guide for sizes (defalut to "FALSE").}
 }
 \value{
 A ggplot2.

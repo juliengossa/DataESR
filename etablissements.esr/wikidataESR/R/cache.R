@@ -20,14 +20,28 @@
 #'
 #' @format A data frame with 6 variables:
 #' - id: the wikipedia id of the item;
-#' - libellé: the libellé (label) of the item;
+#' - libellé: the label of the item;
 #' - recommandé: whether this item is recommanded to use ("oui") or not ("non");
-#' - niveau: level of the item (1:national, 2:group of institutions, 3:institutions, 4:intermediary level, 5:sub-institutions, 6:non-institutions);
+#' - niveau: level of the item (see \code{\link{wdesr.niveaux}})
 #' - wikipedia: url to the wikipedia notice;
 #' - note: note to help the user.
-
 #' @source \url{https://www.wikidata.org}
-"wdesr.status"
+"wdesr.statuts"
+
+
+#' Levels of french ESR institution status.
+#'
+#' A dataset containing arbitrary levels to institutions statuts.
+#' Used to set sizes when plotting things.
+#'niveau;label;description;exemple
+
+#' @format A data frame with 4 variables:
+#' - niveau: an integer to id the level;
+#' - libellé: the label of the level;
+#' - description: a description of the level;
+#' - exemple: some example of status of this level.
+"wdesr.statuts"
+
 
 
 #' Maintainance function to build local cache and datasets
@@ -37,10 +51,12 @@
 #' @examples wdesr_make_package_data()
 #' @noRd
 wdesr_make_package_data <- function() {
-  wdesr.status <- read.table("wdesr.status.csv",header=TRUE,sep=';',quote='"',stringsAsFactors=FALSE)
-  usethis::use_data(wdesr.status, overwrite = TRUE, internal = TRUE)
+  wdesr.statuts <- read.table("wdesr.statuts.csv",header=TRUE,sep=';',quote='"',stringsAsFactors=FALSE)
+  wdesr.niveaux <- read.table("wdesr.niveaux.csv",header=TRUE,sep=';',quote='"',stringsAsFactors=FALSE)
+  usethis::use_data(wdesr.statuts, wdesr.niveaux, overwrite = TRUE, internal = FALSE)
 
-  write.table(wdesr.status, file = "wdesr.status.csv", sep=';', quote = TRUE, row.names = FALSE)
+  write.table(wdesr.statuts, file = "wdesr.statuts.csv", sep=';', quote = TRUE, row.names = FALSE)
+  write.table(wdesr.niveaux, file = "wdesr.niveaux.csv", sep=';', quote = TRUE, row.names = FALSE)
 
   #usethis::use_data(items,instance_ofs, internal = TRUE, overwrite = TRUE)
 }
@@ -65,7 +81,7 @@ wdesr_make_package_data <- function() {
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 wdesr_clear_cache <- function() {
 
-  wdesr.cache$status <- wikidataESR:::wdesr.status
+  wdesr.cache$status <- wikidataESR::wdesr.statuts
   wdesr.cache$items <- data.frame()
 
   return(wdesr.cache)
@@ -146,7 +162,7 @@ wdesr_load_cache <- function(file = "wdesr-cache.RData", package_statuts = FALSE
   load(file = "wdesr-cache.RData", envir = wdesr.cache )
 
   if (package_statuts) {
-    wdesr.cache$status <- wdesr.status
+    wdesr.cache$status <- wdesr.statuts
   }
   return(wdesr.cache)
 }

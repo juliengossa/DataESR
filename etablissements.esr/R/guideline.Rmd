@@ -89,18 +89,19 @@ De plus, même si les tutelles (EPST, EPCA, EPIC...) sont membres des regroupeme
 
 Enfin, les adhésions aux diverses associations (CPU, CURIF, LERU, COUPERIN...) doivent être déclarées avec "membre de", toujours pour les différencier des autres types de relations.
 
-## Listes des status{#listes-statuts}
+## Status et niveaux{#listes-statuts}
+
+### Niveaux
+
+Les statuts d'établissement sont hiérarchisés en différents niveaux :
+
+```{r niveaux, echo = FALSE, results='asis'}
+kable(wdesr.niveaux)
+```
+
+Cette hiérarchisation est faite hors wikidata, directement dans la librairie [R/wikidataESR](wikidataESR).
 
 ### Liste des statuts recommandés 
-
-Les statuts d'établissement peuvent être hiérarchisés en différents niveaux :
-
-- 1 national : institutions nationales (p. ex. : CNRS) ;
-- 2 régional/regroupement : institutions régionales (p. ex. : COMUEs) ;
-- 3 institutions/université : institutions locales (p. ex. : universités) ;
-- 4 intermédiaire : institutions locales de moindre taille (p. ex. : école indépendante), ou premier sous-niveau des institutions (p. ex. : collégium)
-- 5 terrain : sous-partie d'une institution (p. ex. : UFR/UMR)
-- 6 autre : ce qui n'est pas une institution (p.ex : équipements, projets)
 
 ```{r statuts, echo = FALSE, results='asis'}
 df <- statuts_to_table(subset(wikidataESR:::wdesr.cache$status,recommandé=="oui"))

@@ -44,7 +44,7 @@ NULL
 #' wdesr_get_item_status(item)
 #'
 #' @references \url{https://github.com/juliengossa/DataESR/tree/master/etablissements.esr/wikidataESR}
-#' @seealso \code{\link{wdesr.status}}, \code{\link[WikidataR]{WikidataR}}
+#' @seealso \code{\link{wdesr.statuts}}, \code{\link[WikidataR]{WikidataR}}
 #' @author Julien Gossa, \email{gossa@unistra.fr}
 #' @noRd
 wdesr_get_item_status <- function(item) {
@@ -369,6 +369,7 @@ wdesr_node_geom <- function(node_type = "text") {
 #' @param node_type Define the type of drawing for the nodes. Either "text", "text_repel", "label", or "label_repel" (default to "text").
 #' @param edge_label TRUE to plot dates on edges (default to "TRUE").
 #' @param arrow_gap A parameter that will shorten the network edges in order to avoid overplotting edge arrows and nodes see \code{\link[ggnetwork]{fortify.network}}.
+#' @param size_guide TRUE to plot the guide for sizes (defalut to "FALSE").
 #'
 #' @return A ggplot2.
 #' @export
@@ -394,7 +395,8 @@ wdesr_ggplot_graph <- function( df.g,
                                 node_label = "alias",
                                 node_type = "text",
                                 edge_label = TRUE,
-                                arrow_gap = 0.05 ) {
+                                arrow_gap = 0.05,
+                                size_guide = FALSE) {
 
   if( nrow(df.g$vertices) == 0 | nrow(df.g$edges) == 0 )
     stop("Empty ESR graph: something went wrong with the graph production parameters")
@@ -423,16 +425,19 @@ wdesr_ggplot_graph <- function( df.g,
 
   g <- g + geom_nodes(aes(
     color=statut,
-    alpha = (dissolution != "NA")),
-    size = scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes)
-    )
+    alpha = (dissolution != "NA"),
+    size = niveau #scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes)
+  ))
   g <- g + geom_node_fun(aes(
     label = wdesr_node_label_aes(node_label,alias,label,fondation,dissolution),
     fill = statut),
     size = scales::rescale(-as.numeric(df.g$vertices$niveau),label_sizes)
     )
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
-  #g <- g + scale_size_continuous(range=c(1,10), guide=FALSE)
+  g <- g + scale_size_manual(breaks=wdesr.niveaux$niveau,
+                             values=scales::rescale(-as.numeric(wdesr.niveaux$niveau),node_sizes),
+                             labels=wdesr.niveaux$libellé,
+                             guide=size_guide)
   g <- g + xlim(-0.2,1.2) + ylim(-0.03,1.03)
   g <- g + theme_blank()
 

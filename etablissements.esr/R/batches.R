@@ -125,6 +125,7 @@ plot_histoire <- function(racines) {
                       edge_label = TRUE)
   alias <- subset(wdesr.env$items, id == racine)$alias
   ggsave(paste(ggs.path,alias,'-',racine,"-histoire.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
+  
 }
 
 ## Charge les racines et puis plote les graphiques.
