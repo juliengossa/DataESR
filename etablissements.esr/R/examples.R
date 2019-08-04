@@ -7,15 +7,6 @@ library(ggnetwork)
 library(scales)
 library(dplyr)
 
-## test
-# wdesr_load_cache()
-racine <- "Q20791505"
-g <- wdesr_get_graph(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10)
-wdesr_load_and_plot(racine,c('successeur', 'séparé_de', 'composante_de', 'associé_de'), depth=10,
-                    node_size = 25, label_sizes = 3, arrow_gap = 0.09,
-                    node_label = "alias_date", node_type = "text",
-                    edge_label = TRUE)
-
 
 ## Examples 
 wdesr_load_cache()
@@ -24,7 +15,8 @@ wdesr_save_cache()
 wdesr_ggplot_graph(df.alsace,
                    node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
                    node_label = "alias", node_type = "text",
-                   edge_label = FALSE)
+                   edge_label = FALSE,
+                   size_guide = TRUE)
 
 ggsave(paste("test.png",sep=''), width = 13, height = 8, dpi=150)
 

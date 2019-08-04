@@ -226,10 +226,7 @@ wdesr_get_graph <- function(wdid, props, depth = 3, active_only = FALSE, stop_at
   wdesr_get_subgraph(wgge, wdid, props, depth, active_only, stop_at)
 
   wgge$vertices <- wgge$vertices %>% mutate_all(as.character) %>% arrange(id)
-
-  #wgge$edges <- wgge$edges[row.names(unique(wgge$edges[,1:2])),]
-
-  #res <- list('edges'=unique(wgge$edges), 'vertices'=unique(wgge$vertices))
+  #wgge$vertices$niveau <- factor(wgge$vertices$niveau, levels = wdesr.niveaux$niveau)
 
   res <- list('edges'=wgge$edges, 'vertices'=wgge$vertices)
 
@@ -426,7 +423,7 @@ wdesr_ggplot_graph <- function( df.g,
   g <- g + geom_nodes(aes(
     color=statut,
     alpha = (dissolution != "NA"),
-    size = niveau #scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes)
+    size = factor(niveau, levels=wdesr.niveaux$niveau)  #scales::rescale(-as.numeric(df.g$vertices$niveau),node_sizes)
   ))
   g <- g + geom_node_fun(aes(
     label = wdesr_node_label_aes(node_label,alias,label,fondation,dissolution),
@@ -434,10 +431,12 @@ wdesr_ggplot_graph <- function( df.g,
     size = scales::rescale(-as.numeric(df.g$vertices$niveau),label_sizes)
     )
   g <- g + scale_alpha_manual(labels=c("dissous","actif"), values = (c(0.6,1)), name='statut')
-  g <- g + scale_size_manual(breaks=wdesr.niveaux$niveau,
+  g <- g + scale_size_manual(breaks=as.character(wdesr.niveaux$niveau),
                              values=scales::rescale(-as.numeric(wdesr.niveaux$niveau),node_sizes),
                              labels=wdesr.niveaux$libellé,
-                             guide=size_guide)
+                             name="niveau",
+                             drop=FALSE,
+                             guide=ifelse(size_guide,"legend",FALSE))
   g <- g + xlim(-0.2,1.2) + ylim(-0.03,1.03)
   g <- g + theme_blank()
 
