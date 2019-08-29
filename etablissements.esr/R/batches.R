@@ -50,10 +50,9 @@ plot_regroupements <- function(racines) {
     ## court
     try( {
       wdesr_load_and_plot(racine,c('composante','associé'),depth=1, 
-                          node_size = c(5,30), label_sizes = c(3,5), arrow_gap = 0.0,
+                          node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
                           node_label = "alias", node_type = "text",
-                          edge_label = FALSE,
-                          size_guide = TRUE)
+                          edge_label = FALSE)
       alias <- subset(wdesr.env$items, id == racine)$alias
       ggsave(paste(ggs.path,alias,'-',racine,"-court.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi) 
     } )
@@ -61,20 +60,18 @@ plot_regroupements <- function(racines) {
     ## étendu
     try( {
       wdesr_load_and_plot(racine,c('composante','associé'),depth=2, active_only = TRUE,
-                          node_size = c(5,30), label_sizes = c(3,5), arrow_gap = 0.0,
+                          node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
                           node_label = "alias", node_type = "text",
-                          edge_label = FALSE,
-                          size_guide = TRUE)
+                          edge_label = FALSE)
       ggsave(paste(ggs.path,alias,'-',racine,"-etendu.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi) 
       } )
 
     ## superétendu
     try( {
       wdesr_load_and_plot(racine,c('composante','associé','prédécesseur'),depth=3,
-                          node_size = c(5,30), label_sizes = c(3,5), arrow_gap = 0.0,
+                          node_size = c(10,30), label_sizes = c(3,5), arrow_gap = 0.0,
                           node_label = "alias", node_type = "text",
-                          edge_label = FALSE,
-                          size_guide = TRUE)
+                          edge_label = FALSE)
       ggsave(paste(ggs.path,alias,'-',racine,"-superetendu.png",sep=''), width = ggs.width, height = ggs.heigth, dpi = ggs.dpi)  
     } )
     
