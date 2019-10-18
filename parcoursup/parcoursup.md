@@ -726,25 +726,92 @@ Le taux de Licences sélective est défini comme le rapport entre le nombre de L
 ```
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.établissement-1.png)<!-- -->
-  
 
-```
-## # A tibble: 10 x 5
-## # Groups:   Établissement [2,647]
-##    Établissement Nb.Licences Nb.de.Licences_… Taux.de.Licence…
-##    <fct>               <int>            <int>            <dbl>
-##  1 Université P…          35               34            0.971
-##  2 Université d…          14               13            0.929
-##  3 Université d…          22               20            0.909
-##  4 Université P…          19               17            0.895
-##  5 Université P…          43               38            0.884
-##  6 Université T…          17               15            0.882
-##  7 Université B…          40               35            0.875
-##  8 Centre Unive…           6                5            0.833
-##  9 Universite J…          27               22            0.815
-## 10 Université d…          16               13            0.812
-## # … with 1 more variable: Taux.de.sélection.moyen_Sélective <dbl>
-```
+### Top 10  
+  
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Établissement </th>
+   <th style="text-align:right;"> Nb.L </th>
+   <th style="text-align:right;"> Nb.L.Sélectives </th>
+   <th style="text-align:right;"> Taux.L.sél </th>
+   <th style="text-align:right;"> Taux.sél.moyen </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 34 </td>
+   <td style="text-align:right;"> 0.9714286 </td>
+   <td style="text-align:right;"> 0.4785086 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Rennes 1 </td>
+   <td style="text-align:right;"> 14 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 0.9285714 </td>
+   <td style="text-align:right;"> 0.7409422 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Bordeaux - Bordeaux Métropole </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 20 </td>
+   <td style="text-align:right;"> 0.9090909 </td>
+   <td style="text-align:right;"> 0.6207313 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris-Est Marne-la-Vallée </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 17 </td>
+   <td style="text-align:right;"> 0.8947368 </td>
+   <td style="text-align:right;"> 0.6634427 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
+   <td style="text-align:right;"> 43 </td>
+   <td style="text-align:right;"> 38 </td>
+   <td style="text-align:right;"> 0.8837209 </td>
+   <td style="text-align:right;"> 0.6138956 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Toulouse 1 Capitole </td>
+   <td style="text-align:right;"> 17 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:right;"> 0.8823529 </td>
+   <td style="text-align:right;"> 0.5456959 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Bordeaux Montaigne </td>
+   <td style="text-align:right;"> 40 </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 0.8750000 </td>
+   <td style="text-align:right;"> 0.7780565 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Centre Universitaire de Mayotte </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 0.8333333 </td>
+   <td style="text-align:right;"> 0.7722759 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Universite Jean Monnet, Saint-Etienne </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 0.8148148 </td>
+   <td style="text-align:right;"> 0.9405747 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de La Rochelle </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 0.8125000 </td>
+   <td style="text-align:right;"> 0.9257335 </td>
+  </tr>
+</tbody>
+</table>
 
 
 

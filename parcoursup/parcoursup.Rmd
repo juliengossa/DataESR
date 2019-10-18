@@ -450,11 +450,19 @@ ps2018.etab.sel <- ps2018 %>%
   theme_hc()
 
 ```
+
+### Top 10  
   
 ```{r Taux.de.sélection.établissement.top10, echo=FALSE}
   ps2018.etab.sel %>%
-  arrange(-Taux.de.Licences.sélectives) %>%
-  head(10)
+  rename(
+    Nb.L = Nb.Licences,
+    Nb.L.Sélectives = Nb.de.Licences_Sélective,
+    Taux.L.sél = Taux.de.Licences.sélectives,
+    Taux.sél.moyen = Taux.de.sélection.moyen_Sélective) %>%
+  arrange(-Taux.L.sél) %>%
+  head(10) %>%
+  kable()
 ```
 
 
