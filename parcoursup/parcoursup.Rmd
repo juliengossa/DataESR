@@ -70,6 +70,7 @@ ggplot(ps2018.all, aes(x=Filière.de.formation.très.agrégée, fill=Filière.de
   geom_bar(colour="black") +
   xlab("Filière") + ylab("Nombre de formations")  + scale_fill_discrete(name="Fillère") +
   ggtitle("Nombre de formations par filière (Parcoursup en 2018)") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -86,6 +87,7 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=nombre/1000, fill=Filière
   scale_fill_discrete(name="Filière") +
   scale_alpha_manual(name="Phase",labels=c("Complémentaire","Principale"), values=c(0.7,1)) +
   ggtitle("Nombre d'admissions par phase et par filière (Parcoursup 2018)") +
+  guides(fill=FALSE) +
   theme_hc()
 #  coord_polar(theta = "y")
 ```
@@ -95,7 +97,7 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=nombre/1000, fill=Filière
 ggplot(ps2018.all, aes(x=Capacité.de.l.établissement.par.formation, fill=Filière.de.formation.très.agrégée)) +
   geom_density(alpha=0.8) + xlim(0,200) +
   #facet_grid(~ Filière.de.formation.très.agrégée) +
-  xlab("Filière") + ylab("Proportion des formations")  +
+  xlab("Capacités d'accueil") + ylab("Densité de formations")  +
   scale_fill_discrete(name="Capacité d'accueil") +
   ggtitle("Distribution des capacités d'accueil (<200) par filière ") +
   theme_hc()
@@ -113,10 +115,13 @@ $tension=\frac{candidatures}{capacité}$
 Limite : une formation "choix de secours" peut apparaitre en tension avec un très grand nombre de candidatures initiales, mais tout autant de désistements.
 
 ```{r Taux.de.tension, echo=FALSE}
-ggplot(ps2018, aes(x=Filière.de.formation.très.agrégée, y=Taux.de.tension, fill=Filière.de.formation.très.agrégée)) +
-  geom_violin() +
-  xlab("Filière") + ylab("Taux de tension") + scale_fill_discrete(name="Fillère") +
+ggplot(ps2018, aes(y=Taux.de.tension, fill=Filière.de.formation.très.agrégée)) +
+  geom_boxplot() +
+  facet_grid(~Filière.de.formation.très.agrégée) +
+  ylab("Taux de tension") + scale_fill_discrete(name="Fillère") +
   ggtitle("Taux de tension par filière (Parcoursup 2018)") +
+  guides(fill=FALSE) +
+   theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
   theme_hc()
 ```
 
@@ -128,6 +133,7 @@ ggplot(ps2018, aes(x=Taux.de.tension,
   facet_grid(~Filière.de.formation.très.agrégée) +
   scale_fill_discrete(name="Filière") +
   ggtitle("Densité taux de tension des formations par filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -141,6 +147,7 @@ ps2018 %>%
     geom_bar(stat="identity",colour="black") + 
   xlab("Filière") + ylab("Taux de tension moyen") + scale_fill_discrete(name="Fillère") +
   ggtitle("Taux de tension moyen par filière (Parcoursup 2018)") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -170,12 +177,15 @@ $remplissage=\frac{admis}{capacité}$
 
 
 ```{r Taux.de.remplissage, echo=FALSE}
-ggplot(ps2018, aes(x=Filière.de.formation.très.agrégée, y=Taux.de.remplissage,
+ggplot(ps2018, aes( y=Taux.de.remplissage,
                    fill=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
-  ylab("Taux de remplissage") + xlab("Filière") +
+  ylab("Taux de remplissage") +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de remplissage par filière") +
+  guides(fill=FALSE) +
+  facet_grid(~Filière.de.formation.très.agrégée) +
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
   theme_hc()
 ```
 
@@ -189,6 +199,7 @@ ggplot(ps2018, aes(x=Taux.de.remplissage,
   xlab("Taux de remplissage") + ylab("Densité") +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Densité des taux de remplissage par filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -269,13 +280,16 @@ $sélection=\frac{rang.du.dernier.appelé}{candidats}$
 Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective. 
 
 ```{r Taux.de.sélection, echo=FALSE}
-ggplot(ps2018, aes(x=Filière.de.formation.très.agrégée, y=Taux.de.sélection,
+ggplot(ps2018, aes(y=Taux.de.sélection,
                    fill=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
-  ylab("Taux de sélection") + xlab("Filière") +
+  ylab("Taux de sélection") +
+  facet_grid(~Filière.de.formation.très.agrégée) +
   scale_y_continuous(labels=scales::percent) +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de sélection par filière") +
+  guides(fill=FALSE) +
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
   theme_hc()
 ```
 
@@ -289,6 +303,7 @@ ggplot(ps2018, aes(x=Taux.de.sélection,
   scale_x_continuous(labels=scales::percent, breaks = c(0.25,0.75)) +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Densité des taux de sélection\n(Attention : filtrage des densités supérieures à 3 (L et PACES)") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -480,14 +495,17 @@ Le taux de boursiers est défini comme le rapport entre le nombre d'admis néo-b
 $boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$
 
 ```{r Taux.de.boursiers, echo=FALSE}
-ggplot(ps2018, aes(x=Filière.de.formation.très.agrégée, y=X..d.admis.néo.bacheliers.boursiers,
+ggplot(ps2018, aes(y=X..d.admis.néo.bacheliers.boursiers,
                    fill=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
-  ylab("Taux de boursiers") + xlab("Filière") +
+  ylab("Taux de boursiers") + 
   scale_y_continuous(labels=function(x) paste(x,'%',sep='')) +
   #labels=scales::percent) +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de boursiers par filière") +
+  facet_grid(~Filière.de.formation.très.agrégée) +
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -501,6 +519,7 @@ ggplot(ps2018, aes(x=X..d.admis.néo.bacheliers.boursiers,
   ylab("Densité") + xlab("Taux de boursiers") +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Densité des taux de boursiers (<50%) par filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -513,6 +532,7 @@ ggplot(subset(ps2018,Filière.de.formation.très.agrégée == "Licence"),
                    fill=Filière.de.formation)) +
   geom_boxplot() + coord_flip() +
   ylab("Taux de boursier") + xlab("Filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -545,6 +565,7 @@ ggplot(ps2018.mentions, aes( y=taux.de.mention,
   #labels=scales::percent) +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de mention par filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
@@ -600,6 +621,7 @@ ggplot(aes( y=Taux.de.bac,
   #labels=scales::percent) +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de type de bac par filière") +
+  guides(fill=FALSE) +
   theme_hc()
 ```
 
