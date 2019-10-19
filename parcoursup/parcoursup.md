@@ -84,7 +84,7 @@ $remplissage=\frac{admis}{capacité}$
 
 ### Top 10
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
@@ -92,9 +92,9 @@ $remplissage=\frac{admis}{capacité}$
    <th style="text-align:left;"> Type </th>
    <th style="text-align:left;"> Filière </th>
    <th style="text-align:right;"> Capacité </th>
-   <th style="text-align:right;"> Admis.phase.principale </th>
+   <th style="text-align:right;"> Admis.phase.prin </th>
    <th style="text-align:right;"> Admis.phase.comp </th>
-   <th style="text-align:right;"> Taux.de.remplissage </th>
+   <th style="text-align:left;"> Taux.de.remplissage </th>
   </tr>
  </thead>
 <tbody>
@@ -106,7 +106,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 15 </td>
    <td style="text-align:right;"> 58 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 3.866667 </td>
+   <td style="text-align:left;"> 387% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Lumière-Lyon 2 </td>
@@ -116,7 +116,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 160 </td>
    <td style="text-align:right;"> 377 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 2.356250 </td>
+   <td style="text-align:left;"> 236% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de la Réunion - Le Tampon </td>
@@ -126,7 +126,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 120 </td>
    <td style="text-align:right;"> 131 </td>
    <td style="text-align:right;"> 112 </td>
-   <td style="text-align:right;"> 2.025000 </td>
+   <td style="text-align:left;"> 202% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Lumière-Lyon 2 </td>
@@ -136,7 +136,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 30 </td>
    <td style="text-align:right;"> 59 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.966667 </td>
+   <td style="text-align:left;"> 197% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université des Antilles - Pôle Guadeloupe </td>
@@ -146,7 +146,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 39 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.950000 </td>
+   <td style="text-align:left;"> 195% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de La Réunion - Saint Denis </td>
@@ -156,7 +156,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 90 </td>
    <td style="text-align:right;"> 103 </td>
    <td style="text-align:right;"> 70 </td>
-   <td style="text-align:right;"> 1.922222 </td>
+   <td style="text-align:left;"> 192% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Henri Martin </td>
@@ -166,7 +166,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 15 </td>
    <td style="text-align:right;"> 24 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.800000 </td>
+   <td style="text-align:left;"> 180% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de La Réunion - Saint Denis </td>
@@ -176,7 +176,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 160 </td>
    <td style="text-align:right;"> 180 </td>
    <td style="text-align:right;"> 104 </td>
-   <td style="text-align:right;"> 1.775000 </td>
+   <td style="text-align:left;"> 178% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Lumière-Lyon 2 </td>
@@ -186,7 +186,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 130 </td>
    <td style="text-align:right;"> 229 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.761538 </td>
+   <td style="text-align:left;"> 176% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de Poitiers </td>
@@ -196,14 +196,14 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 34 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1.700000 </td>
+   <td style="text-align:left;"> 170% </td>
   </tr>
 </tbody>
 </table>
 
 ### Bottom 10
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
@@ -211,9 +211,9 @@ $remplissage=\frac{admis}{capacité}$
    <th style="text-align:left;"> Type </th>
    <th style="text-align:left;"> Filière </th>
    <th style="text-align:right;"> Capacité </th>
-   <th style="text-align:right;"> Admis.phase.principale </th>
+   <th style="text-align:right;"> Admis.phase.prin </th>
    <th style="text-align:right;"> Admis.phase.comp </th>
-   <th style="text-align:right;"> Taux.de.remplissage </th>
+   <th style="text-align:left;"> Taux.de.remplissage </th>
   </tr>
  </thead>
 <tbody>
@@ -225,7 +225,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 55 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 8 </td>
@@ -235,7 +235,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Saint Leon </td>
@@ -245,7 +245,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 45 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
@@ -255,7 +255,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 50 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de Bourgogne - site de Dijon </td>
@@ -265,7 +265,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 2 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 8 </td>
@@ -275,7 +275,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 8 </td>
@@ -285,7 +285,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> INALCO </td>
@@ -295,7 +295,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 55 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université d'Orléans </td>
@@ -305,7 +305,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 125 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Institut Catholique Paris </td>
@@ -315,7 +315,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:right;"> 30 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
   </tr>
 </tbody>
 </table>
@@ -346,7 +346,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
 
 ### Top 10
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
@@ -356,7 +356,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <th style="text-align:right;"> Capacité </th>
    <th style="text-align:right;"> Candidats </th>
    <th style="text-align:right;"> Rang.du.dernier.appelé </th>
-   <th style="text-align:right;"> Taux.de.sélection </th>
+   <th style="text-align:left;"> Taux.de.sélection </th>
   </tr>
  </thead>
 <tbody>
@@ -368,7 +368,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 981 </td>
    <td style="text-align:right;"> 10 </td>
-   <td style="text-align:right;"> 0.0101937 </td>
+   <td style="text-align:left;"> 1.02% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Leonard de Vinci </td>
@@ -378,7 +378,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 969 </td>
    <td style="text-align:right;"> 11 </td>
-   <td style="text-align:right;"> 0.0113519 </td>
+   <td style="text-align:left;"> 1.14% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Carnot </td>
@@ -388,7 +388,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 732 </td>
    <td style="text-align:right;"> 12 </td>
-   <td style="text-align:right;"> 0.0163934 </td>
+   <td style="text-align:left;"> 1.64% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Leonard de Vinci </td>
@@ -398,7 +398,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 729 </td>
    <td style="text-align:right;"> 15 </td>
-   <td style="text-align:right;"> 0.0205761 </td>
+   <td style="text-align:left;"> 2.06% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Carnot </td>
@@ -408,7 +408,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 1066 </td>
    <td style="text-align:right;"> 22 </td>
-   <td style="text-align:right;"> 0.0206379 </td>
+   <td style="text-align:left;"> 2.06% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Edouard Branly </td>
@@ -418,7 +418,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 2 </td>
    <td style="text-align:right;"> 140 </td>
    <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 0.0214286 </td>
+   <td style="text-align:left;"> 2.14% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Henri IV </td>
@@ -428,7 +428,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 2 </td>
    <td style="text-align:right;"> 180 </td>
    <td style="text-align:right;"> 4 </td>
-   <td style="text-align:right;"> 0.0222222 </td>
+   <td style="text-align:left;"> 2.22% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Carnot </td>
@@ -438,7 +438,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 8 </td>
    <td style="text-align:right;"> 935 </td>
    <td style="text-align:right;"> 23 </td>
-   <td style="text-align:right;"> 0.0245989 </td>
+   <td style="text-align:left;"> 2.46% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> I.U.T. 2 de Grenoble </td>
@@ -448,7 +448,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 28 </td>
    <td style="text-align:right;"> 1382 </td>
    <td style="text-align:right;"> 46 </td>
-   <td style="text-align:right;"> 0.0332851 </td>
+   <td style="text-align:left;"> 3.33% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée Edouard Branly </td>
@@ -458,14 +458,14 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 2 </td>
    <td style="text-align:right;"> 85 </td>
    <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 0.0352941 </td>
+   <td style="text-align:left;"> 3.53% </td>
   </tr>
 </tbody>
 </table>
 
 ### Bottom 10
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
@@ -475,7 +475,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <th style="text-align:right;"> Capacité </th>
    <th style="text-align:right;"> Candidats </th>
    <th style="text-align:right;"> Rang.du.dernier.appelé </th>
-   <th style="text-align:right;"> Taux.de.sélection </th>
+   <th style="text-align:left;"> Taux.de.sélection </th>
   </tr>
  </thead>
 <tbody>
@@ -487,7 +487,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 28 </td>
    <td style="text-align:right;"> 32 </td>
    <td style="text-align:right;"> 32 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Lycée AMEP </td>
@@ -497,7 +497,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 43 </td>
    <td style="text-align:right;"> 43 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> CNED </td>
@@ -507,7 +507,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 200 </td>
    <td style="text-align:right;"> 69 </td>
    <td style="text-align:right;"> 69 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université d'Orléans </td>
@@ -517,7 +517,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 125 </td>
    <td style="text-align:right;"> 34 </td>
    <td style="text-align:right;"> 34 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris Nanterre </td>
@@ -527,7 +527,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 39 </td>
    <td style="text-align:right;"> 104 </td>
    <td style="text-align:right;"> 104 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Lumière-Lyon 2 </td>
@@ -537,7 +537,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 300 </td>
    <td style="text-align:right;"> 2682 </td>
    <td style="text-align:right;"> 2682 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de Cergy-Pontoise </td>
@@ -547,7 +547,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 170 </td>
    <td style="text-align:right;"> 397 </td>
    <td style="text-align:right;"> 397 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aix Marseille Université - site d'Aix-en-Provence </td>
@@ -557,7 +557,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 22 </td>
    <td style="text-align:right;"> 22 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
@@ -567,7 +567,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 35 </td>
    <td style="text-align:right;"> 140 </td>
    <td style="text-align:right;"> 140 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
@@ -577,7 +577,7 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
    <td style="text-align:right;"> 105 </td>
    <td style="text-align:right;"> 725 </td>
    <td style="text-align:right;"> 725 </td>
-   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
   </tr>
 </tbody>
 </table>
@@ -597,7 +597,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
 ![](parcoursup_files/figure-html/type.de.sélection.Licence-1.png)<!-- -->
 
 
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
@@ -607,7 +607,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <th style="text-align:right;"> Capacité </th>
    <th style="text-align:right;"> Candidats </th>
    <th style="text-align:right;"> Rang.du.dernier.appelé </th>
-   <th style="text-align:right;"> Taux.de.sélection </th>
+   <th style="text-align:left;"> Taux.de.sélection </th>
   </tr>
  </thead>
 <tbody>
@@ -619,7 +619,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 30 </td>
    <td style="text-align:right;"> 1360 </td>
    <td style="text-align:right;"> 51 </td>
-   <td style="text-align:right;"> 0.0375000 </td>
+   <td style="text-align:left;"> 3.75% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris- Est- Créteil Val de Marne UPEC - Antenne de Sénart </td>
@@ -629,7 +629,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 32 </td>
    <td style="text-align:right;"> 1057 </td>
    <td style="text-align:right;"> 48 </td>
-   <td style="text-align:right;"> 0.0454115 </td>
+   <td style="text-align:left;"> 4.54% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
@@ -639,7 +639,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 726 </td>
    <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 0.0482094 </td>
+   <td style="text-align:left;"> 4.82% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
@@ -649,7 +649,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 65 </td>
    <td style="text-align:right;"> 6556 </td>
    <td style="text-align:right;"> 363 </td>
-   <td style="text-align:right;"> 0.0553691 </td>
+   <td style="text-align:left;"> 5.54% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
@@ -659,7 +659,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 30 </td>
    <td style="text-align:right;"> 1245 </td>
    <td style="text-align:right;"> 71 </td>
-   <td style="text-align:right;"> 0.0570281 </td>
+   <td style="text-align:left;"> 5.70% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Universite de Lille - Campus Moulin Ronchin - Lille </td>
@@ -669,7 +669,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 15 </td>
    <td style="text-align:right;"> 285 </td>
    <td style="text-align:right;"> 17 </td>
-   <td style="text-align:right;"> 0.0596491 </td>
+   <td style="text-align:left;"> 5.96% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de Lille - Campus Pont de Bois - Villeneuve d'Ascq </td>
@@ -679,7 +679,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 25 </td>
    <td style="text-align:right;"> 525 </td>
    <td style="text-align:right;"> 32 </td>
-   <td style="text-align:right;"> 0.0609524 </td>
+   <td style="text-align:left;"> 6.10% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> IPC-Facultés Libres de Philosophie et de Psycholog </td>
@@ -689,7 +689,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 632 </td>
    <td style="text-align:right;"> 41 </td>
-   <td style="text-align:right;"> 0.0648734 </td>
+   <td style="text-align:left;"> 6.49% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université de Bordeaux - Bordeaux Métropole </td>
@@ -699,7 +699,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 90 </td>
    <td style="text-align:right;"> 2016 </td>
    <td style="text-align:right;"> 135 </td>
-   <td style="text-align:right;"> 0.0669643 </td>
+   <td style="text-align:left;"> 6.70% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Paris 2 Panthéon - Assas </td>
@@ -709,7 +709,7 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
    <td style="text-align:right;"> 50 </td>
    <td style="text-align:right;"> 5408 </td>
    <td style="text-align:right;"> 370 </td>
-   <td style="text-align:right;"> 0.0684172 </td>
+   <td style="text-align:left;"> 6.84% </td>
   </tr>
 </tbody>
 </table>
@@ -722,98 +722,185 @@ Le taux de Licences sélective est défini comme le rapport entre le nombre de L
 
 
 ```
-## Warning: Removed 76 rows containing non-finite values (stat_density).
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 2 rows containing non-finite values (stat_bin).
 ```
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.établissement-1.png)<!-- -->
 
 ### Top 10  
   
-<table>
+<table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
    <th style="text-align:right;"> Nb.L </th>
-   <th style="text-align:right;"> Nb.L.Sélectives </th>
-   <th style="text-align:right;"> Taux.L.sél </th>
-   <th style="text-align:right;"> Taux.sél.moyen </th>
+   <th style="text-align:right;"> Nb.L.sél </th>
+   <th style="text-align:left;"> Taux.L.sél </th>
+   <th style="text-align:left;"> Taux.sél.moyen </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 34 </td>
-   <td style="text-align:right;"> 0.9714286 </td>
-   <td style="text-align:right;"> 0.4785086 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université de Rennes 1 </td>
-   <td style="text-align:right;"> 14 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 0.9285714 </td>
-   <td style="text-align:right;"> 0.7409422 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université de Bordeaux - Bordeaux Métropole </td>
-   <td style="text-align:right;"> 22 </td>
-   <td style="text-align:right;"> 20 </td>
-   <td style="text-align:right;"> 0.9090909 </td>
-   <td style="text-align:right;"> 0.6207313 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris-Est Marne-la-Vallée </td>
-   <td style="text-align:right;"> 19 </td>
-   <td style="text-align:right;"> 17 </td>
-   <td style="text-align:right;"> 0.8947368 </td>
-   <td style="text-align:right;"> 0.6634427 </td>
-  </tr>
-  <tr>
    <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
    <td style="text-align:right;"> 43 </td>
    <td style="text-align:right;"> 38 </td>
-   <td style="text-align:right;"> 0.8837209 </td>
-   <td style="text-align:right;"> 0.6138956 </td>
+   <td style="text-align:left;"> 88.4% </td>
+   <td style="text-align:left;"> 61.4% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Toulouse 1 Capitole </td>
-   <td style="text-align:right;"> 17 </td>
-   <td style="text-align:right;"> 15 </td>
-   <td style="text-align:right;"> 0.8823529 </td>
-   <td style="text-align:right;"> 0.5456959 </td>
+   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:left;"> 57.1% </td>
+   <td style="text-align:left;"> 74.7% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Bordeaux Montaigne </td>
    <td style="text-align:right;"> 40 </td>
    <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 0.8750000 </td>
-   <td style="text-align:right;"> 0.7780565 </td>
+   <td style="text-align:left;"> 87.5% </td>
+   <td style="text-align:left;"> 77.8% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Centre Universitaire de Mayotte </td>
-   <td style="text-align:right;"> 6 </td>
-   <td style="text-align:right;"> 5 </td>
-   <td style="text-align:right;"> 0.8333333 </td>
-   <td style="text-align:right;"> 0.7722759 </td>
+   <td style="text-align:left;"> Université de Strasbourg </td>
+   <td style="text-align:right;"> 66 </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:left;"> 53.0% </td>
+   <td style="text-align:left;"> 84.6% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Universite Jean Monnet, Saint-Etienne </td>
+   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 34 </td>
+   <td style="text-align:left;"> 97.1% </td>
+   <td style="text-align:left;"> 47.9% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris Nanterre </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:left;"> 52.4% </td>
+   <td style="text-align:left;"> 77.8% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Sorbonne Nouvelle Paris 3 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:left;"> 70.2% </td>
+   <td style="text-align:left;"> 61.3% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> UNIVERSITE GRENOBLE ALPES </td>
+   <td style="text-align:right;"> 56 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:left;"> 57.1% </td>
+   <td style="text-align:left;"> 81.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Aix Marseille Université - site d'Aix-en-Provence </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 28 </td>
+   <td style="text-align:left;"> 80.0% </td>
+   <td style="text-align:left;"> 96.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris 8 </td>
+   <td style="text-align:right;"> 52 </td>
    <td style="text-align:right;"> 27 </td>
-   <td style="text-align:right;"> 22 </td>
-   <td style="text-align:right;"> 0.8148148 </td>
-   <td style="text-align:right;"> 0.9405747 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université de La Rochelle </td>
-   <td style="text-align:right;"> 16 </td>
-   <td style="text-align:right;"> 13 </td>
-   <td style="text-align:right;"> 0.8125000 </td>
-   <td style="text-align:right;"> 0.9257335 </td>
+   <td style="text-align:left;"> 51.9% </td>
+   <td style="text-align:left;"> 87.3% </td>
   </tr>
 </tbody>
 </table>
 
 
+<table class="table" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Établissement </th>
+   <th style="text-align:right;"> Nb.L </th>
+   <th style="text-align:right;"> Nb.L.sél </th>
+   <th style="text-align:left;"> Taux.L.sél </th>
+   <th style="text-align:left;"> Taux.sél.moyen </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> CNAM de Franche-Comté site de Besançon et CNAM de Franche-Comté site de Belfort </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 20.2% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IPC-Facultés Libres de Philosophie et de Psycholog </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 25.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Institut Catholique de Lille - ESPAS </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 25.5% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Mulhouse - Site de Colmar - Faculté de marketing et d'agrosciences </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 27.5% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Universite de Lille - Campus Moulin Ronchin - Lille </td>
+   <td style="text-align:right;"> 10 </td>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:left;"> 70.0% </td>
+   <td style="text-align:left;"> 29.4% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris 2 Panthéon - Assas </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 36.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Toulouse 2 - Antenne Montauban </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 38.3% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Montpellier, Antenne de Nîmes </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 39.2% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Institut Supérieur d'Expertise et d'Audit - Institut Catholique de Lille </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 47.2% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 34 </td>
+   <td style="text-align:left;"> 97.1% </td>
+   <td style="text-align:left;"> 47.9% </td>
+  </tr>
+</tbody>
+</table>
 
 ### Taux de Licences sélectives par filière de formation
 

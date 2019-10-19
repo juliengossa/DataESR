@@ -237,12 +237,13 @@ ps2018 %>%
          Type = Filière.de.formation.très.agrégée, 
          Filière = Filière.de.formation.détaillée,
          Capacité = Capacité.de.l.établissement.par.formation,
-         Admis.phase.principale = Effectif.des.admis.en.phase.principale,
+         Admis.phase.prin = Effectif.des.admis.en.phase.principale,
          Admis.phase.comp = Effectif.des.admis.en.phase.complémentaire
          ) %>%
   arrange(-Taux.de.remplissage) %>%
   head(10) %>%
-  kable()
+  mutate(Taux.de.remplissage = scales::percent(Taux.de.remplissage)) %>%
+  kable() %>% kable_styling()
 ```
 
 ### Bottom 10
@@ -262,12 +263,13 @@ ps2018 %>%
          Type = Filière.de.formation.très.agrégée, 
          Filière = Filière.de.formation.détaillée,
          Capacité = Capacité.de.l.établissement.par.formation,
-         Admis.phase.principale = Effectif.des.admis.en.phase.principale,
+         Admis.phase.prin = Effectif.des.admis.en.phase.principale,
          Admis.phase.comp = Effectif.des.admis.en.phase.complémentaire
          ) %>%
   arrange(Taux.de.remplissage) %>%
   head(10) %>%
-  kable()
+  mutate(Taux.de.remplissage = scales::percent(Taux.de.remplissage)) %>%
+  kable() %>% kable_styling()
 
 ```
 
@@ -329,7 +331,8 @@ ps2018 %>%
          ) %>%
   arrange(Taux.de.sélection) %>%
   head(10) %>%
-  kable()
+  mutate(Taux.de.sélection = scales::percent(Taux.de.sélection)) %>%
+  kable() %>% kable_styling()
 ```
 
 ### Bottom 10
@@ -353,7 +356,8 @@ ps2018 %>%
          ) %>%
   arrange(-Taux.de.sélection) %>%
   head(10) %>%
-  kable()
+  mutate(Taux.de.sélection = scales::percent(Taux.de.sélection)) %>%
+  kable() %>% kable_styling()
 ```
 
 ### Filières non-sélectives (Licences)
@@ -416,7 +420,8 @@ ps2018 %>%
          ) %>%
   arrange(Taux.de.sélection) %>%
   head(10) %>%
-  kable()
+  mutate(Taux.de.sélection = scales::percent(Taux.de.sélection)) %>%
+  kable() %>% kable_styling()
 ```
 
 
@@ -437,16 +442,18 @@ ps2018.etab.sel <- ps2018 %>%
   group_by(Établissement, Type.de.sélection) %>%
   summarise(Taux.de.sélection.moyen = mean(Taux.de.sélection),
             Nb.de.Licences = n()) %>%
-  pivot_wider(names_from=Type.de.sélection, values_from=c(Taux.de.sélection.moyen, Nb.de.Licences)) %>%
+  pivot_wider(names_from=Type.de.sélection, 
+              values_from=c(Taux.de.sélection.moyen, Nb.de.Licences),
+              values_fill=list(Nb.de.Licences=0)) %>%
   mutate(Nb.Licences = Nb.de.Licences_Non_sélective + Nb.de.Licences_Sélective,
          Taux.de.Licences.sélectives = Nb.de.Licences_Sélective/Nb.Licences) %>%
   select(Établissement,Nb.Licences,Nb.de.Licences_Sélective,Taux.de.Licences.sélectives,Taux.de.sélection.moyen_Sélective) 
   
   ggplot(ps2018.etab.sel, aes(x=Taux.de.Licences.sélectives)) + 
-    geom_density(fill="blue") +
-    xlab("Taux de Licences sélectives") + ylab("Densité") +
+    geom_histogram(fill="blue") +
+    xlab("Taux de Licences sélectives") + ylab("Nombre d'établissements") +
   scale_x_continuous(labels=scales::percent) +
-  ggtitle("Densité des établissements\nen fonction de leur taux de Licences sélectives") +
+  ggtitle("Distribution des établissements\nen fonction de leur taux de Licences sélectives") +
   theme_hc()
 
 ```
@@ -457,15 +464,33 @@ ps2018.etab.sel <- ps2018 %>%
   ps2018.etab.sel %>%
   rename(
     Nb.L = Nb.Licences,
-    Nb.L.Sélectives = Nb.de.Licences_Sélective,
+    Nb.L.sél = Nb.de.Licences_Sélective,
     Taux.L.sél = Taux.de.Licences.sélectives,
     Taux.sél.moyen = Taux.de.sélection.moyen_Sélective) %>%
-  arrange(-Taux.L.sél) %>%
+  arrange(-Nb.L.sél) %>%
   head(10) %>%
-  kable()
+  mutate(
+    Taux.L.sél = scales::percent(Taux.L.sél),
+    Taux.sél.moyen = scales::percent(Taux.sél.moyen)) %>%
+  kable() %>%
+  kable_styling()
 ```
 
 
+```{r Taux.de.sélection.sélection.moyenne.top10, echo=FALSE}
+  ps2018.etab.sel %>%
+  rename(
+    Nb.L = Nb.Licences,
+    Nb.L.sél = Nb.de.Licences_Sélective,
+    Taux.L.sél = Taux.de.Licences.sélectives,
+    Taux.sél.moyen = Taux.de.sélection.moyen_Sélective) %>%
+  arrange(Taux.sél.moyen) %>%
+  head(10) %>%
+  mutate(
+    Taux.L.sél = scales::percent(Taux.L.sél),
+    Taux.sél.moyen = scales::percent(Taux.sél.moyen)) %>%
+  kable() %>% kable_styling()
+```
 
 ### Taux de Licences sélectives par filière de formation
 
