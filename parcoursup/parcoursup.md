@@ -91,6 +91,7 @@ $remplissage=\frac{admis}{capacité}$
    <th style="text-align:left;"> CP </th>
    <th style="text-align:left;"> Type </th>
    <th style="text-align:left;"> Filière </th>
+   <th style="text-align:left;"> Détail </th>
    <th style="text-align:right;"> Capacité </th>
    <th style="text-align:right;"> Admis.phase.prin </th>
    <th style="text-align:right;"> Admis.phase.comp </th>
@@ -103,6 +104,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Langues étrangères appliquées </td>
+   <td style="text-align:left;"> Portail Langues : Anglais - Italien - mentions accessibles : LEA, LLCER / Programme International MINERVE </td>
    <td style="text-align:right;"> 15 </td>
    <td style="text-align:right;"> 58 </td>
    <td style="text-align:right;"> 0 </td>
@@ -113,6 +115,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Mathématiques et informatique appliquées aux sciences humaines et sociales </td>
+   <td style="text-align:left;"> Portail MIASHS - mentions : Economie gestion, Géographie, Histoire, Info com, MIASHS, Psychologie, Sc et techno, Sc du langage, Sc sociales,Sociologie </td>
    <td style="text-align:right;"> 160 </td>
    <td style="text-align:right;"> 377 </td>
    <td style="text-align:right;"> 0 </td>
@@ -123,6 +126,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 974 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Sciences pour la santé </td>
+   <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 120 </td>
    <td style="text-align:right;"> 131 </td>
    <td style="text-align:right;"> 112 </td>
@@ -133,6 +137,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Langues étrangères appliquées </td>
+   <td style="text-align:left;"> Portail Langues : Anglais - Chinois - mentions accessibles : LEA, LLCER </td>
    <td style="text-align:right;"> 30 </td>
    <td style="text-align:right;"> 59 </td>
    <td style="text-align:right;"> 0 </td>
@@ -143,6 +148,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 971 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Administration publique </td>
+   <td style="text-align:left;"> Administration publique - Guadeloupe </td>
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 39 </td>
    <td style="text-align:right;"> 0 </td>
@@ -153,6 +159,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 974 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Histoire </td>
+   <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 90 </td>
    <td style="text-align:right;"> 103 </td>
    <td style="text-align:right;"> 70 </td>
@@ -163,6 +170,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 02 </td>
    <td style="text-align:left;"> BTS </td>
    <td style="text-align:left;"> Métiers de l'audio-visuel opt : montage et post-production </td>
+   <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 15 </td>
    <td style="text-align:right;"> 24 </td>
    <td style="text-align:right;"> 0 </td>
@@ -173,6 +181,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 974 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Sciences sociales </td>
+   <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 160 </td>
    <td style="text-align:right;"> 180 </td>
    <td style="text-align:right;"> 104 </td>
@@ -183,6 +192,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Langues étrangères appliquées </td>
+   <td style="text-align:left;"> Portail Langues : Anglais - Espagnol - mentions accessibles : LEA, LLCER / Programme International MINERVE </td>
    <td style="text-align:right;"> 130 </td>
    <td style="text-align:right;"> 229 </td>
    <td style="text-align:right;"> 0 </td>
@@ -193,6 +203,7 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 86 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Portail Langues, Littératures et Civilisations Etrangères et Régionales Anglais (LLCER Anglais) / Sciences du Langage </td>
    <td style="text-align:right;"> 20 </td>
    <td style="text-align:right;"> 34 </td>
    <td style="text-align:right;"> 0 </td>
@@ -210,6 +221,7 @@ $remplissage=\frac{admis}{capacité}$
    <th style="text-align:left;"> CP </th>
    <th style="text-align:left;"> Type </th>
    <th style="text-align:left;"> Filière </th>
+   <th style="text-align:left;"> Détail </th>
    <th style="text-align:right;"> Capacité </th>
    <th style="text-align:right;"> Admis.phase.prin </th>
    <th style="text-align:right;"> Admis.phase.comp </th>
@@ -218,90 +230,11 @@ $remplissage=\frac{admis}{capacité}$
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> INALCO </td>
-   <td style="text-align:left;"> 75 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 55 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris 8 </td>
-   <td style="text-align:left;"> 93 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues étrangères appliquées </td>
-   <td style="text-align:right;"> 25 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Lycée Saint Leon </td>
-   <td style="text-align:left;"> 91 </td>
-   <td style="text-align:left;"> CPGE </td>
-   <td style="text-align:left;"> PTSI </td>
-   <td style="text-align:right;"> 45 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
-   <td style="text-align:left;"> 94 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 50 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université de Bourgogne - site de Dijon </td>
-   <td style="text-align:left;"> 21 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Philosophie </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris 8 </td>
-   <td style="text-align:left;"> 93 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues étrangères appliquées </td>
-   <td style="text-align:right;"> 25 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris 8 </td>
-   <td style="text-align:left;"> 93 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues étrangères appliquées </td>
-   <td style="text-align:right;"> 25 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> INALCO </td>
-   <td style="text-align:left;"> 75 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 55 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:left;"> 0% </td>
-  </tr>
-  <tr>
    <td style="text-align:left;"> Université d'Orléans </td>
    <td style="text-align:left;"> 45 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Physique </td>
+   <td style="text-align:left;"> Portail n° 14 - Sciences de la terre-Physique-Chimie </td>
    <td style="text-align:right;"> 125 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
@@ -312,7 +245,96 @@ $remplissage=\frac{admis}{capacité}$
    <td style="text-align:left;"> 75 </td>
    <td style="text-align:left;"> Licence </td>
    <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 30 </td>
+   <td style="text-align:left;"> Anglais - Allemand </td>
+   <td style="text-align:right;"> 70 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations,  parcours Asie et Pacifique -  Népali </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations, parcours Europe et Eurasie - Estonien </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations, parcours Europe et Eurasie - Slovaque </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations Etrangères et Régionales, parcours Asie et Pacifique - Télougou </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations, parcours Europe et Eurasie - Lituanien </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> INALCO </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Langues, Littératures et Civilisations,  parcours Asie et Pacifique -  Rromani </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
+   <td style="text-align:left;"> 94 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> Allemand </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:left;"> 0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sorbonne Université - Lettres, Arts, Langues, Sciences Humaines et Sociales </td>
+   <td style="text-align:left;"> 75 </td>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
+   <td style="text-align:left;"> LLCER ALLEMAND - LLCER NEERLANDAIS </td>
+   <td style="text-align:right;"> 50 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:right;"> 0 </td>
    <td style="text-align:left;"> 0% </td>
@@ -480,103 +502,103 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
+   <td style="text-align:left;"> Université Claude Bernard Lyon 1 </td>
    <td style="text-align:left;"> 69 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues étrangères appliquées </td>
-   <td style="text-align:right;"> 28 </td>
-   <td style="text-align:right;"> 32 </td>
-   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 2550 </td>
+   <td style="text-align:right;"> 8589 </td>
+   <td style="text-align:right;"> 8589 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Lycée AMEP </td>
-   <td style="text-align:left;"> 972 </td>
-   <td style="text-align:left;"> BTS </td>
-   <td style="text-align:left;"> Fluide, énergie, domotique - option C domotique et bâtiment communicants </td>
-   <td style="text-align:right;"> 25 </td>
-   <td style="text-align:right;"> 43 </td>
-   <td style="text-align:right;"> 43 </td>
+   <td style="text-align:left;"> Université Toulouse 3 Paul Sabatier </td>
+   <td style="text-align:left;"> 31 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 3000 </td>
+   <td style="text-align:right;"> 6476 </td>
+   <td style="text-align:right;"> 6476 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> CNED </td>
+   <td style="text-align:left;"> Université de Montpellier </td>
+   <td style="text-align:left;"> 34 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 1800 </td>
+   <td style="text-align:right;"> 6428 </td>
+   <td style="text-align:right;"> 6428 </td>
+   <td style="text-align:left;"> 100% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Nantes </td>
+   <td style="text-align:left;"> 44 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 1210 </td>
+   <td style="text-align:right;"> 5621 </td>
+   <td style="text-align:right;"> 5621 </td>
+   <td style="text-align:left;"> 100% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> UNIVERSITE GRENOBLE ALPES </td>
    <td style="text-align:left;"> 38 </td>
-   <td style="text-align:left;"> BTS </td>
-   <td style="text-align:left;"> Systèmes numériques - Option électronique et communication </td>
-   <td style="text-align:right;"> 200 </td>
-   <td style="text-align:right;"> 69 </td>
-   <td style="text-align:right;"> 69 </td>
-   <td style="text-align:left;"> 100% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université d'Orléans </td>
-   <td style="text-align:left;"> 45 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Physique </td>
-   <td style="text-align:right;"> 125 </td>
-   <td style="text-align:right;"> 34 </td>
-   <td style="text-align:right;"> 34 </td>
-   <td style="text-align:left;"> 100% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris Nanterre </td>
-   <td style="text-align:left;"> 92 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 39 </td>
-   <td style="text-align:right;"> 104 </td>
-   <td style="text-align:right;"> 104 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 1100 </td>
+   <td style="text-align:right;"> 4227 </td>
+   <td style="text-align:right;"> 4227 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Université Lumière-Lyon 2 </td>
    <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Sciences sociales </td>
-   <td style="text-align:right;"> 300 </td>
-   <td style="text-align:right;"> 2682 </td>
-   <td style="text-align:right;"> 2682 </td>
+   <td style="text-align:left;"> Droit </td>
+   <td style="text-align:right;"> 570 </td>
+   <td style="text-align:right;"> 4002 </td>
+   <td style="text-align:right;"> 4002 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université de Cergy-Pontoise </td>
-   <td style="text-align:left;"> 95 </td>
+   <td style="text-align:left;"> Université de Nantes </td>
+   <td style="text-align:left;"> 44 </td>
    <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Lettres </td>
-   <td style="text-align:right;"> 170 </td>
-   <td style="text-align:right;"> 397 </td>
-   <td style="text-align:right;"> 397 </td>
+   <td style="text-align:left;"> Economie et gestion </td>
+   <td style="text-align:right;"> 430 </td>
+   <td style="text-align:right;"> 3618 </td>
+   <td style="text-align:right;"> 3618 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Aix Marseille Université - site d'Aix-en-Provence </td>
-   <td style="text-align:left;"> 13 </td>
-   <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues, littératures &amp; civilisations étrangères et régionales </td>
-   <td style="text-align:right;"> 20 </td>
-   <td style="text-align:right;"> 22 </td>
-   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:left;"> Université de Reims Champagne-Ardenne </td>
+   <td style="text-align:left;"> 51 </td>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> PACES - Médecine, Pharmacie, Odontologie (dentiste), Maïeutique (sage-femmes) </td>
+   <td style="text-align:right;"> 940 </td>
+   <td style="text-align:right;"> 2997 </td>
+   <td style="text-align:right;"> 2997 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
-   <td style="text-align:left;"> 69 </td>
+   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
+   <td style="text-align:left;"> 75 </td>
    <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Langues étrangères appliquées </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 140 </td>
-   <td style="text-align:right;"> 140 </td>
+   <td style="text-align:left;"> Histoire </td>
+   <td style="text-align:right;"> 630 </td>
+   <td style="text-align:right;"> 2964 </td>
+   <td style="text-align:right;"> 2964 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
-   <td style="text-align:left;"> 69 </td>
+   <td style="text-align:left;"> Université de Montpellier </td>
+   <td style="text-align:left;"> 34 </td>
    <td style="text-align:left;"> Licence </td>
-   <td style="text-align:left;"> Philosophie </td>
-   <td style="text-align:right;"> 105 </td>
-   <td style="text-align:right;"> 725 </td>
-   <td style="text-align:right;"> 725 </td>
+   <td style="text-align:left;"> Economie </td>
+   <td style="text-align:right;"> 345 </td>
+   <td style="text-align:right;"> 2806 </td>
+   <td style="text-align:right;"> 2806 </td>
    <td style="text-align:left;"> 100% </td>
   </tr>
 </tbody>

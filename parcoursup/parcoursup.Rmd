@@ -228,6 +228,7 @@ ps2018 %>%
              Code.départemental.de.l.établissement,
              Filière.de.formation.très.agrégée, 
              Filière.de.formation.détaillée,
+             Filière.de.formation.très.détaillée,
              Capacité.de.l.établissement.par.formation,
              Effectif.des.admis.en.phase.principale,
              Effectif.des.admis.en.phase.complémentaire,
@@ -236,6 +237,7 @@ ps2018 %>%
   rename(CP = Code.départemental.de.l.établissement,
          Type = Filière.de.formation.très.agrégée, 
          Filière = Filière.de.formation.détaillée,
+         Détail = Filière.de.formation.très.détaillée,
          Capacité = Capacité.de.l.établissement.par.formation,
          Admis.phase.prin = Effectif.des.admis.en.phase.principale,
          Admis.phase.comp = Effectif.des.admis.en.phase.complémentaire
@@ -254,6 +256,7 @@ ps2018 %>%
              Code.départemental.de.l.établissement,
              Filière.de.formation.très.agrégée, 
              Filière.de.formation.détaillée,
+             Filière.de.formation.très.détaillée,
              Capacité.de.l.établissement.par.formation,
              Effectif.des.admis.en.phase.principale,
              Effectif.des.admis.en.phase.complémentaire,
@@ -262,11 +265,12 @@ ps2018 %>%
   rename(CP = Code.départemental.de.l.établissement,
          Type = Filière.de.formation.très.agrégée, 
          Filière = Filière.de.formation.détaillée,
+         Détail = Filière.de.formation.très.détaillée,
          Capacité = Capacité.de.l.établissement.par.formation,
          Admis.phase.prin = Effectif.des.admis.en.phase.principale,
          Admis.phase.comp = Effectif.des.admis.en.phase.complémentaire
          ) %>%
-  arrange(Taux.de.remplissage) %>%
+  arrange(Taux.de.remplissage,-Capacité) %>%
   head(10) %>%
   mutate(Taux.de.remplissage = scales::percent(Taux.de.remplissage)) %>%
   kable() %>% kable_styling()
@@ -354,7 +358,7 @@ ps2018 %>%
          Capacité = Capacité.de.l.établissement.par.formation,
          Candidats = Effectif.total.des.candidats.en.phase.principale
          ) %>%
-  arrange(-Taux.de.sélection) %>%
+  arrange(-Taux.de.sélection,-Candidats) %>%
   head(10) %>%
   mutate(Taux.de.sélection = scales::percent(Taux.de.sélection)) %>%
   kable() %>% kable_styling()
