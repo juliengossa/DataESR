@@ -17,6 +17,12 @@ Ce jeu de données ne permet pas de percevoir les choses du côté des candidats
 
 Il permet en revanche de percevoir les choses du côté des formations.
 
+_Attention_ : Ce jeu de données présente des incohérences :
+
+- Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis. différent de la somme Effectif.des.admis.en.phase.principale + Effectif.des.admis.en.phase.complémentaire ;
+- Le nombre de candidats classés par la formation peut être inférieur au nombre de candidats pour des filières non sélectives ;
+- Le nombre de candidats ayant reçu une proposition peut être inférieur au nombre de candidats classés même si la formation n'atteint pas sa capacité d'accueil.
+
 ## Statistiques nationales
 
 ![](parcoursup_files/figure-html/stat.generales-1.png)<!-- -->
@@ -344,11 +350,60 @@ $remplissage=\frac{admis}{capacité}$
 
 ## Taux de sélection
 
-Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non), et le nombre de candidats en phase principale :
+Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :
 
 $sélection=\frac{rang.du.dernier.appelé}{candidats}$
 
 Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective. 
+
+_Attention_ : Théoriquement, une formation est considérée comme "Non-sélective" si et seulement si elle présente un taux de sélection de 100%. Cependant, les données présentent plusieurs défauts qui empêchent ce calcul :
+
+- des Licences manifestement non-sélectives présentent un nombre de candidats classés légèrement inférieur au nombre de candidats (parfois de 1 ou 2 sur des milliers), qui ne peut être assimilé à de la sélection ;
+- le rang du dernier appelé n'est pas disponible pour plusieurs formations, dont les DUT ;
+- utiliser l'existence d'appels en phase complémentaire pour détecter les filières non-sélectives n'est pas possible puisque des places ont été ajoutées en cours de procédure.
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Filière.de.formation.très.agrégée </th>
+   <th style="text-align:left;"> Rang.du.dernier.appelé.disponible </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> BTS </td>
+   <td style="text-align:left;"> 23.5% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CPGE </td>
+   <td style="text-align:left;"> 98.7% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DUT </td>
+   <td style="text-align:left;"> 6.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Licence </td>
+   <td style="text-align:left;"> 98.6% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> PACES </td>
+   <td style="text-align:left;"> 95.5% </td>
+  </tr>
+</tbody>
+</table>
+
+C'est pourquoi, est considérée comme :
+
+- "Non-sélective" : les formation dont le taux de sélection est supérieur à 95%. Pour des questions de lisibilité, leur taux de sélection est forcé à 100% ;
+- "Sélective" : les formation dont le taux de sélection est inférieur à 95% ;
+- "Hyper-Sélective" : les formation dont le taux de sélection est inférieur à 10%.
+
+_NB_ : 
+
+- Avec cette interprétation, il est possible que des formation ayant éliminé quelques candidats soient considérées comme non-sélectives.
+- Les statistiques sur les formations et les établissements se basent sur les données disponibles, celles sur les candidats considèrent BTS, CPGE et DUT comme sélectives, et Licence et PACES comme non sélectives.
+
 
 
 ```
@@ -360,11 +415,13 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
 
 
 ```
-## Warning: Removed 4694 rows containing non-finite values (stat_density).
+## Warning: Removed 4657 rows containing non-finite values (stat_density).
 ```
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.densite-1.png)<!-- -->
 
+
+![](parcoursup_files/figure-html/Taux.de.sélection.preoportion-1.png)<!-- -->
 
 ### Top 10
 
@@ -607,16 +664,17 @@ Interprétation : un taux de sélection de 100% signifie que tous les candidats 
 ### Filières non-sélectives (Licences)
 
 
-
-```
-## Warning: Removed 35 rows containing non-finite values (stat_bin).
-```
-
-![](parcoursup_files/figure-html/Taux.de.sélection.Licence-1.png)<!-- -->
-
-Attention : le nombre de formations ayant un unique candidat non-appelé est surreprésenté. De plus amples investigations sont nécessaires. Dans la suite, les filières sont considérées comme sélectives dès lors qu'au moins 2 candidats sont restés en file d'attente à la fin de la procédure.
-
 ![](parcoursup_files/figure-html/type.de.sélection.Licence-1.png)<!-- -->
+
+
+
+
+```
+## Warning: Removed 95 rows containing non-finite values (stat_density).
+```
+
+![](parcoursup_files/figure-html/type.de.sélection.Licence.capa-1.png)<!-- -->
+
 
 
 <table class="table" style="margin-left: auto; margin-right: auto;">
@@ -741,100 +799,97 @@ Attention : le nombre de formations ayant un unique candidat non-appelé est sur
 
 Le taux de Licences sélective est défini comme le rapport entre le nombre de Licences sélectives, et le nombre total de Licences.
 
+_Attention_ : Dans le jeu de données, les établissements de grande taille sont éclatés par site.
 
 
-```
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-```
-
-```
-## Warning: Removed 2 rows containing non-finite values (stat_bin).
-```
+  
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.établissement-1.png)<!-- -->
 
 ### Top 10  
-  
+
+TSM : Taux de Sélection Moyen des Licences sélectives
+
 <table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Établissement </th>
    <th style="text-align:right;"> Nb.L </th>
-   <th style="text-align:right;"> Nb.L.sél </th>
-   <th style="text-align:left;"> Taux.L.sél </th>
-   <th style="text-align:left;"> Taux.sél.moyen </th>
+   <th style="text-align:right;"> Nb_Sélective </th>
+   <th style="text-align:left;"> Taux_Sélective </th>
+   <th style="text-align:left;"> TSM_Sélective </th>
   </tr>
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
-   <td style="text-align:right;"> 43 </td>
-   <td style="text-align:right;"> 38 </td>
-   <td style="text-align:left;"> 88.4% </td>
-   <td style="text-align:left;"> 61.4% </td>
+   <td style="text-align:left;"> Institut Catholique de Lyon </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 69.0% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
-   <td style="text-align:right;"> 63 </td>
-   <td style="text-align:right;"> 36 </td>
-   <td style="text-align:left;"> 57.1% </td>
-   <td style="text-align:left;"> 74.7% </td>
+   <td style="text-align:left;"> Université Paris-Sud, campus de Sceaux </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 49.9% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Bordeaux Montaigne </td>
-   <td style="text-align:right;"> 40 </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:left;"> 87.5% </td>
-   <td style="text-align:left;"> 77.8% </td>
+   <td style="text-align:left;"> Institut Catholique de Lille-Faculté de Gestion, Economie et Sciences </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 54.8% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université de Strasbourg </td>
-   <td style="text-align:right;"> 66 </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:left;"> 53.0% </td>
-   <td style="text-align:left;"> 84.6% </td>
+   <td style="text-align:left;"> Université Paris 13 - Antenne de Bobigny </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 52.1% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 34 </td>
-   <td style="text-align:left;"> 97.1% </td>
-   <td style="text-align:left;"> 47.9% </td>
+   <td style="text-align:left;"> Institut Supérieur de l'Enseignement Privé de Polynésie </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 57.5% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Paris Nanterre </td>
-   <td style="text-align:right;"> 63 </td>
-   <td style="text-align:right;"> 33 </td>
-   <td style="text-align:left;"> 52.4% </td>
-   <td style="text-align:left;"> 77.8% </td>
+   <td style="text-align:left;"> Sorbonne Université - Sciences et Ingénierie </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 65.7% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Sorbonne Nouvelle Paris 3 </td>
-   <td style="text-align:right;"> 47 </td>
-   <td style="text-align:right;"> 33 </td>
-   <td style="text-align:left;"> 70.2% </td>
-   <td style="text-align:left;"> 61.3% </td>
+   <td style="text-align:left;"> CNAM de Franche-Comté site de Besançon et CNAM de Franche-Comté site de Belfort </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 20.2% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> UNIVERSITE GRENOBLE ALPES </td>
-   <td style="text-align:right;"> 56 </td>
-   <td style="text-align:right;"> 32 </td>
-   <td style="text-align:left;"> 57.1% </td>
-   <td style="text-align:left;"> 81.1% </td>
+   <td style="text-align:left;"> Université Paris 2 Panthéon - Assas </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 36.0% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Aix Marseille Université - site d'Aix-en-Provence </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 28 </td>
-   <td style="text-align:left;"> 80.0% </td>
-   <td style="text-align:left;"> 96.1% </td>
+   <td style="text-align:left;"> Université d'Artois - Site de Liévin </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 52.2% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Paris 8 </td>
-   <td style="text-align:right;"> 52 </td>
-   <td style="text-align:right;"> 27 </td>
-   <td style="text-align:left;"> 51.9% </td>
-   <td style="text-align:left;"> 87.3% </td>
+   <td style="text-align:left;"> IPC-Facultés Libres de Philosophie et de Psycholog </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 100% </td>
+   <td style="text-align:left;"> 25.1% </td>
   </tr>
 </tbody>
 </table>
@@ -845,12 +900,103 @@ Le taux de Licences sélective est défini comme le rapport entre le nombre de L
   <tr>
    <th style="text-align:left;"> Établissement </th>
    <th style="text-align:right;"> Nb.L </th>
-   <th style="text-align:right;"> Nb.L.sél </th>
-   <th style="text-align:left;"> Taux.L.sél </th>
-   <th style="text-align:left;"> Taux.sél.moyen </th>
+   <th style="text-align:right;"> Nb_Sélective </th>
+   <th style="text-align:left;"> Taux_Sélective </th>
+   <th style="text-align:left;"> TSM_Sélective </th>
   </tr>
  </thead>
 <tbody>
+  <tr>
+   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 30 </td>
+   <td style="text-align:left;"> 85.7% </td>
+   <td style="text-align:left;"> 41.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Sorbonne Nouvelle Paris 3 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 29 </td>
+   <td style="text-align:left;"> 61.7% </td>
+   <td style="text-align:left;"> 56.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Jean Moulin Lyon 3 </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 28 </td>
+   <td style="text-align:left;"> 44.4% </td>
+   <td style="text-align:left;"> 67.5% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris- Est-Créteil Val de Marne - UPEC (Paris 12) </td>
+   <td style="text-align:right;"> 43 </td>
+   <td style="text-align:right;"> 26 </td>
+   <td style="text-align:left;"> 60.5% </td>
+   <td style="text-align:left;"> 44.4% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris Nanterre </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 21 </td>
+   <td style="text-align:left;"> 33.3% </td>
+   <td style="text-align:left;"> 66.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris Diderot - Paris 7 </td>
+   <td style="text-align:right;"> 30 </td>
+   <td style="text-align:right;"> 18 </td>
+   <td style="text-align:left;"> 60.0% </td>
+   <td style="text-align:left;"> 52.3% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> UNIVERSITE GRENOBLE ALPES </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 17 </td>
+   <td style="text-align:left;"> 29.8% </td>
+   <td style="text-align:left;"> 65.5% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Bordeaux Montaigne </td>
+   <td style="text-align:right;"> 40 </td>
+   <td style="text-align:right;"> 16 </td>
+   <td style="text-align:left;"> 40.0% </td>
+   <td style="text-align:left;"> 53.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université Paris-Sud, campus d'Orsay </td>
+   <td style="text-align:right;"> 17 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:left;"> 88.2% </td>
+   <td style="text-align:left;"> 56.8% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Université de Lille - Campus Pont de Bois - Villeneuve d'Ascq </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 14 </td>
+   <td style="text-align:left;"> 29.8% </td>
+   <td style="text-align:left;"> 34.3% </td>
+  </tr>
+</tbody>
+</table>
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Établissement </th>
+   <th style="text-align:right;"> Nb.L </th>
+   <th style="text-align:right;"> Nb_Sélective </th>
+   <th style="text-align:left;"> Taux_Sélective </th>
+   <th style="text-align:left;"> TSM_Sélective </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Université de Versailles - Saint Quentin en Yvelines - Antenne de Guyancourt </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:left;"> 7.69% </td>
+   <td style="text-align:left;"> 13.7% </td>
+  </tr>
   <tr>
    <td style="text-align:left;"> CNAM de Franche-Comté site de Besançon et CNAM de Franche-Comté site de Belfort </td>
    <td style="text-align:right;"> 3 </td>
@@ -880,6 +1026,13 @@ Le taux de Licences sélective est défini comme le rapport entre le nombre de L
    <td style="text-align:left;"> 27.5% </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> Université Paris- Est- Créteil Val de Marne UPEC - Antenne de Sénart </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 66.7% </td>
+   <td style="text-align:left;"> 29.0% </td>
+  </tr>
+  <tr>
    <td style="text-align:left;"> Universite de Lille - Campus Moulin Ronchin - Lille </td>
    <td style="text-align:right;"> 10 </td>
    <td style="text-align:right;"> 7 </td>
@@ -887,55 +1040,60 @@ Le taux de Licences sélective est défini comme le rapport entre le nombre de L
    <td style="text-align:left;"> 29.4% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Paris 2 Panthéon - Assas </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:right;"> 3 </td>
-   <td style="text-align:left;"> 100% </td>
-   <td style="text-align:left;"> 36.0% </td>
+   <td style="text-align:left;"> Université de Bordeaux - Bordeaux Métropole </td>
+   <td style="text-align:right;"> 22 </td>
+   <td style="text-align:right;"> 11 </td>
+   <td style="text-align:left;"> 50.0% </td>
+   <td style="text-align:left;"> 31.6% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université Toulouse 2 - Antenne Montauban </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 100% </td>
-   <td style="text-align:left;"> 38.3% </td>
+   <td style="text-align:left;"> Université de Perpignan Via Domitia </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:left;"> 10.5% </td>
+   <td style="text-align:left;"> 31.8% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> Université de Montpellier, Antenne de Nîmes </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 100% </td>
-   <td style="text-align:left;"> 39.2% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Institut Supérieur d'Expertise et d'Audit - Institut Catholique de Lille </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> 100% </td>
-   <td style="text-align:left;"> 47.2% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Université Paris 1 Panthéon Sorbonne </td>
-   <td style="text-align:right;"> 35 </td>
-   <td style="text-align:right;"> 34 </td>
-   <td style="text-align:left;"> 97.1% </td>
-   <td style="text-align:left;"> 47.9% </td>
+   <td style="text-align:left;"> Université Le Havre Normandie </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:left;"> 21.1% </td>
+   <td style="text-align:left;"> 33.3% </td>
   </tr>
 </tbody>
 </table>
 
-### Taux de Licences sélectives par filière de formation
+### La sélection par candidats
+
+La sélection par candidat permet d'évaluer la sélectivité du système d'orientation supérieur.
 
 
+
+![](parcoursup_files/figure-html/Taux.de.sélection.candidats-1.png)<!-- -->
+
+La moyenne pondérée par le nombre d'amis des taux de sélection :
+
+```r
+scales::percent(weighted.mean(ps2018$Taux.de.sélection,ps2018$Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.,na.rm = TRUE))
 ```
-## Warning: Removed 35 rows containing non-finite values (stat_boxplot).
+
 ```
+## [1] "86.3%"
+```
+
+
+
+
+### Focus sur les Licences sélectives
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.filière-1.png)<!-- -->
 
-En limitant aux Licences sélectives :
 
 ![](parcoursup_files/figure-html/Taux.de.sélection.filière.98-1.png)<!-- -->
+
+
+
+
 
 ## Taux de boursiers 
 
@@ -1003,3 +1161,5 @@ $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$
 
 ![](parcoursup_files/figure-html/Taux.de.bac.tot-1.png)<!-- -->
 
+
+## Mesurer la sélectivité 
