@@ -395,9 +395,9 @@ _Attention_ : Théoriquement, une formation est considérée comme "Non-sélecti
 
 C'est pourquoi, est considérée comme :
 
-- "Non-sélective" : les formation dont le taux de sélection est supérieur à 95%. Pour des questions de lisibilité, leur taux de sélection est forcé à 100% ;
+- "Non-sélective" : les formation dont le taux de sélection est supérieur ou égal à 95%. Pour des questions de lisibilité, leur taux de sélection est forcé à 100% ;
 - "Sélective" : les formation dont le taux de sélection est inférieur à 95% ;
-- "Hyper-Sélective" : les formation dont le taux de sélection est inférieur à 10%.
+- "Hyper-Sélective" : les formation dont le taux de sélection est inférieur à 20%.
 
 _NB_ : 
 
@@ -1072,10 +1072,6 @@ La sélection par candidat permet d'évaluer la sélectivité du système d'orie
 ![](parcoursup_files/figure-html/Taux.de.sélection.candidats-1.png)<!-- -->
 
 La moyenne pondérée par le nombre d'amis des taux de sélection :
-
-```r
-scales::percent(weighted.mean(ps2018$Taux.de.sélection,ps2018$Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.,na.rm = TRUE))
-```
 
 ```
 ## [1] "86.3%"
