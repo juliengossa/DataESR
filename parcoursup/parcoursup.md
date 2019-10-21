@@ -1158,4 +1158,6 @@ $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$
 ![](parcoursup_files/figure-html/Taux.de.bac.tot-1.png)<!-- -->
 
 
-## Mesurer la sélectivité 
+
+![](parcoursup_files/figure-html/Taux.de.bac.alluvial-1.png)<!-- -->
+

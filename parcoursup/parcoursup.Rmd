@@ -20,6 +20,7 @@ library(data.table)
 library(knitr)
 library(kableExtra)
 library(ggthemes)
+library(ggalluvial)
 
 ps2018.all <- read.table("fr-esr-parcoursup.csv",
               header=TRUE, sep=';', quote='"')
@@ -795,4 +796,32 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=effectifs,
 ```
 
 
-## Mesurer la sélectivité 
+
+```{r Taux.de.bac.alluvial, echo=FALSE}
+ps2018 %>%
+  group_by(Filière.de.formation.très.agrégée) %>%
+  summarise(Général = sum(Effectif.des.admis.néo.bacheliers.généraux),
+            Techno = sum(Effectif.des.admis.néo.bacheliers.technologiques),
+            Pro = sum(Effectif.des.admis.néo.bacheliers.professionnels)
+            #,
+            #Capa = Général + Techno + Pro
+            ) %>%
+  rename(Filière = Filière.de.formation.très.agrégée) %>%
+  
+  pivot_longer(-Filière, names_to="Bac", values_to="Effectif") %>%
+  mutate(
+    Bac = fct_relevel(Bac,c("Général", "Techno", "Pro")),
+    Filière = fct_relevel(Filière,c("Autre formation","CPGE", "PACES", "Licence","DUT","BTS")),
+    Effectif = Effectif/1000) %>%
+  
+  ggplot(aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+    geom_alluvium(aes(fill = Bac), width = 1/12) +
+    geom_stratum(width = 1/12, fill = "black", color = "grey") +
+    geom_label(stat = "stratum", label.strata = TRUE) +
+    
+    ggtitle("Répartition des effectifs néo-bacheliers\nadmis dans le supérieur (milliers)") +
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  guides(fill=FALSE) +
+  theme_hc()
+```
+
