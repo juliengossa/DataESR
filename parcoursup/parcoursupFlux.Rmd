@@ -1,0 +1,219 @@
+---
+title: "ParcoursupFlux"
+author: "Julien Gossa"
+date: "22/10/2019"
+output:
+  html_document: 
+    keep_md: true
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+
+
+library(ggplot2)
+library(ggrepel)
+library(plotly)
+library(tidyverse)
+library(data.table)
+library(knitr)
+library(kableExtra)
+library(ggthemes)
+library(ggalluvial)
+
+ps2018.all <- read.table("fr-esr-parcoursup.csv",
+              header=TRUE, sep=';', quote='"')
+
+ps2018.all <- ps2018.all %>%
+  mutate(Taux.de.tension =
+    Effectif.total.des.candidats.en.phase.principale /
+      Capacité.de.l.établissement.par.formation,
+  Taux.de.remplissage = 
+    Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis./
+    Capacité.de.l.établissement.par.formation,
+
+  Taux.de.sélection = Rang.du.dernier.appelé /
+    Effectif.total.des.candidats.en.phase.principale,
+  Type.de.sélection = case_when(
+    is.na(Rang.du.dernier.appelé) & Filière.de.formation.très.agrégée %in% c("Licence","PACES") ~ "Non_sélective",
+    is.na(Rang.du.dernier.appelé) ~ "Sélective",
+    Taux.de.sélection < 0.20 ~ "Hyper_sélective",
+    Taux.de.sélection < 0.95 ~ "Sélective",
+    TRUE ~ "Non_sélective"
+    ),
+  Type.de.sélection = factor(Type.de.sélection,
+                             levels=c("Hyper_sélective","Sélective","Non_sélective"))
+  )
+    
+ps2018 <- subset(ps2018.all, Filière.de.formation.très.agrégée != "Autre formation")
+
+ps2018.flux <- ps2018 %>%
+  group_by(Filière.de.formation.très.agrégée) %>%
+  summarise(Général = sum(Effectif.des.admis.néo.bacheliers.généraux),
+            Techno = sum(Effectif.des.admis.néo.bacheliers.technologiques),
+            Pro = sum(Effectif.des.admis.néo.bacheliers.professionnels)
+            #,
+            #Capa = Général + Techno + Pro
+            ) %>%
+  rename(Filière = Filière.de.formation.très.agrégée) %>%
+  
+  pivot_longer(-Filière, names_to="Bac", values_to="Effectif") %>%
+  mutate(
+    Bac = fct_relevel(Bac,c("Général", "Techno", "Pro")),
+    Filière = fct_relevel(Filière,c("CPGE", "PACES", "Licence","DUT","BTS")),
+    Filière2 = Filière,
+    Effectif = Effectif/1000) %>%
+  select("Bac","Filière","Filière2","Effectif")
+```
+
+## Situation actuelle
+
+Les flux de néo-bacheliers admis dans le supérieur public peut se modéliser ainsi :
+
+```{r flux.actuel, echo=FALSE, warnings=FALSE}
+ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+  geom_alluvium(aes(fill = Bac), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+
+L'un des problèmes actuel du supérieur public est la saturation des Licences, ainsi que leur taux de réussite.
+
+```{r flux.actuel.L, echo=FALSE}
+ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence")), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+
+
+## Comment améliorer les taux de réussite en Licence à moyens constants ?
+
+Les universités sont formelles : le problèmes des Licences est le taux de réussite des bacs pros. C'est pourquoi ce public est évincé des filières en tension. 
+
+Cette éviction est d'ailleurs le seul levier sûr d'augmentation de la réussite en Licence, [comme cela a été montré en STAPS](http://blog.educpros.fr/julien-gossa/2019/08/10/bilan-2018-2019-i-parcoursup-annee-2/), par exemple.
+
+Les filières les plus adaptées aux bacs pros sont les BTS. On va donc détourner les bacs pros qui allaient en Licence vers les BTS :
+
+
+```{r flux.bts, echo=FALSE}
+
+flux <- ps2018.flux
+flux$Modifié <- FALSE
+
+flux[12,]$Filière2 <- "BTS"
+flux[12,]$Modifié <- TRUE
+
+ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+Problème : ce détournement augmente les effectifs en BTS... Or les BTS sont déjà saturés, et on ne souhaite pas ajouter de nouveaux moyens. 
+
+Il faut donc faire de la place. Les bacs généraux sont difficile à gérer, car ils ne font pas l'objet de quotas. On va donc plutôt détourner les flux de bacs technos allant en BTS.
+
+Le taux de réussite des bacs technos dans le supérieur est très bas également : les détourner vers les Licences/PACES/CPGE ne présentera aucun gain de réussite. Leur meilleur taux de réussite est en DUT :
+
+```{r flux.dut, echo=FALSE}
+
+flux <- ps2018.flux
+flux$Modifié <- FALSE
+
+flux[12,]$Filière2 <- "BTS"
+flux[12,]$Modifié <- TRUE
+
+flux[2,]$Effectif <- 31.8 #41.8
+#flux[2,]$Modifié <- TRUE
+
+flux <- add_row(flux,Bac="Techno",Filière="BTS",Filière2="DUT",Effectif=10.0,Modifié=TRUE,.after=2)
+
+ggplot(flux,aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+Maintenant, le problème se situe au niveau du DUT, qui doit absorber 10 milliers de bac technos auparavant en BTS. L'éviction va se faire au niveau des bacs généraux, qui seront ventilés pour 1/3 vers les CPGE (ce qui comble la baisse des effectifs des 3 dernières années) et 2/3 vers les Licences et PACES.
+
+```{r flux.aprèsdut, echo=FALSE}
+
+flux <- ps2018.flux
+flux$Modifié <- FALSE
+
+flux[12,]$Filière2 <- "BTS"
+flux[12,]$Modifié <- TRUE
+
+flux[2,]$Effectif <- 31.8 #41.8
+#flux[2,]$Modifié <- TRUE
+
+flux <- add_row(flux,Bac="Techno",Filière="BTS",Filière2="DUT",Effectif=10.0,Modifié=TRUE)
+
+flux[7,]$Effectif <- 21.5 #31.5
+#flux[7,]$Modifié <- TRUE
+
+flux <- add_row(flux,Bac="Général",Filière="DUT",Filière2="CPGE",Effectif=3.0,Modifié=TRUE)
+flux <- add_row(flux,Bac="Général",Filière="DUT",Filière2="Licence",Effectif=5.0,Modifié=TRUE)
+flux <- add_row(flux,Bac="Général",Filière="DUT",Filière2="PACES",Effectif=2.0,Modifié=TRUE)
+
+
+ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+Au final, obtiens les flux suivants :
+
+```{r flux.final, echo=FALSE}
+ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  ylab("Effectif (milliers)") +
+  guides(fill=FALSE,alpha=FALSE) + 
+  scale_alpha_manual(values = c(0.4,1)) +
+  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
+  theme_hc()
+```
+
+
+Ainsi, on aura :
+
+- abaissé la pression sur les Licences ;
+- enrayé la crise du recrutement en CPGE ;
+- augmenté les taux de réussite des bacs pros et des Licences ;
+
+le tout à moyens constants. 
+
+Cependant, cette manœuvre présente deux désavantages majeurs : 
+
+- l'abaissemen de la mixité, notamment en BTS ;
+- l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT, 
+
+Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qui est le quota envisagé dans l'Arrêté. 
