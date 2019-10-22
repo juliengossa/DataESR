@@ -13,7 +13,7 @@ output:
 
 ## Situation actuelle
 
-Les flux de néo-bacheliers admis dans le supérieur public peut se modéliser ainsi :
+Les flux de néo-bacheliers admis dans le supérieur public peuvent se modéliser ainsi :
 
 ![](parcoursupFlux_files/figure-html/flux.actuel-1.png)<!-- -->
 
@@ -47,7 +47,7 @@ Maintenant, le problème se situe au niveau du DUT, qui doit absorber 10 millier
 
 ![](parcoursupFlux_files/figure-html/flux.aprèsdut-1.png)<!-- -->
 
-Au final, obtiens les flux suivants :
+Au final, on obtient les flux suivants :
 
 ![](parcoursupFlux_files/figure-html/flux.final-1.png)<!-- -->
 
@@ -62,7 +62,7 @@ le tout à moyens constants.
 
 Cependant, cette manœuvre présente deux désavantages majeurs : 
 
-- l'abaissemen de la mixité, notamment en BTS ;
-- l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT, 
+- l'abaissement de la mixité, notamment en BTS ;
+- l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT. 
 
 Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qui est le quota envisagé dans l'Arrêté. 

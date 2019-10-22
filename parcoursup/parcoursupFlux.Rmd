@@ -70,7 +70,7 @@ ps2018.flux <- ps2018 %>%
 
 ## Situation actuelle
 
-Les flux de néo-bacheliers admis dans le supérieur public peut se modéliser ainsi :
+Les flux de néo-bacheliers admis dans le supérieur public peuvent se modéliser ainsi :
 
 ```{r flux.actuel, echo=FALSE, warnings=FALSE}
 ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
@@ -188,7 +188,7 @@ ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)
   theme_hc()
 ```
 
-Au final, obtiens les flux suivants :
+Au final, on obtient les flux suivants :
 
 ```{r flux.final, echo=FALSE}
 ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
@@ -213,7 +213,7 @@ le tout à moyens constants.
 
 Cependant, cette manœuvre présente deux désavantages majeurs : 
 
-- l'abaissemen de la mixité, notamment en BTS ;
-- l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT, 
+- l'abaissement de la mixité, notamment en BTS ;
+- l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT. 
 
 Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qui est le quota envisagé dans l'Arrêté. 
