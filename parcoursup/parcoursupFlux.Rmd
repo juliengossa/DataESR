@@ -98,7 +98,7 @@ L'un des problèmes actuel du supérieur public est la saturation des Licences, 
 
 ```{r flux.actuel.L, echo=FALSE}
 ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
-  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/5) +
+  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/6) +
   geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
