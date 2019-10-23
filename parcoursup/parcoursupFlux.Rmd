@@ -98,7 +98,7 @@ L'un des problèmes actuel du supérieur public est la saturation des Licences, 
 
 ```{r flux.actuel.L, echo=FALSE}
 ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
-  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/6) +
+  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/12) +
   geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
@@ -203,7 +203,7 @@ ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   scale_alpha_manual(values=c(0.6,1)) +
   ylab("Effectif (milliers)") +
-  ggtitle("Flux de néo-bacheliers admis dans le supérieur - Prévisions") +
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - Projection") +
   guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 
 ```
@@ -315,7 +315,7 @@ ggplot( aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
   scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
-  ggtitle("Flux de néo-bacheliers admis en DUT - Prévisions du BUT") +
+  ggtitle("Flux de néo-bacheliers admis en DUT - Projection du BUT") +
   guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
