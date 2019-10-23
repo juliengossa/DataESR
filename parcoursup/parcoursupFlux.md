@@ -80,6 +80,48 @@ Faisons un focus sur le DUT. En regardant les mentions des néo-bacheliers admis
 
 ![](parcoursupFlux_files/figure-html/dut.actuel-1.png)<!-- -->
 
+<table class="table" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Bac </th>
+   <th style="text-align:right;"> Effectif </th>
+   <th style="text-align:left;"> part </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> GénéralM </td>
+   <td style="text-align:right;"> 19.357 </td>
+   <td style="text-align:left;"> 39.8% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GénéralS </td>
+   <td style="text-align:right;"> 12.150 </td>
+   <td style="text-align:left;"> 25.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TechnoM </td>
+   <td style="text-align:right;"> 12.492 </td>
+   <td style="text-align:left;"> 25.7% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TechnoS </td>
+   <td style="text-align:right;"> 3.966 </td>
+   <td style="text-align:left;"> 8.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ProM </td>
+   <td style="text-align:right;"> 0.620 </td>
+   <td style="text-align:left;"> 1.3% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ProS </td>
+   <td style="text-align:right;"> 0.081 </td>
+   <td style="text-align:left;"> 0.2% </td>
+  </tr>
+</tbody>
+</table>
+
 Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d'au moins 7000 les admis de ce public : 
 
 - cette augmentation devraient se faire essentiellement sur les bacheliers technologiques avec mention (TechnoM) auparavant en BTS ;
@@ -92,6 +134,48 @@ Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d
 Au final, on obtient donc ce recrutement en DUT :
 
 ![](parcoursupFlux_files/figure-html/dut.futur-1.png)<!-- -->
+
+<table class="table" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Bac </th>
+   <th style="text-align:right;"> Effectif </th>
+   <th style="text-align:left;"> part </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> GénéralM </td>
+   <td style="text-align:right;"> 19.357 </td>
+   <td style="text-align:left;"> 39.7% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GénéralS </td>
+   <td style="text-align:right;"> 5.200 </td>
+   <td style="text-align:left;"> 10.7% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TechnoM </td>
+   <td style="text-align:right;"> 19.492 </td>
+   <td style="text-align:left;"> 40.0% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> TechnoS </td>
+   <td style="text-align:right;"> 3.966 </td>
+   <td style="text-align:left;"> 8.1% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ProM </td>
+   <td style="text-align:right;"> 0.620 </td>
+   <td style="text-align:left;"> 1.3% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ProS </td>
+   <td style="text-align:right;"> 0.081 </td>
+   <td style="text-align:left;"> 0.2% </td>
+  </tr>
+</tbody>
+</table>
 
 On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
 

@@ -274,6 +274,12 @@ ggplot(ps2018.dut, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
   guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
+```{r dut.actuel.per, echo=FALSE}
+ps2018.dut %>% select(Bac,Effectif) %>% 
+  mutate(part=scales::percent(Effectif/sum(Effectif))) %>%
+  kable() %>% kable_styling()
+```
+
 Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d'au moins 7000 les admis de ce public : 
 
 - cette augmentation devraient se faire essentiellement sur les bacheliers technologiques avec mention (TechnoM) auparavant en BTS ;
@@ -317,6 +323,13 @@ ggplot( aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
   scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
   ggtitle("Flux de néo-bacheliers admis en DUT - Projection du BUT") +
   guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
+```
+
+```{r dut.futur.per, echo=FALSE}
+flux %>% filter(Filière2 == "DUT") %>% group_by(Bac) %>% 
+  summarise(Effectif = sum(Effectif)) %>%
+  mutate(part=scales::percent(Effectif/sum(Effectif))) %>%
+  kable() %>% kable_styling()
 ```
 
 On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
