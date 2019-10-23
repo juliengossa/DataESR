@@ -252,7 +252,7 @@ ps2018.dut <- ps2018 %>%
   mutate(
     Bac = fct_relevel(Bac,c("GénéralM", "GénéralS","TechnoM","TechnoS","ProM","ProS")),
     Filière = fct_relevel(Filière,c("CPGE", "PACES", "Licence","DUT","BTS")),
-    Filière2 = Filière,
+    Filière2 = ifelse(Filière == "DUT", "BUT", Filière),
     Effectif = Effectif/1000) %>%
   select("Bac","Filière","Filière2","Effectif") %>%
   #filter(Bac %in% c("TechnoM","TechnoS","ProM","ProS") | Filière %in% c("DUT","BTS"))
@@ -292,7 +292,7 @@ Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d
 flux <- ps2018.dut
 flux$Modifié <- FALSE
 
-flux <- add_row(flux,Bac="TechnoM",Filière="BTS",Filière2="DUT",Effectif=7.0,Modifié=TRUE)
+flux <- add_row(flux,Bac="TechnoM",Filière="BTS",Filière2="BUT",Effectif=7.0,Modifié=TRUE)
 
 flux[2,]$Effectif <- 5.2 #12.2
 flux[2,]$Modifié <- TRUE
@@ -314,24 +314,24 @@ ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)
 Au final, on obtient donc ce recrutement en DUT :
 
 ```{r dut.futur, echo=FALSE}
-flux %>% filter(Filière2 == "DUT") %>%
+flux %>% filter(Filière2 == "BUT") %>%
 ggplot( aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
   geom_alluvium(aes(fill = Bac), color="grey", width = 1/3, alpha=1) +
   geom_stratum(width = 1/3, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
   scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
-  ggtitle("Flux de néo-bacheliers admis en DUT - Projection du BUT") +
+  ggtitle("Flux de néo-bacheliers admis en BUT - Projection") +
   guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
 ```{r dut.futur.per, echo=FALSE}
-flux %>% filter(Filière2 == "DUT") %>% group_by(Bac) %>% 
+flux %>% filter(Filière2 == "BUT") %>% group_by(Bac) %>% 
   summarise(Effectif = sum(Effectif)) %>%
   mutate(part=scales::percent(Effectif/sum(Effectif))) %>%
   kable() %>% kable_styling()
 ```
 
-On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
+On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bacheliers généraux avec mention et bacheliers technologiques avec mention.
 
 

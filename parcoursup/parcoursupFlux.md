@@ -177,6 +177,6 @@ Au final, on obtient donc ce recrutement en DUT :
 </tbody>
 </table>
 
-On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
+On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bacheliers généraux avec mention et bacheliers technologiques avec mention.
 
 
