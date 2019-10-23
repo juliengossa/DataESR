@@ -17,7 +17,6 @@ library(ggplot2)
 library(ggrepel)
 library(plotly)
 library(tidyverse)
-library(data.table)
 library(knitr)
 library(kableExtra)
 library(ggthemes)
@@ -68,19 +67,30 @@ ps2018.flux <- ps2018 %>%
   select("Bac","Filière","Filière2","Effectif")
 ```
 
+``` {r styles, echo=FALSE}
+sty <- 
+  theme_tufte(base_family = "sans") +
+  theme(axis.text.x = element_blank(), 
+        axis.title.x=element_blank(), 
+        axis.ticks.x =element_blank(), 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank())
+```
+
+
 ## Situation actuelle
 
 Les flux de néo-bacheliers admis dans le supérieur public peuvent se modéliser ainsi :
 
 ```{r flux.actuel, echo=FALSE, warnings=FALSE}
 ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
-  geom_alluvium(aes(fill = Bac), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac,color=Bac), width = 1/12, alpha=1) +
+  geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur (2018)") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + 
+  sty
 ```
 
 
@@ -88,13 +98,12 @@ L'un des problèmes actuel du supérieur public est la saturation des Licences, 
 
 ```{r flux.actuel.L, echo=FALSE}
 ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
-  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence")), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/5) +
+  geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - focus Licences") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
 
@@ -117,13 +126,12 @@ flux[12,]$Filière2 <- "BTS"
 flux[12,]$Modifié <- TRUE
 
 ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
-  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié, color=Bac), width = 1/5) +
+  geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - détournements") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
 Problème : ce détournement augmente les effectifs en BTS... Or les BTS sont déjà saturés, et on ne souhaite pas ajouter de nouveaux moyens. 
@@ -146,13 +154,12 @@ flux[2,]$Effectif <- 31.8 #41.8
 flux <- add_row(flux,Bac="Techno",Filière="BTS",Filière2="DUT",Effectif=10.0,Modifié=TRUE,.after=2)
 
 ggplot(flux,aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
-  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié, color=Bac), width = 1/5) +
+  geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - détournements") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
 Maintenant, le problème se situe au niveau du DUT, qui doit absorber 10 milliers de bac technos auparavant en BTS. L'éviction va se faire au niveau des bacs généraux, qui seront ventilés pour 1/3 vers les CPGE (ce qui comble la baisse des effectifs des 3 dernières années) et 2/3 vers les Licences et PACES.
@@ -179,27 +186,26 @@ flux <- add_row(flux,Bac="Général",Filière="DUT",Filière2="PACES",Effectif=2
 
 
 ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
-  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié, color=Bac), width = 1/5) +
+  geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - détournements") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
 ```
 
 Au final, on obtient les flux suivants :
 
 ```{r flux.final, echo=FALSE}
 ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
-  geom_alluvium(aes(fill = Bac, alpha = Modifié), width = 1/12, color="grey") +
-  geom_stratum(width = 1/12, fill = "black", color = "grey") +
-  geom_label(stat = "stratum", label.strata = TRUE) +
+  geom_alluvium(aes(fill = Bac, alpha = Modifié, color=Bac), width = 1/5) +
+  geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
+  scale_alpha_manual(values=c(0.6,1)) +
   ylab("Effectif (milliers)") +
-  guides(fill=FALSE,alpha=FALSE) + 
-  scale_alpha_manual(values = c(0.4,1)) +
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur - Prévisions") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
+
 ```
 
 
@@ -217,3 +223,102 @@ Cependant, cette manœuvre présente deux désavantages majeurs :
 - l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT. 
 
 Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qui est le quota envisagé dans l'Arrêté. 
+
+## Les quotas de DUT
+
+```{r dut.calculs, echo=FALSE}
+ps2018.all <- read.table("fr-esr-parcoursup.csv",
+              header=TRUE, sep=';', quote='"')
+
+ps2018 <- subset(ps2018.all, Filière.de.formation.très.agrégée != "Autre formation")
+
+ps2018.dut <- ps2018 %>%
+  mutate(
+    Filière = Filière.de.formation.très.agrégée
+#    Filière = case_when(
+#      Filière.de.formation.très.agrégée == "DUT" ~ "DUT",
+#      TRUE ~ "Autre")
+    ) %>%  
+  group_by(Filière) %>%
+  summarise(
+    GénéralM = sum(Effectif.des.admis.néo.bacheliers.généraux.ayant.eu.une.mention.au.bac),
+    GénéralS = sum(Effectif.des.admis.néo.bacheliers.généraux) - GénéralM,
+    TechnoM = sum(Effectif.des.admis.néo.bacheliers.technologiques.ayant.eu.une.mention.au.bac),
+    TechnoS = sum(Effectif.des.admis.néo.bacheliers.technologiques) - TechnoM,
+    ProM = sum(Effectif.des.admis.néo.bacheliers.professionnels.ayant.eu.une.mention.au.bac),
+    ProS = sum(Effectif.des.admis.néo.bacheliers.professionnels) - ProM
+    ) %>%
+  pivot_longer(-Filière, names_to="Bac", values_to="Effectif") %>%
+  mutate(
+    Bac = fct_relevel(Bac,c("GénéralM", "GénéralS","TechnoM","TechnoS","ProM","ProS")),
+    Filière = fct_relevel(Filière,c("CPGE", "PACES", "Licence","DUT","BTS")),
+    Filière2 = Filière,
+    Effectif = Effectif/1000) %>%
+  select("Bac","Filière","Filière2","Effectif") %>%
+  #filter(Bac %in% c("TechnoM","TechnoS","ProM","ProS") | Filière %in% c("DUT","BTS"))
+  filter(Filière %in% c("DUT"))
+```
+
+
+Faisons un focus sur le DUT. En regardant les mentions des néo-bacheliers admis, ses flux de recrutement en 2018 peuvent se modéliser ainsi (M : avec mention, S : sans mention) :
+
+
+```{r dut.actuel, echo=FALSE, warnings=FALSE}
+ggplot(ps2018.dut, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+  geom_alluvium(aes(fill = Bac), color="grey", width = 1/12, alpha=1) +
+  geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
+  ylab("Effectif (milliers)") +
+  scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
+  ggtitle("Flux de néo-bacheliers admis en DUT") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
+```
+
+Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d'au moins 7000 les admis de ce public : 
+
+- cette augmentation devraient se faire essentiellement sur les bacheliers technologiques avec mention (TechnoM) auparavant en BTS ;
+- pour leur faire de la place, avec les classements actuels, l'éviction se fera sur les bacheliers généraux sans mention (GénéralS) ;
+- ces évincés se répartiraient entre CPGE, Licences et PACES.
+
+
+```{r dut.flux, echo=FALSE}
+
+flux <- ps2018.dut
+flux$Modifié <- FALSE
+
+flux <- add_row(flux,Bac="TechnoM",Filière="BTS",Filière2="DUT",Effectif=7.0,Modifié=TRUE)
+
+flux[2,]$Effectif <- 5.2 #12.2
+flux[2,]$Modifié <- TRUE
+flux <- add_row(flux,Bac="GénéralS",Filière="DUT",Filière2="CPGE",Effectif=1.0,Modifié=TRUE)
+flux <- add_row(flux,Bac="GénéralS",Filière="DUT",Filière2="Licence",Effectif=5.0,Modifié=TRUE)
+flux <- add_row(flux,Bac="GénéralS",Filière="DUT",Filière2="PACES",Effectif=1.0,Modifié=TRUE)
+
+
+ggplot(flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière, axis3 = Filière2)) +
+  geom_alluvium(aes(fill = Bac), color="grey", width = 1/3, alpha=1) +
+  geom_stratum(width = 1/3, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
+  ylab("Effectif (milliers)") +
+  scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
+  ggtitle("Flux de néo-bacheliers admis en DUT - Détournements") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
+```
+
+Au final, on obtient donc ce recrutement en DUT :
+
+```{r dut.futur, echo=FALSE}
+flux %>% filter(Filière2 == "DUT") %>%
+ggplot( aes(y = Effectif, axis1 = Bac, axis2 = Filière2)) +
+  geom_alluvium(aes(fill = Bac), color="grey", width = 1/3, alpha=1) +
+  geom_stratum(width = 1/3, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
+  ylab("Effectif (milliers)") +
+  scale_fill_manual(values=c("red","red4","green","forestgreen","turquoise","blue")) +
+  ggtitle("Flux de néo-bacheliers admis en DUT - Prévisions du BUT") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + sty
+```
+
+On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
+
+

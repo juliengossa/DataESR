@@ -11,6 +11,9 @@ output:
 
 
 
+
+
+
 ## Situation actuelle
 
 Les flux de néo-bacheliers admis dans le supérieur public peuvent se modéliser ainsi :
@@ -66,3 +69,30 @@ Cependant, cette manœuvre présente deux désavantages majeurs :
 - l'abaissement des exigences pédagogiques, et donc de la qualité des diplômes BTS et DUT. 
 
 Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qui est le quota envisagé dans l'Arrêté. 
+
+## Les quotas de DUT
+
+
+
+
+Faisons un focus sur le DUT. En regardant les mentions des néo-bacheliers admis, ses flux de recrutement en 2018 peuvent se modéliser ainsi (M : avec mention, S : sans mention) :
+
+
+![](parcoursupFlux_files/figure-html/dut.actuel-1.png)<!-- -->
+
+Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d'au moins 7000 les admis de ce public : 
+
+- cette augmentation devraient se faire essentiellement sur les bacheliers technologiques avec mention (TechnoM) auparavant en BTS ;
+- pour leur faire de la place, avec les classements actuels, l'éviction se fera sur les bacheliers généraux sans mention (GénéralS) ;
+- ces évincés se répartiraient entre CPGE, Licences et PACES.
+
+
+![](parcoursupFlux_files/figure-html/dut.flux-1.png)<!-- -->
+
+Au final, on obtient donc ce recrutement en DUT :
+
+![](parcoursupFlux_files/figure-html/dut.futur-1.png)<!-- -->
+
+On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bachleliers généraux avec mention et bacheliers technologiques avec mention.
+
+
