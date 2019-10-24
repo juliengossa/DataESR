@@ -179,4 +179,12 @@ Au final, on obtient donc ce recrutement en DUT :
 
 On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bacheliers généraux avec mention et bacheliers technologiques avec mention.
 
+## Bassin de recrutement
+
+Les équipes pédagogiques en IUT estiment souvent ne pas avoir le bassin de recrutement pour atteindre 50% de bacheliers technologiques.
+
+Pourtant, le flux de bacheliers technologiques allant en DUT n'est que de 17%. Une marge de progression est indubitable. 
+
+![](parcoursupFlux_files/figure-html/flux.actuel.BT-1.png)<!-- -->
+
 

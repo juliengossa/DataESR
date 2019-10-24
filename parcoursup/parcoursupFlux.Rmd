@@ -334,4 +334,21 @@ flux %>% filter(Filière2 == "BUT") %>% group_by(Bac) %>%
 
 On observe ainsi un abaissement de la mixité des publics, désormais polarisés entre bacheliers généraux avec mention et bacheliers technologiques avec mention.
 
+## Bassin de recrutement
+
+Les équipes pédagogiques en IUT estiment souvent ne pas avoir le bassin de recrutement pour atteindre 50% de bacheliers technologiques.
+
+Pourtant, le flux de bacheliers technologiques allant en DUT n'est que de 17%. Une marge de progression est indubitable. 
+
+```{r flux.actuel.BT, echo=FALSE, warnings=FALSE}
+ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+  geom_alluvium(aes(fill = Bac,color=Bac,alpha= (Bac == "Techno")), width = 1/12) +
+  geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
+  geom_text(stat = "stratum", label.strata = TRUE, color="white") +
+  ylab("Effectif (milliers)") +
+  ggtitle("Flux de néo-bacheliers admis dans le supérieur (2018)") +
+  guides(fill=FALSE,alpha=FALSE,color=FALSE) + 
+  sty
+```
+
 
