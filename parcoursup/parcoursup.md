@@ -348,6 +348,18 @@ $remplissage=\frac{admis}{capacité}$
 </tbody>
 </table>
 
+### Par discipline
+
+Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
+
+Le jeu de données ne permet pas (encore) une analyse pluriannuelle, mais permet une comparaison entre filières.
+
+![](parcoursup_files/figure-html/Taux.de.remplissage.ALL-1.png)<!-- -->
+
+L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé.
+
+![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemand-1.png)<!-- -->
+
 ## Taux de sélection
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :

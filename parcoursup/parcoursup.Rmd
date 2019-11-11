@@ -295,6 +295,53 @@ ps2018 %>%
 
 ```
 
+### Par discipline
+
+Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
+
+Le jeu de données ne permet pas (encore) une analyse pluriannuelle, mais permet une comparaison entre filières.
+
+```{r Taux.de.remplissage.ALL, echo=FALSE}
+
+ps2018 %>%
+  filter(Filière.de.formation == "Licence - Arts-lettres-langues") %>%
+ggplot(aes(y=Taux.de.remplissage, 
+           x=reorder(Filière.de.formation.détaillée,
+                     Taux.de.remplissage, FUN=median),
+           fill=Filière.de.formation.détaillée)) + 
+  geom_hline(yintercept = 1, color="grey") +
+  geom_boxplot() +
+  coord_flip(ylim = c(0,1.7)) +
+  guides(fill=FALSE) +
+  xlab("") +
+  ylab("Taux de remplissage") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_hc() +
+  ggtitle("Distribution des taux de remplissage des filières de Licence ALL\n(limités à 170%)") +
+  theme(plot.title = element_text(hjust = 1))
+```
+
+L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé.
+
+```{r Taux.de.remplissage.ALL.allemand, echo=FALSE}
+
+ps2018 %>%
+  filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>%
+  mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>%
+  filter(Allemand=="Oui") %>%
+ggplot(aes(x=Taux.de.remplissage,
+           fill=Allemand)) + 
+  geom_histogram(bins = 10,color="white") +
+  xlab("Taux de remplissage") +
+  ylab("Nombre de formations") +
+  #scale_y_log10() +
+  scale_x_continuous(labels=scales::percent) +
+  theme_hc() +
+  guides(fill=FALSE) +
+  ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' dans l'intitulé") +
+  theme(plot.title = element_text(hjust = 1))
+```
+
 ## Taux de sélection
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :
