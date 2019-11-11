@@ -331,7 +331,7 @@ ps2018 %>%
   filter(Allemand=="Oui") %>%
 ggplot(aes(x=Taux.de.remplissage,
            fill=Allemand)) + 
-  geom_histogram(bins = 10,color="white") +
+  geom_histogram(bins = 10,color="white",fill="#00BFC4") +
   xlab("Taux de remplissage") +
   ylab("Nombre de formations") +
   #scale_y_log10() +
