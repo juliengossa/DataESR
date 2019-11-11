@@ -297,6 +297,8 @@ ps2018 %>%
 
 ### Par discipline
 
+#### Licence - Arts-lettres-langues
+
 Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
 
 Le jeu de données ne permet pas (encore) une analyse pluriannuelle, mais permet une comparaison entre filières.
@@ -357,6 +359,28 @@ ggplot(aes(x=Taux.de.remplissage,
   theme_hc() +
   #guides(fill=FALSE) +
   ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' ou non dans l'intitulé") +
+  theme(plot.title = element_text(hjust = 1))
+```
+
+#### Licence - Droit-économie-gestion
+
+```{r Taux.de.remplissage.DEG, echo=FALSE}
+
+ps2018 %>%
+  filter(Filière.de.formation == "Licence - Droit-économie-gestion") %>%
+ggplot(aes(y=Taux.de.remplissage, 
+           x=reorder(Filière.de.formation.détaillée,
+                     Taux.de.remplissage, FUN=median),
+           fill=Filière.de.formation.détaillée)) + 
+  geom_hline(yintercept = 1, color="grey") +
+  geom_boxplot() +
+  coord_flip(ylim = c(0,1.4)) +
+  guides(fill=FALSE) +
+  xlab("") +
+  ylab("Taux de remplissage") +
+  scale_y_continuous(labels=scales::percent) +
+  theme_hc() +
+  ggtitle("Distribution des taux de remplissage des filières de Licence ALL\n(limités à 170%)") +
   theme(plot.title = element_text(hjust = 1))
 ```
 

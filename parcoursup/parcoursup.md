@@ -350,6 +350,8 @@ $remplissage=\frac{admis}{capacité}$
 
 ### Par discipline
 
+#### Licence - Arts-lettres-langues
+
 Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
 
 Le jeu de données ne permet pas (encore) une analyse pluriannuelle, mais permet une comparaison entre filières.
@@ -361,6 +363,10 @@ L'étude par filière de formation très détaillée n'est pas possible du fait 
 ![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemand-1.png)<!-- -->
 
 ![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemandounon-1.png)<!-- -->
+
+#### Licence - Droit-économie-gestion
+
+![](parcoursup_files/figure-html/Taux.de.remplissage.DEG-1.png)<!-- -->
 
 ## Taux de sélection
 
