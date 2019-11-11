@@ -342,6 +342,24 @@ ggplot(aes(x=Taux.de.remplissage,
   theme(plot.title = element_text(hjust = 1))
 ```
 
+```{r Taux.de.remplissage.ALL.allemandounon, echo=FALSE}
+
+ps2018 %>%
+  filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>%
+  mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>%
+ggplot(aes(x=Taux.de.remplissage,
+           fill=Allemand)) + 
+  geom_histogram(bins = 10,color="white") +
+  xlab("Taux de remplissage") +
+  ylab("Nombre de formations") +
+  #scale_y_log10() +
+  scale_x_continuous(labels=scales::percent) +
+  theme_hc() +
+  #guides(fill=FALSE) +
+  ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' ou non dans l'intitulé") +
+  theme(plot.title = element_text(hjust = 1))
+```
+
 ## Taux de sélection
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :

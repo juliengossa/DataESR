@@ -360,6 +360,8 @@ L'étude par filière de formation très détaillée n'est pas possible du fait 
 
 ![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemand-1.png)<!-- -->
 
+![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemandounon-1.png)<!-- -->
+
 ## Taux de sélection
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :
