@@ -57,7 +57,7 @@ tdbesr_plot_norm(rentrée,uai,select_pkis("pki.K"),
 
 
 tdbesr_plot_evol("Université", seq(2012,2017), select_pkis("pki.K"),c(uai.unistra),
-                 plot.type="both",
+                 plot.type="norm",
                  colors = tdbesr_colors$K,
                  strip_labels = NULL, scale_y_format = NULL)
 

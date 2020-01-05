@@ -49,7 +49,7 @@ tdbesr_plot_evol <- function(type, rentrées, pkis, uais,
 
 tdbesr_plot_evol_K <- function(rentrée,uai) {
   type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
-  tdbesr_plot_evol(type, seq(2012,rentrée), select_pkis("pki.K"),c(uai),
+  tdbesr_plot_evol(type, seq(2012,rentrée), select_pkis("pki.K"),uai,
                    plot.type="both",
                    colors = tdbesr_colors$K,
                    strip_labels = NULL, scale_y_format = NULL)

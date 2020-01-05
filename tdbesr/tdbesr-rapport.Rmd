@@ -64,10 +64,11 @@ catinfo <- function(etab) {
 }
 
 plot_primaires <- function(uai) {
+  cat(uai)
+  cat(typeof(uai))
   
   pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,big_style)
   pp.k.e <- tdbesr_plot_evol_K(rentrée,uai)
-
   
   pp.etu <- tdbesr_plot_primaire_ETU(rentrée,uai)
   pp.ens <- tdbesr_plot_primaire_ENS(rentrée,uai)  
@@ -83,6 +84,7 @@ plot_primaires <- function(uai) {
                pp.ens, pn.ens,
                pp.fin, pn.fin,
                #nrow = 3, ncol=2,
+               heights = c(2,2,1,1,1),
                layout_matrix = rbind(c(1),c(2),c(3,4),c(5,6),c(7,8)))
 }
 
@@ -109,8 +111,8 @@ uai.guyanne <- "9730429D"
 
 
 etabs <- subset(esr,Type==type,UAI:url.legifrance) %>% unique %>% arrange(Académie) 
-# %>% 
-#   filter(UAI %in% c(uai.unistra,uai.uha,uai.lorraine))
+
+# etabs <-filter(etabs, UAI %in% c(uai.unistra,uai.uha,uai.lorraine))
 
 aca <- ""
 for (i in seq(1,nrow(etabs))) {
@@ -125,11 +127,11 @@ for (i in seq(1,nrow(etabs))) {
   cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
   
   catinfo(etab)
+  
   plot_primaires(etab$UAI)
   cat("  \n   \n")
 }
 ```
-
 
 
 
