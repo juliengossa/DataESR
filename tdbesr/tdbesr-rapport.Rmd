@@ -88,7 +88,7 @@ uai.ehess <- "0753742K"
 uai.dauphine <- "0750736T"
 
 
-etabs <- subset(esr,Type %in% c("Université", desc("Grand établissement")), UAI:url.legifrance) %>% unique %>% arrange(Type,Académie) 
+etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), UAI:url.legifrance) %>% unique %>% arrange(desc(Type),Académie) 
 
 #etabs <-filter(etabs, UAI %in% c(uai.ehess, uai.dauphine))
 
@@ -96,14 +96,13 @@ aca <- ""
 type <- ""
 for (i in seq(1,nrow(etabs))) {
   etab <- etabs[i,]
-  
-  cat("\\newpage   \n")
+  message("Processing ",strvar(etab$Libellé))
   
   if(etab$Type != type) {
     cat("# ", strvar(etab$Type),"   \n")
     type <- etab$Type
   }
-    
+  cat("\\newpage   \n")  
   if(etab$Académie != aca) {
     cat("## Académie de ", strvar(etab$Académie),"   \n")
     aca <- etab$Académie
