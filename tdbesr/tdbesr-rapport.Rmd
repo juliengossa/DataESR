@@ -64,9 +64,7 @@ catinfo <- function(etab) {
 }
 
 plot_primaires <- function(uai) {
-  cat(uai)
-  cat(typeof(uai))
-  
+
   pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,big_style)
   pp.k.e <- tdbesr_plot_evol_K(rentrée,uai)
   
