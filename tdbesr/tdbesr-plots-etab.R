@@ -22,10 +22,11 @@ tdbesr_plot_primaire  <- function(rentrée, uai, var,
 
 
 tdbesr_plot_norm <- function(rentrée, uai, vars, values="norm",
+                             type=NA,
                              var.labels=NA, palette=NA,
                              mean_format = identity, style = tdbesr_style) {
   
-  type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
+  if(is.na(type)) type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
   
   df <- esr.pnl %>%
     filter(Type==type, Rentrée==rentrée, pki %in% vars) %>%
@@ -63,49 +64,48 @@ tdbesr_plot_norm <- function(rentrée, uai, vars, values="norm",
   return(p)
 }
 
-tdbesr_plot_primaire_FIN <- function(rentrée,uai) {
+tdbesr_plot_primaire_FIN <- function(rentrée,uai, ...) {
   tdbesr_plot_primaire(rentrée,uai,"pki.FIN",
                        var.labels = tdbesr_labels$FIN, 
                        palette = tdbesr_colors$FIN,
-                       scale_format = euro)  
+                       scale_format = euro, ...)  
 }
 
-tdbesr_plot_primaire_ETU <- function(rentrée,uai) {
+tdbesr_plot_primaire_ETU <- function(rentrée,uai, ...) {
   tdbesr_plot_primaire(rentrée,uai,"pki.ETU",
                        var.labels = tdbesr_labels$ETU, 
-                       palette = tdbesr_colors$ETU)  
+                       palette = tdbesr_colors$ETU, ...)  
 }
 
-tdbesr_plot_primaire_ENS <- function(rentrée,uai) {
+tdbesr_plot_primaire_ENS <- function(rentrée,uai, ...) {
   tdbesr_plot_primaire(rentrée,uai,"pki.ENS",
                        var.labels = tdbesr_labels$ENS, 
-                       palette = tdbesr_colors$ENS)  
+                       palette = tdbesr_colors$ENS, ...)  
 }
 
-tdbesr_plot_norm_ETU <- function(rentrée,uai) {
+tdbesr_plot_norm_ETU <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,select_pkis("pki.ETU.S")[1:3],
                    var.labels = tdbesr_labels$ETU[2:4], 
-                   palette = tdbesr_colors$ETU)  
+                   palette = tdbesr_colors$ETU, ...)  
 }
 
 
-tdbesr_plot_norm_ENS <- function(rentrée,uai) {
+tdbesr_plot_norm_ENS <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,select_pkis("pki.ENS.S"),
                    var.labels = tdbesr_labels$ENS[2:5], 
-                   palette = tdbesr_colors$ENS)
+                   palette = tdbesr_colors$ENS, ...)
 }
 
-tdbesr_plot_norm_FIN <- function(rentrée,uai) {
+tdbesr_plot_norm_FIN <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,c(select_pkis("pki.FIN.S"),"pki.ETU.S.diplomeEtablissement"),
                    var.labels = c(tdbesr_labels$FIN[2:3], tdbesr_labels$ETU[5]),
-                   palette = c(tdbesr_colors$FIN[1:3], tdbesr_colors$ETU[5]))
+                   palette = c(tdbesr_colors$FIN[1:3], tdbesr_colors$ETU[5]), ...)
 }
 
-tdbesr_plot_norm_K <- function(rentrée,uai, style=tdbesr_style) {
+tdbesr_plot_norm_K <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,select_pkis("pki.K"),
                    values = "value",
                    var.labels = tdbesr_labels$K, 
-                   palette = tdbesr_colors$K,
-                   style=style)
+                   palette = tdbesr_colors$K, ...)
 }
 

@@ -21,7 +21,7 @@
 # [17] "geolocalisation"                 "code.categorie.personnels"      
 # [19] "categorie.personnels.regroupées" "quotite"    
 
-read.ens <- function() {
+tdesr_read.ens <- function() {
   
   ens.tit <- read.table("fr-esr-enseignants-titulaires-esr-public.csv",
                         header=TRUE, sep=';', quote='"') %>% 

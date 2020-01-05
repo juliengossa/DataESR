@@ -22,7 +22,7 @@
 
 
 
-read.fin <- function() {
+tdesr_read.fin <- function() {
   fin <- read.table("fr-esr-operateurs-indicateurs-financiers.csv",
                         header=TRUE, sep=';', quote='"') %>% 
     transmute(

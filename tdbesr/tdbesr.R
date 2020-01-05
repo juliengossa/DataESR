@@ -69,10 +69,10 @@ tdbesr_ETL_and_save <- function() {
   source("fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement.R")
   
   
-  esr <<- merge(read.etab(),
-                merge(read.fin(),
-                      merge(read.ens(),
-                            read.etu(),all=TRUE),all=TRUE),all.x=TRUE) %>%
+  esr <<- merge(tdesr_read.etab(),
+                merge(tdesr_read.fin(),
+                      merge(tdesr_read.ens(),
+                            tdesr_read.etu(),all=TRUE),all=TRUE),all.x=TRUE) %>%
     filter(!is.na(Rentrée)) %>%
     mutate(
       pki.K.1.proPres = pki.FIN.S.2.ressourcesPropres / pki.FIN.P.ressources ,
@@ -95,4 +95,29 @@ tdbesr_load <- function() {
   esr <<- esr
   esr.pnl <<- esr.pnl
 }
+
+
+tdbesr_plot_tdb <- function(rentrée,uai, big_style=tdbesr_style,...) {
+  
+  pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,style=big_style,...)
+  pp.k.e <- tdbesr_plot_evol_K(rentrée,uai,...)
+  
+  pp.etu <- tdbesr_plot_primaire_ETU(rentrée,uai,...)
+  pp.ens <- tdbesr_plot_primaire_ENS(rentrée,uai,...)  
+  pp.fin <- tdbesr_plot_primaire_FIN(rentrée,uai,...)  
+  
+  pn.etu <- tdbesr_plot_norm_ETU(rentrée,uai,...)
+  pn.ens <- tdbesr_plot_norm_ENS(rentrée,uai,...)
+  pn.fin <- tdbesr_plot_norm_FIN(rentrée,uai,...)
+  
+  grid.arrange(pp.k.n,
+               pp.k.e,
+               pp.etu, pn.etu,
+               pp.ens, pn.ens,
+               pp.fin, pn.fin,
+               #nrow = 3, ncol=2,
+               heights = c(2,2,1,1,1),
+               layout_matrix = rbind(c(1),c(2),c(3,4),c(5,6),c(7,8)))
+}
+
 

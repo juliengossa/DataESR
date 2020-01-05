@@ -1,16 +1,18 @@
 
 
-tdbesr_plot_evol <- function(type, rentrées, pkis, uais, 
+tdbesr_plot_evol <- function(rentrées, uais, pkis, type=NA,
                              plot.type="both", colors=NA, strip_labels=NA, 
                              scale_y_format=identity,
                              style = tdbesr_style) {
+  
+  if(is.na(type)) type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
   
   df.evol <- esr.pnl %>% 
     filter(Type == type, Rentrée %in% rentrées, pki %in% pkis) %>%
     filter(! (UAI=="0311382J" & Rentrée==2015 & pki == "pki.K.1.proPres"), # Enlever Toulouse
            ! (UAI=="9730429D" & Rentrée==2015 & pki == "pki.K.4.titPens")) %>% # Enlever guyanes
     mutate(
-      norm.evol = "valeurs absolues")
+      norm.evol = "absolue")
       
   
   if (plot.type != "raw") {
@@ -47,12 +49,11 @@ tdbesr_plot_evol <- function(type, rentrées, pkis, uais,
     { if(is.null(scale_y_format)) theme(axis.text.y = element_blank()) }
 }  
 
-tdbesr_plot_evol_K <- function(rentrée,uai) {
-  type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
-  tdbesr_plot_evol(type, seq(2012,rentrée), select_pkis("pki.K"),uai,
+tdbesr_plot_evol_K <- function(rentrée,uai, ...) {
+  tdbesr_plot_evol(seq(2012,rentrée), uai, select_pkis("pki.K"),
                    plot.type="both",
                    colors = tdbesr_colors$K,
-                   strip_labels = NULL, scale_y_format = NULL)
+                   strip_labels = NULL, scale_y_format = NULL, ...)
 }
 
 

@@ -21,6 +21,8 @@ uai <- uai.unistra
 uai <- uai.uha
 uai <- uai.lorraine
 
+uai.ehess <- "0753742K"
+uai.dauphine <- "0750736T"
 uai.psl <- "0755700N"
 type <- "Regroupement"
 
@@ -56,15 +58,15 @@ tdbesr_plot_norm(rentrée,uai,select_pkis("pki.K"),
                  values = "value")  
 
 
-tdbesr_plot_evol("Université", seq(2012,2017), select_pkis("pki.K"),c(uai.unistra),
-                 plot.type="norm",
+tdbesr_plot_evol(seq(2012,2017), c(uai.unistra), select_pkis("pki.K"),
+                 plot.type="both",
                  colors = tdbesr_colors$K,
                  strip_labels = NULL, scale_y_format = NULL)
 
-tdbesr_plot_evol("Université", seq(2012,2017), select_pkis("pki.K"),c(uai.unistra),
+
+tdbesr_plot_evol(seq(2012,2017), c(uai.dauphine), select_pkis("pki.K"),
                  plot.type="both",
                  colors = tdbesr_colors$K,
-                 strip_labels = tdbesr_labels$K)
-
+                 strip_labels = NULL, scale_y_format = NULL)
 
 

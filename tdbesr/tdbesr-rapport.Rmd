@@ -63,28 +63,6 @@ catinfo <- function(etab) {
   cat(" ; [Décret](",strvar(etab$url.legifrance),")\n   \n")
 }
 
-plot_primaires <- function(uai) {
-
-  pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,big_style)
-  pp.k.e <- tdbesr_plot_evol_K(rentrée,uai)
-  
-  pp.etu <- tdbesr_plot_primaire_ETU(rentrée,uai)
-  pp.ens <- tdbesr_plot_primaire_ENS(rentrée,uai)  
-  pp.fin <- tdbesr_plot_primaire_FIN(rentrée,uai)  
-  
-  pn.etu <- tdbesr_plot_norm_ETU(rentrée,uai)
-  pn.ens <- tdbesr_plot_norm_ENS(rentrée,uai)
-  pn.fin <- tdbesr_plot_norm_FIN(rentrée,uai)
-
-  grid.arrange(pp.k.n,
-               pp.k.e,
-               pp.etu, pn.etu,
-               pp.ens, pn.ens,
-               pp.fin, pn.fin,
-               #nrow = 3, ncol=2,
-               heights = c(2,2,1,1,1),
-               layout_matrix = rbind(c(1),c(2),c(3,4),c(5,6),c(7,8)))
-}
 
 ```
 
@@ -96,7 +74,6 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 ```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
 ```
 
-# Etablissements
 
 ```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5}
 
@@ -107,26 +84,36 @@ uai.nimes <- "0301687W"
 uai.lorraine <- "0542493S"
 uai.guyanne <- "9730429D"
 
+uai.ehess <- "0753742K"
+uai.dauphine <- "0750736T"
 
-etabs <- subset(esr,Type==type,UAI:url.legifrance) %>% unique %>% arrange(Académie) 
 
-# etabs <-filter(etabs, UAI %in% c(uai.unistra,uai.uha,uai.lorraine))
+etabs <- subset(esr,Type %in% c("Université", desc("Grand établissement")), UAI:url.legifrance) %>% unique %>% arrange(Type,Académie) 
+
+#etabs <-filter(etabs, UAI %in% c(uai.ehess, uai.dauphine))
 
 aca <- ""
+type <- ""
 for (i in seq(1,nrow(etabs))) {
   etab <- etabs[i,]
   
   cat("\\newpage   \n")
   
-  if(etab$Académie != aca)
+  if(etab$Type != type) {
+    cat("# ", strvar(etab$Type),"   \n")
+    type <- etab$Type
+  }
+    
+  if(etab$Académie != aca) {
     cat("## Académie de ", strvar(etab$Académie),"   \n")
-  aca <- etab$Académie
+    aca <- etab$Académie
+  }
 
   cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
   
   catinfo(etab)
   
-  plot_primaires(etab$UAI)
+  tdbesr_plot_tdb(rentrée, etab$UAI, big_style)
   cat("  \n   \n")
 }
 ```

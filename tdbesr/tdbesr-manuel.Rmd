@@ -73,7 +73,7 @@ Exemple de lecture : « Il y a en moyenne 4 enseignants titulaires pour 100 étu
 ### PKI : évolution en valeur absolue
 
 ```{r pki.evol.raw, fig.asp=fig.asp.man}
-  tdbesr_plot_evol(type, seq(2012,rentrée), select_pkis("pki.K"),c(uai),
+  tdbesr_plot_evol(seq(2012,rentrée), c(uai), select_pkis("pki.K"),
                  plot.type="raw",
                  colors = tdbesr_colors$K,
                  strip_labels = tdbesr_labels$K)
@@ -85,7 +85,7 @@ Exemple de lecture : « En 2012, le taux d'encadrement de l'établissement étai
 #### PKI : évolution en valeur de l'année de référence
 
 ```{r pki.evol.norm, fig.asp=fig.asp.man}
-  tdbesr_plot_evol(type, seq(2012,rentrée), select_pkis("pki.K"),c(uai),
+  tdbesr_plot_evol(seq(2012,rentrée), c(uai), select_pkis("pki.K"),
                  plot.type="norm",
                  colors = tdbesr_colors$K,
                  strip_labels = tdbesr_labels$K)
