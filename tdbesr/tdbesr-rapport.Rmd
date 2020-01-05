@@ -1,0 +1,135 @@
+---
+title: "Tableaux de bord des universités"
+author: "Julien Gossa"
+date: "03/01/2020"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+library(gridExtra)
+
+source("tdbesr.R")
+tdbesr_load()
+
+tdbesr_style <- list(
+  point_size = 15,
+  line_size = 2,
+  text_size = 4,
+  primaire_plot.margin = unit(c(0.25,0,0,0), "cm"),
+  bp_width = 0.5,
+  bp_text_x = -0.25 )
+
+big_style <- list(
+  point_size = 20,
+  line_size = 2,
+  text_size = 5,
+  primaire_plot.margin = unit(c(0.3,0,0,0), "cm"),
+  bp_width = 0.5,
+  bp_text_x = -0.25 )
+
+
+tdbesr_labels <- list(
+  FIN = c("Ressources","Masse\nsalariale","Ressources\npropres"),
+  ENS = c("Enseignants", "Titulaires","EC","Doc et\nATER","LRU"),
+  ETU = c("Etudiants","Cycle 1\n(L)","Cycle 2\n(M)","Cycle 3\n(D)","Diplômes\npropres"),
+  K = c("Taux de\nressources propres", "Taux de ressources\npar étudiant","Taux\nd'encadrement","Taux de\ntitularité")
+)
+
+
+rentrée <- 2017
+type <- "Université"
+
+strvar <- function(var) {
+  s <- as.character(var)
+  ifelse(str_length(s)>0,s,"N/A")
+}
+
+catinfo <- function(etab) {
+  cat("- ",strvar(etab$Type.détaillé))
+  r <- strvar(etab$Rattachement)
+  if(r == "N/A") cat(" sans rattachement ") else cat(" rattaché(e) à ",r)
+  cat(" dans l'académie de ", strvar(etab$Académie), "\n")
+  cat("- UAI : ",strvar(etab$UAI))
+  cat(" ; Web : ",strvar(etab$url.siteweb) )
+  cat(" ; [Wikidata](", strvar(etab$url.wikidata),")\n")
+  cat(" ; [Décret](",strvar(etab$url.legifrance),")\n   \n")
+}
+
+plot_primaires <- function(uai) {
+  
+  pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,big_style)
+  pp.k.e <- tdbesr_plot_evol_K(rentrée,uai)
+
+  
+  pp.etu <- tdbesr_plot_primaire_ETU(rentrée,uai)
+  pp.ens <- tdbesr_plot_primaire_ENS(rentrée,uai)  
+  pp.fin <- tdbesr_plot_primaire_FIN(rentrée,uai)  
+  
+  pn.etu <- tdbesr_plot_norm_ETU(rentrée,uai)
+  pn.ens <- tdbesr_plot_norm_ENS(rentrée,uai)
+  pn.fin <- tdbesr_plot_norm_FIN(rentrée,uai)
+
+  grid.arrange(pp.k.n,
+               pp.k.e,
+               pp.etu, pn.etu,
+               pp.ens, pn.ens,
+               pp.fin, pn.fin,
+               #nrow = 3, ncol=2,
+               layout_matrix = rbind(c(1),c(2),c(3,4),c(5,6),c(7,8)))
+}
+
+```
+
+__ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__
+
+# Présentation des indicateurs
+
+
+```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
+```
+
+# Etablissements
+
+```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5}
+
+uai.unistra <- "0673021V"
+uai.uha <- "0681166Y"
+uai.ubm <- "0331766R"
+uai.nimes <- "0301687W"
+uai.lorraine <- "0542493S"
+uai.guyanne <- "9730429D"
+
+
+etabs <- subset(esr,Type==type,UAI:url.legifrance) %>% unique %>% arrange(Académie) 
+# %>% 
+#   filter(UAI %in% c(uai.unistra,uai.uha,uai.lorraine))
+
+aca <- ""
+for (i in seq(1,nrow(etabs))) {
+  etab <- etabs[i,]
+  
+  cat("\\newpage   \n")
+  
+  if(etab$Académie != aca)
+    cat("## Académie de ", strvar(etab$Académie),"   \n")
+  aca <- etab$Académie
+
+  cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
+  
+  catinfo(etab)
+  plot_primaires(etab$UAI)
+  cat("  \n   \n")
+}
+```
+
+
+
+

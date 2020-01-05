@@ -1,0 +1,22 @@
+---
+title: "Tableau de bord ESR"
+author: "Julien Gossa"
+date: "03/01/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+source("tdbesr.R")
+tdbesr_load()
+```
+
+__ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__
+
+Téléchargement : [Rapport complet sur les universités](./tdbesr-rapport.pdf)
+
+
+```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
+```
+
+
