@@ -14,7 +14,10 @@ output:
 ```{r setup, include=FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(pdf.options(encoding = "CP1250"))
+
 library(gridExtra)
+
 
 source("tdbesr.R")
 tdbesr_load()
@@ -76,7 +79,6 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 
 
 ```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5}
-
 uai.unistra <- "0673021V"
 uai.uha <- "0681166Y"
 uai.ubm <- "0331766R"
@@ -90,7 +92,7 @@ uai.dauphine <- "0750736T"
 
 etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), UAI:url.legifrance) %>% unique %>% arrange(desc(Type),Académie) 
 
-#etabs <-filter(etabs, UAI %in% c(uai.ehess, uai.dauphine))
+#etabs <-filter(etabs, UAI %in% c(uai.unistra))
 
 aca <- ""
 type <- ""
@@ -104,7 +106,7 @@ for (i in seq(1,nrow(etabs))) {
   }
   cat("\\newpage   \n")  
   if(etab$Académie != aca) {
-    cat("## Académie de ", strvar(etab$Académie),"   \n")
+    cat("## Académie de ", strvar(etab$Académie),"€   \n")
     aca <- etab$Académie
   }
 
