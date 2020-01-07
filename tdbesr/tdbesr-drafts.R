@@ -11,6 +11,8 @@ uai.ubm <- "0331766R"
 uai.nimes <- "0301687W"
 uai.lorraine <- "0542493S"
 uai.guyanne <- "9730429D"
+uai.diderot <- "0751723R"
+uai.descartes <- "0751721N"
 
 uais <- c(uai.unistra, uai.uha)
 uai.horsnormes <- c(uai.guyanne)
@@ -68,5 +70,42 @@ tdbesr_plot_evol(seq(2012,2017), c(uai.dauphine), select_pkis("pki.K"),
                  plot.type="both",
                  colors = tdbesr_colors$K,
                  strip_labels = NULL, scale_y_format = NULL)
+
+
+
+
+tdbesr_plot_tdb(2017,uai.descartes)
+tdbesr_plot_tdb(2017,uai.diderot)
+
+tdbesr_fusion <- function(uais) {
+  df <- esr %>% filter(UAI %in% uais) 
+  
+  info <- df %>%
+    group_by(Rentrée) %>%
+    summarise(
+      UAI = paste(uais,collapse=('_')),
+      Libellé = paste(unique(df$Libellé),collapse=('_')),
+      Sigle = paste(unique(df$Sigle),collapse=('_')),
+      Type = first(df$Type),
+      Type.détaillé = first(df$Type.détaillé),
+      Académie = first(df$Académie),
+    )
+  
+  pkis <- df %>%
+    group_by(Rentrée) %>%
+    summarise_at(vars(starts_with("pki")), ~sum(.))
+  
+  merge(info,pkis) %>% tdbesr_add_pkis
+}
+
+uai.diderot <- "0751723R"
+uai.descartes <- "0751721N"
+
+f <- tdbesr_fusion(c(uai.diderot,uai.descartes))
+esr <- bind_rows(esr,f)
+esr.pnl <<- tdbesr_pivot_norm_label()  
+
+
+
 
 

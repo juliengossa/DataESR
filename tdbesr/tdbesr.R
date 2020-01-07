@@ -7,6 +7,7 @@ library(kableExtra)
 library(ggthemes)
 library(ggalluvial)
 library(psych)
+library(gridExtra)
 
 source("tdbesr-style.R")
 source("tdbesr-plots-etab.R")
@@ -62,6 +63,17 @@ tdbesr_pivot_norm_label <- function(rentrée, type) {
 }
 
 
+tdbesr_add_pkis <- function (df) {
+  mutate(df,
+    pki.K.1.proPres = pki.FIN.S.2.ressourcesPropres / pki.FIN.P.ressources ,
+    pki.K.2.resPetu = pki.FIN.P.ressources / (pki.ETU.S.cycle.1.L+pki.ETU.S.cycle.2.M),
+    pki.K.3.titPetu = pki.ENS.S.1.titulaires / pki.ETU.P.effectif * 100,
+    pki.K.4.titPens = pki.ENS.S.2.ECtitulaires / pki.ENS.P.effectif
+    #pki.K.2.resPens = pki.FIN.P.ressources / pki.ENS.P.effectif,
+    #pki.K.4.docPec  = pki.ETU.S.cycle.3.D / pki.ENS.S.2.ECtitulaires,
+  ) 
+}
+
 tdbesr_ETL_and_save <- function() {
   source("fr-esr-principaux-etablissements-enseignement-superieur.R")
   source("fr-esr-operateurs-indicateurs-financiers.R")
@@ -74,14 +86,7 @@ tdbesr_ETL_and_save <- function() {
                       merge(tdesr_read.ens(),
                             tdesr_read.etu(),all=TRUE),all=TRUE),all.x=TRUE) %>%
     filter(!is.na(Rentrée)) %>%
-    mutate(
-      pki.K.1.proPres = pki.FIN.S.2.ressourcesPropres / pki.FIN.P.ressources ,
-      pki.K.2.resPetu = pki.FIN.P.ressources / (pki.ETU.S.cycle.1.L+pki.ETU.S.cycle.2.M),
-      pki.K.3.titPetu = pki.ENS.S.1.titulaires / pki.ETU.P.effectif * 100,
-      pki.K.4.titPens = pki.ENS.S.2.ECtitulaires / pki.ENS.P.effectif
-      #pki.K.2.resPens = pki.FIN.P.ressources / pki.ENS.P.effectif,
-      #pki.K.4.docPec  = pki.ETU.S.cycle.3.D / pki.ENS.S.2.ECtitulaires,
-    ) 
+    tdbesr_add_pkis()
   
   write.csv2(esr,"tdbesr.csv",row.names = FALSE)
   
@@ -95,6 +100,32 @@ tdbesr_load <- function() {
   esr <<- esr
   esr.pnl <<- esr.pnl
 }
+
+tdbesr_fusion <- function(uais) {
+  df <- esr %>% filter(UAI %in% uais) 
+  
+  info <- df %>%
+    group_by(Rentrée) %>%
+    summarise(
+      UAI = paste(uais,collapse=('_')),
+      Libellé = paste(unique(df$Libellé),collapse=('_')),
+      Sigle = paste(unique(df$Sigle),collapse=('_')),
+      Type = first(df$Type),
+      Type.détaillé = first(df$Type.détaillé),
+      Académie = first(df$Académie),
+      Rattachement = NA,
+      url.sitewe = NA,
+      url.wikidata = NA,
+      url.legifrance = NA
+    )
+  
+  pkis <- df %>%
+    group_by(Rentrée) %>%
+    summarise_at(vars(starts_with("pki")), ~sum(.))
+  
+  merge(info,pkis) %>% tdbesr_add_pkis
+}
+
 
 
 tdbesr_plot_tdb <- function(rentrée,uai, big_style=tdbesr_style,...) {

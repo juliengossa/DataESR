@@ -1,0 +1,133 @@
+---
+title: "Tableaux de bord des universités   \n édition fusions"
+author: "Julien Gossa"
+date: "03/01/2020"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    includes:
+      in_header: header.tex
+---
+
+```{r setup, include=FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(pdf.options(encoding = "CP1250"))
+
+library(gridExtra)
+
+
+source("tdbesr.R")
+tdbesr_load()
+
+tdbesr_style <- list(
+  point_size = 15,
+  line_size = 2,
+  text_size = 4,
+  primaire_plot.margin = unit(c(0.25,0,0,0), "cm"),
+  bp_width = 0.5,
+  bp_text_x = -0.25 )
+
+big_style <- list(
+  point_size = 20,
+  line_size = 2,
+  text_size = 5,
+  primaire_plot.margin = unit(c(0.3,0,0,0), "cm"),
+  bp_width = 0.5,
+  bp_text_x = -0.25 )
+
+
+tdbesr_labels <- list(
+  FIN = c("Ressources","Masse\nsalariale","Ressources\npropres"),
+  ENS = c("Enseignants", "Titulaires","EC","Doc et\nATER","LRU"),
+  ETU = c("Etudiants","Cycle 1\n(L)","Cycle 2\n(M)","Cycle 3\n(D)","Diplômes\npropres"),
+  K = c("Taux de\nressources propres", "Taux de ressources\npar étudiant","Taux\nd'encadrement","Taux de\ntitularité")
+)
+
+
+rentrée <- 2017
+type <- "Université"
+
+strvar <- function(var) {
+  s <- as.character(var)
+  ifelse(str_length(s)>0,s,"N/A")
+}
+
+catinfo <- function(etab) {
+  cat("- ",strvar(etab$Type.détaillé))
+  r <- strvar(etab$Rattachement)
+  if(is.na(r) || r == "N/A") cat(" sans rattachement ") else cat(" rattaché(e) à ",r)
+  cat(" dans l'académie de ", strvar(etab$Académie), "\n")
+  cat("- UAI : ",strvar(etab$UAI))
+  cat(" ; Web : ",strvar(etab$url.siteweb) )
+  cat(" ; [Wikidata](", strvar(etab$url.wikidata),")\n")
+  cat(" ; [Décret](",strvar(etab$url.legifrance),")\n   \n")
+}
+
+
+```
+
+__ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__
+
+# Présentation des indicateurs
+
+
+```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
+```
+
+
+```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5}
+uai.unistra <- "0673021V"
+uai.uha <- "0681166Y"
+uai.ubm <- "0331766R"
+uai.nimes <- "0301687W"
+uai.lorraine <- "0542493S"
+uai.guyanne <- "9730429D"
+
+uai.ehess <- "0753742K"
+uai.dauphine <- "0750736T"
+
+uai.diderot <- "0751723R"
+uai.descartes <- "0751721N"
+
+
+f <- tdbesr_fusion(c(uai.diderot,uai.descartes))
+uai.f <- f$UAI[1]
+esr <<- bind_rows(esr,f)
+esr.pnl <<- tdbesr_pivot_norm_label()  
+
+
+
+etabs <- subset(esr, UAI %in% (c(uai.diderot,uai.descartes,uai.f)), UAI:url.legifrance) %>% unique %>% arrange(desc(Type),Académie) 
+
+#etabs <-filter(etabs, UAI %in% c(uai.unistra))
+
+aca <- ""
+type <- ""
+for (i in seq(1,nrow(etabs))) {
+  etab <- etabs[i,]
+  message("Processing ",strvar(etab$Libellé))
+  
+  if(etab$Type != type) {
+    cat("# ", strvar(etab$Type),"   \n")
+    type <- etab$Type
+  }
+  cat("\\newpage   \n")  
+  if(etab$Académie != aca) {
+    cat("## Académie de ", strvar(etab$Académie),"   \n")
+    aca <- etab$Académie
+  }
+
+  cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
+  
+  catinfo(etab)
+  
+  tdbesr_plot_tdb(rentrée, etab$UAI, big_style)
+  cat("  \n   \n")
+}
+```
+
+
+
