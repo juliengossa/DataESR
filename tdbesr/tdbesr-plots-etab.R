@@ -50,9 +50,9 @@ tdbesr_plot_norm <- function(rentrée, uai, vars, values="norm",
   
   
   p <- ggplot(df, aes(x=pki,y=y)) + 
-    geom_boxplot(aes(fill=pki), color="black", width=style$bp_width) + 
-    geom_point(data = df.etab, size=style$point_size, fill=palette[1], color="black", shape=21) +
-    geom_line(data = df.etab, aes(group=UAI),     color=palette[1], size=style$line_size) +
+    geom_violin(aes(fill=pki), color="black", width=style$bp_width) + 
+    geom_point(data = df.etab, size=style$point_size, fill=palette[1], color="black", shape=21, alpha=0.9) +
+    geom_line(data = df.etab, aes(group=UAI),     color=palette[1], size=style$line_size, alpha=0.9) +
     geom_text(data = df.etab, aes(label=norm_label),     color="white",    size=style$text_size, fontface="bold") +
     geom_label(data = df.mean, aes(y=0,label=norm_label), color="black",    size=style$text_size-1, nudge_x=style$bp_text_x, hjust=1) +
     { if(!is.na(var.labels)) scale_x_discrete(labels=var.labels) } +
@@ -83,6 +83,13 @@ tdbesr_plot_primaire_ENS <- function(rentrée,uai, ...) {
                        palette = tdbesr_colors$ENS, ...)  
 }
 
+tdbesr_plot_primaire_ADM <- function(rentrée,uai, ...) {
+  tdbesr_plot_primaire(rentrée,uai,"pki.ADM",
+                       var.labels = tdbesr_labels$ADM, 
+                       palette = tdbesr_colors$ADM, ...)  
+}
+
+
 tdbesr_plot_norm_ETU <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,select_pkis("pki.ETU.S")[1:3],
                    var.labels = tdbesr_labels$ETU[2:4], 
@@ -101,6 +108,13 @@ tdbesr_plot_norm_FIN <- function(rentrée,uai, ...) {
                    var.labels = c(tdbesr_labels$FIN[2:3], tdbesr_labels$ETU[5]),
                    palette = c(tdbesr_colors$FIN[1:3], tdbesr_colors$ETU[5]), ...)
 }
+
+tdbesr_plot_norm_ADM <- function(rentrée,uai, ...) {
+  tdbesr_plot_norm(rentrée,uai,select_pkis("pki.ADM.S"),
+                   var.labels = tdbesr_labels$ADM[2:5], 
+                   palette = tdbesr_colors$ADM, ...)
+}
+
 
 tdbesr_plot_norm_K <- function(rentrée,uai, ...) {
   tdbesr_plot_norm(rentrée,uai,select_pkis("pki.K"),

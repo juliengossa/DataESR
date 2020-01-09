@@ -161,9 +161,3 @@ tdesr_read.etu <- function() {
       pki.ETU.S.diplomeEtablissement = Type.de.diplôme...Diplômes.d.établissement
   )
 }
-
-subset(etu, ETABLISSEMENT == "0290346U") %>% 
-  transmute( Rentrée = RENTREE, 
-             etu=Nombre.d.étudiants.inscrits..inscriptions.principales., 
-             hors.cpge=Nombre.d.étudiants.inscrits..inscriptions.principales..hors.étudiants.inscrits.en.parallèle.en.CPGE ) %>%
-  arrange(Rentrée)

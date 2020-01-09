@@ -1,7 +1,7 @@
 ---
-title: "Tableaux de bord des universités"
-author: "Julien Gossa"
-date: "03/01/2020"
+title: "Tableaux de bord des universités  \nv0.2"
+author: "Julien Gossa  \n gossa@unistra.fr"
+date: "09/01/2020"
 output: 
   pdf_document:
     toc: true
@@ -12,8 +12,9 @@ output:
 ---
 
 ```{r setup, include=FALSE, warning = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center", out.height="30%")
+
 knitr::opts_chunk$set(pdf.options(encoding = "CP1250"))
 
 library(gridExtra)
@@ -23,19 +24,19 @@ source("tdbesr.R")
 tdbesr_load()
 
 tdbesr_style <- list(
-  point_size = 15,
+  point_size = 12,
   line_size = 2,
-  text_size = 4,
+  text_size = 3,
   primaire_plot.margin = unit(c(0.25,0,0,0), "cm"),
-  bp_width = 0.5,
+  bp_width = 1,
   bp_text_x = -0.25 )
 
 big_style <- list(
-  point_size = 20,
+  point_size = 17,
   line_size = 2,
   text_size = 5,
   primaire_plot.margin = unit(c(0.3,0,0,0), "cm"),
-  bp_width = 0.5,
+  bp_width = 0.9,
   bp_text_x = -0.25 )
 
 
@@ -43,7 +44,12 @@ tdbesr_labels <- list(
   FIN = c("Ressources","Masse\nsalariale","Ressources\npropres"),
   ENS = c("Enseignants", "Titulaires","EC","Doc et\nATER","LRU"),
   ETU = c("Etudiants","Cycle 1\n(L)","Cycle 2\n(M)","Cycle 3\n(D)","Diplômes\npropres"),
-  K = c("Taux de\nressources propres", "Taux de ressources\npar étudiant","Taux\nd'encadrement","Taux de\ntitularité")
+  ADM = c("Formations\nPost-Bac","Sélectives","Hyper-\nsélectives","Sur-\nchargées","Sous-\nchargées"),
+  K = c("Taux de\nressources propres", 
+        "Taux de ressources\npar étudiant",
+        "Taux de\nformations sélectives",
+        "Taux\nd'encadrement",
+        "Taux de\ntitularité")
 )
 
 
@@ -78,21 +84,21 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 ```
 
 
-```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5}
+```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5, out.height="100%"}
 uai.unistra <- "0673021V"
 uai.uha <- "0681166Y"
 uai.ubm <- "0331766R"
 uai.nimes <- "0301687W"
 uai.lorraine <- "0542493S"
 uai.guyanne <- "9730429D"
+uai.bordeaux <- "0333298F"
 
 uai.ehess <- "0753742K"
 uai.dauphine <- "0750736T"
 
 
-etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), UAI:url.legifrance) %>% unique %>% arrange(desc(Type),Académie) 
-
-#etabs <-filter(etabs, UAI %in% c(uai.unistra))
+etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), c(UAI,Libellé:url.legifrance) ) %>% unique %>% arrange(desc(Type),Académie)
+#etabs <- filter(etabs, UAI %in% c(uai.unistra))
 
 aca <- ""
 type <- ""
@@ -101,12 +107,12 @@ for (i in seq(1,nrow(etabs))) {
   message("Processing ",strvar(etab$Libellé))
   
   if(etab$Type != type) {
-    cat("# ", strvar(etab$Type),"   \n")
+    cat("# Type d'établissement : ", strvar(etab$Type),"   \n")
     type <- etab$Type
   }
   cat("\\newpage   \n")  
   if(etab$Académie != aca) {
-    cat("## Académie de ", strvar(etab$Académie),"   \n")
+    cat("## Académie : ", strvar(etab$Académie),"   \n")
     aca <- etab$Académie
   }
 

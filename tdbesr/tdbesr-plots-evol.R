@@ -8,7 +8,7 @@ tdbesr_plot_evol <- function(rentrées, uais, pkis, type=NA,
   if(is.na(type)) type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
   
   df.evol <- esr.pnl %>% 
-    filter(Type == type, Rentrée %in% rentrées, pki %in% pkis) %>%
+    filter(Type == type, Rentrée %in% rentrées, pki %in% pkis, !is.na(value)) %>%
     filter(! (UAI=="0311382J" & Rentrée==2015 & pki == "pki.K.1.proPres"), # Enlever Toulouse
            ! (UAI=="9730429D" & Rentrée==2015 & pki == "pki.K.4.titPens")) %>% # Enlever guyanes
     mutate(
@@ -36,7 +36,7 @@ tdbesr_plot_evol <- function(rentrées, uais, pkis, type=NA,
               aes(group = Libellé, colour = Libellé),
               size=2,
               arrow = arrow(length=unit(0.30,"cm"),type="closed",angle=30)) +
-    facet_wrap(norm.evol~pki,drop = TRUE, scales=facet_scales, ncol=4,
+    facet_wrap(norm.evol~pki,drop = TRUE, scales=facet_scales, ncol=5,
                labeller = labeller(pki=function(x) strip_labels) )   +
     scale_y_continuous(labels = scale_y_format) +
     { if(!is.na(colors)) scale_fill_manual(values=colors[2:length(colors)]) } +
