@@ -11,7 +11,7 @@ uai <- uai.unistra
 
 # Indicateurs clés de performance (PKI)
 
-Trois indicateurs clés de performance sont présentés :
+Les indicateurs clés de performance choisis sont :
 
 - Taux de ressources propres : part des ressources propres dans les ressources totales de l'établissement.
 - Taux de ressources par étudiant : rapport entre les ressources de l'établissement et le nombre d'étudiants inscrits en premier et deuxième cycle (L et M).
@@ -63,7 +63,7 @@ Les données brutes ont été extraites des jeux de données suivants :
    - __Sélectives__ : le nombre de formations dont le rang du dernier appelé est inférieur de plus de 10% du nombre de candidats
    - __Hyper-sélectives__ : le nombre de formations dont le rang du dernier appelé est inférieur de plus de 80% du nombre de candidats
    - __Surchargées__ : le nombre de formations dont le nombre d'admis est supérieur à la capacité d'accueil
-   - __Souschargées__ : le nombre de formations dont le nombre d'admis est inférieur à la moitié de la capacité d'accueil
+   - __Souschargées__ : le nombre de formations dont le nombre d'admis est inférieur à 75% de la capacité d'accueil
    
 _NB_ : les données APB/Parcoursup sont particulièrement difficile à exploiter et comportent de nombreux trous. De plus, elles concernent deux plateformes différentes (APB puis Parcoursup), avec des changements legislatifs et pratiques profonds. Les indicateurs doivent être traités avec les plus grandes précautions.
 
@@ -75,7 +75,7 @@ Enfin, afin de pouvoir présenter les données, les series ont été décalées 
 ### PKI : instantanés
 
 ```{r pki.raw}
-  tdbesr_plot_norm_K(rentrée,uai)
+  tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], omit.first = TRUE)
 ```
 
 Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 étudiants dans les universités. Dans cet établissement, il y en a 3,7, ce qui le place dans le deuxième quartile ».
@@ -83,10 +83,7 @@ Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 é
 ### PKI : évolution en valeur absolue
 
 ```{r pki.evol.raw, fig.width = 9, out.width="100%"}
-  tdbesr_plot_evol(seq(2012,rentrée), c(uai), select_pkis("pki.K"),
-                 plot.type="raw",
-                 colors = tdbesr_colors$K,
-                 strip_labels = tdbesr_labels$K)
+tdbesr_plot_evol(seq(2012,rentrée), c(uai), tdbesr_lfc[["K"]], plot.type = "raw", noscales = FALSE)
 ```
 
 
@@ -95,10 +92,7 @@ Exemple de lecture : « En 2012, le taux d'encadrement de l'établissement étai
 #### PKI : évolution en valeur de l'année de référence
 
 ```{r pki.evol.nor, fig.width = 9, out.width="100%"}
-  tdbesr_plot_evol(seq(2012,rentrée), c(uai), select_pkis("pki.K"),
-                 plot.type="norm",
-                 colors = tdbesr_colors$K,
-                 strip_labels = tdbesr_labels$K)
+tdbesr_plot_evol(seq(2012,2017), c(uai), tdbesr_lfc[["K"]], plot.type = "norm", noscales = FALSE)
 ```
 
 Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établissement a baissé d'environ 15%, ce qui le place dans le premier quartile inférieur des évolution de cet indicateur ».
@@ -107,7 +101,7 @@ Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établiss
 #### Données brutes 
 
 ```{r etu.raw}
-tdbesr_plot_primaire_ETU(rentrée,uai)
+tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « l'établissement compte 47 573 étudiants hors double inscription en CPGE, dont 26 679 en 1er cycle (L, DUT, prépa, etc.) ».
@@ -115,7 +109,7 @@ Exemple de lecture : « l'établissement compte 47 573 étudiants hors double in
 #### Données normalisées
 
 ```{r etu.norm}
-tdbesr_plot_norm_ETU(rentrée,uai)
+tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « La part moyenne des étudiants en 1er cycle dans les effectifs des universités est de 68%. L'établissement présente une part de 56%, ce qui le place dans le quartile inférieur ».

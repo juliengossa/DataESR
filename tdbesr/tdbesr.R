@@ -7,7 +7,7 @@ library(kableExtra)
 library(ggthemes)
 library(ggalluvial)
 library(psych)
-library(gridExtra)
+library(cowplot)
 
 source("tdbesr-style.R")
 source("tdbesr-plots-etab.R")
@@ -15,13 +15,14 @@ source("tdbesr-plots-evol.R")
 
 value_labels <- function(pki, value) {
   case_when(
-    grepl("pki.FIN", pki)     ~ euro(value,"M"),
-    pki == "pki.K.1.proPres"  ~ scales::percent(value),
-    pki == "pki.K.2.resPetu"  ~ euro(value,"k"),
-    pki == "pki.K.3.selPfor"  ~ scales::percent(value),
-    pki == "pki.K.4.titPetu"  ~ format(round(value,1), trim=TRUE),
-    pki == "pki.K.5.titPens"  ~ scales::percent(value),
-    grepl("pki.", pki)   ~ format(round(value), big.mark=" ", trim=TRUE))
+    grepl("pki.FIN", pki)   ~ euro(value,"M"),
+    pki == "pki.K.proPres"  ~ scales::percent(value),
+    pki == "pki.K.resPetu"  ~ euro(value,"k"),
+    pki == "pki.K.selPfor"  ~ scales::percent(value),
+    pki == "pki.K.titPetu"  ~ format(round(value,1), trim=TRUE),
+    pki == "pki.K.titPens"  ~ scales::percent(value),
+    grepl("pki.", pki)      ~ number_format(value)
+  )
 }
 
 norm_labels <- function(pki, norm) {
@@ -66,11 +67,11 @@ tdbesr_pivot_norm_label <- function(rentrée, type) {
 
 tdbesr_add_pkis <- function (df) {
   mutate(df,
-    pki.K.1.proPres = pki.FIN.S.2.ressourcesPropres / pki.FIN.P.ressources ,
-    pki.K.2.resPetu = pki.FIN.P.ressources / (pki.ETU.S.cycle.1.L+pki.ETU.S.cycle.2.M),
-    pki.K.3.selPfor = pki.ADM.S.1.sélective / pki.ADM.P.formations,
-    pki.K.4.titPetu = pki.ENS.S.1.titulaires / pki.ETU.P.effectif * 100,
-    pki.K.5.titPens = pki.ENS.S.2.ECtitulaires / pki.ENS.P.effectif,
+    pki.K.proPres = pki.FIN.S.ressourcesPropres / pki.FIN.P.ressources ,
+    pki.K.resPetu = pki.FIN.P.ressources / (pki.ETU.S.cycle.1.L+pki.ETU.S.cycle.2.M),
+    pki.K.selPfor = pki.ADM.S.sélective / pki.ADM.P.formations,
+    pki.K.titPetu = pki.ENS.S.titulaires / pki.ETU.P.effectif * 100,
+    pki.K.titPens = pki.ENS.S.ECtitulaires / pki.ENS.P.effectif,
     
     #pki.K.2.resPens = pki.FIN.P.ressources / pki.ENS.P.effectif,
     #pki.K.4.docPec  = pki.ETU.S.cycle.3.D / pki.ENS.S.2.ECtitulaires,
@@ -142,30 +143,36 @@ tdbesr_fusion <- function(uais) {
 
 
 
-tdbesr_plot_tdb <- function(rentrée,uai, big_style=tdbesr_style,...) {
+tdbesr_plot_tdb <- function(rentrée, uai, big_style=tdbesr_style,...) {
   
-  pp.k.n <- tdbesr_plot_norm_K(rentrée,uai,style=big_style,...)
-  pp.k.e <- tdbesr_plot_evol_K(rentrée,uai,...)
+  pp.k.n <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], omit.first = FALSE, style=big_style,...)
+  pp.k.e <- tdbesr_plot_evol(seq(2012,rentrée),c(uai),tdbesr_lfc[["K"]],...)
   
-  pp.etu <- tdbesr_plot_primaire_ETU(rentrée,uai,...)
-  pp.ens <- tdbesr_plot_primaire_ENS(rentrée,uai,...)  
-  pp.fin <- tdbesr_plot_primaire_FIN(rentrée,uai,...)  
-  pp.adm <- tdbesr_plot_primaire_ADM(rentrée,uai,...)
+  pp.etu <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ETU"]],...)
+  pp.ens <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ENS"]],...)  
+  pp.fin <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["FIN"]],...)  
+  pp.adm <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ADM"]],...)
   
-  pn.etu <- tdbesr_plot_norm_ETU(rentrée,uai,...)
-  pn.ens <- tdbesr_plot_norm_ENS(rentrée,uai,...)
-  pn.fin <- tdbesr_plot_norm_FIN(rentrée,uai,...)
-  pn.adm <- tdbesr_plot_norm_ADM(rentrée,uai,...)
+  pn.etu <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ETU"]],...)
+  pn.ens <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ENS"]],...)
+  pn.fin <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["FIN_N"]], omit.first = FALSE, ...)
+  pn.adm <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ADM"]],...)
   
-  grid.arrange(pp.k.n,
-               pp.k.e,
+  pg <- 
+    plot_grid(ncol = 1, rel_heights = c(1,1,2),
+              pp.k.n,
+              pp.k.e,
+              plot_grid (ncol = 2, align = "v",
                pp.etu, pn.etu,
                pp.adm, pn.adm,
                pp.ens, pn.ens,
-               pp.fin, pn.fin,
-               #nrow = 3, ncol=2,
-               heights = c(2,2,1,1,1,1),
-               layout_matrix = rbind(c(1),c(2),c(3,4),c(5,6),c(7,8),c(9,10)))
+               pp.fin, pn.fin
+    ) ) 
+  
+  return(pg)
+    
 }
+
+#tdbesr_plot_tdb(2017,uai)
 
 

@@ -56,10 +56,10 @@ tdesr_read.ens <- function() {
       UAI = Identifiant.établissement,
       Rentrée = as.factor(Rentrée),
       pki.ENS.P.effectif      = EC+AM2D+Doc_ATER+LRU+Autres,
-      pki.ENS.S.1.titulaires    = EC+AM2D,
-      pki.ENS.S.2.ECtitulaires = EC,
-      pki.ENS.S.3.DocATER      = Doc_ATER,
-      pki.ENS.S.4.LRU           = LRU,
+      pki.ENS.S.titulaires    = EC+AM2D,
+      pki.ENS.S.ECtitulaires  = EC,
+      pki.ENS.S.DocATER       = Doc_ATER,
+      pki.ENS.S.LRU           = LRU,
     ) %>%
     arrange(UAI,Rentrée)
 

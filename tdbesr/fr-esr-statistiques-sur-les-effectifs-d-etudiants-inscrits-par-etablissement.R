@@ -148,6 +148,7 @@
 # [147] "Commune.du.siège.de.l.établissement"
 
 tdesr_read.etu <- function() {
+  
   etu <- read.table("fr-esr-statistiques-sur-les-effectifs-d-etudiants-inscrits-par-etablissement.csv",
                     header=TRUE, sep=';', quote='"') %>%
     transmute(

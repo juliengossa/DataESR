@@ -31,13 +31,13 @@ tdesr_read.fin <- function() {
       Rentrée = as.factor(exercice-1), # l'exercice comptable est sur l'année civile
       #RCE = rce,
       pki.FIN.P.ressources = Produits.encaissables,
-      pki.FIN.S.1.masseSalariale = Dépenses.de.personnel,
-      pki.FIN.S.2.ressourcesPropres = Ressources.propres...Produits.encaissables * Produits.encaissables / 100
+      pki.FIN.S.masseSalariale = Dépenses.de.personnel,
+      pki.FIN.S.ressourcesPropres = Ressources.propres...Produits.encaissables * Produits.encaissables / 100
     ) %>%
     #filter_at(starts_with("fin"),all_vars(!is.na(.))) %>%
     filter(!is.na(pki.FIN.P.ressources),
-           !is.na(pki.FIN.S.1.masseSalariale),
-           !is.na(pki.FIN.S.2.ressourcesPropres)) %>%
+           !is.na(pki.FIN.S.masseSalariale),
+           !is.na(pki.FIN.S.ressourcesPropres)) %>%
     arrange(UAI,Rentrée) %>%
     # Enlever les données suspectes
     filter(

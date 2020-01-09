@@ -40,19 +40,6 @@ big_style <- list(
   bp_text_x = -0.25 )
 
 
-tdbesr_labels <- list(
-  FIN = c("Ressources","Masse\nsalariale","Ressources\npropres"),
-  ENS = c("Enseignants", "Titulaires","EC","Doc et\nATER","LRU"),
-  ETU = c("Etudiants","Cycle 1\n(L)","Cycle 2\n(M)","Cycle 3\n(D)","Diplômes\npropres"),
-  ADM = c("Formations\nPost-Bac","Sélectives","Hyper-\nsélectives","Sur-\nchargées","Sous-\nchargées"),
-  K = c("Taux de\nressources propres", 
-        "Taux de ressources\npar étudiant",
-        "Taux de\nformations sélectives",
-        "Taux\nd'encadrement",
-        "Taux de\ntitularité")
-)
-
-
 rentrée <- 2017
 type <- "Université"
 
@@ -98,7 +85,7 @@ uai.dauphine <- "0750736T"
 
 
 etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), c(UAI,Libellé:url.legifrance) ) %>% unique %>% arrange(desc(Type),Académie)
-#etabs <- filter(etabs, UAI %in% c(uai.unistra))
+#etabs <- filter(etabs, UAI %in% c(uai.unistra,uai.uha))
 
 aca <- ""
 type <- ""
@@ -120,7 +107,7 @@ for (i in seq(1,nrow(etabs))) {
   
   catinfo(etab)
   
-  tdbesr_plot_tdb(rentrée, etab$UAI, big_style)
+  print(tdbesr_plot_tdb(rentrée, etab$UAI, big_style))
   cat("  \n   \n")
 }
 ```

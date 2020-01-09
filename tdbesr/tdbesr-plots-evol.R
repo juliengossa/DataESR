@@ -1,18 +1,17 @@
 
 
-tdbesr_plot_evol <- function(rentrées, uais, pkis, type=NA,
-                             plot.type="both", colors=NA, strip_labels=NA, 
-                             scale_y_format=identity,
-                             style = tdbesr_style) {
+tdbesr_plot_evol <- function(rentrées, uais, lfc, type=NA,
+                             plot.type="both", 
+                             style = tdbesr_style,
+                             noscales = TRUE) {
   
   if(is.na(type)) type <- as.character(unique(subset(esr,UAI==uai,Type))[[1]])
   
   df.evol <- esr.pnl %>% 
-    filter(Type == type, Rentrée %in% rentrées, pki %in% pkis, !is.na(value)) %>%
-    filter(! (UAI=="0311382J" & Rentrée==2015 & pki == "pki.K.1.proPres"), # Enlever Toulouse
-           ! (UAI=="9730429D" & Rentrée==2015 & pki == "pki.K.4.titPens")) %>% # Enlever guyanes
-    mutate(
-      norm.evol = "absolue")
+    filter(Type == type, Rentrée %in% rentrées, pki %in% lfc$factors, !is.na(value)) %>%
+    filter(UAI!="9730429D") %>% # Enlever guyanes
+    filter(! (UAI=="0640251A" & pki=="pki.K.selPfor" )) %>% # Enlever ADM PAU
+    mutate(norm.evol = "absolue")
       
   
   if (plot.type != "raw") {
@@ -36,25 +35,16 @@ tdbesr_plot_evol <- function(rentrées, uais, pkis, type=NA,
               aes(group = Libellé, colour = Libellé),
               size=2,
               arrow = arrow(length=unit(0.30,"cm"),type="closed",angle=30)) +
-    facet_wrap(norm.evol~pki,drop = TRUE, scales=facet_scales, ncol=5,
-               labeller = labeller(pki=function(x) strip_labels) )   +
-    scale_y_continuous(labels = scale_y_format) +
-    { if(!is.na(colors)) scale_fill_manual(values=colors[2:length(colors)]) } +
-    { if(length(uais)==1) scale_color_manual(values=colors[1]) } +
+    facet_wrap(norm.evol~pki, drop = TRUE, scales=facet_scales, ncol=5,
+               labeller = labeller(pki=function(x) lfc$labels ) ) +
+    scale_y_continuous(labels = lfc$y_labels) +
+    scale_fill_manual(values=lfc$colors[-1]) +
+    scale_color_manual(values=lfc$colors) +
     { if(length(uais)==1) guides(color=FALSE) } +
     guides(fill=FALSE) +
     tdbesr_theme +
     theme(axis.text.x = element_text(angle=90)) +
-    { if(is.null(strip_labels)) theme(strip.text = element_blank()) } +
-    { if(is.null(scale_y_format)) theme(axis.text.y = element_blank()) }
+    { if(noscales) theme(strip.text = element_blank(), axis.text.y = element_blank()) }
 }  
 
-tdbesr_plot_evol_K <- function(rentrée,uai, ...) {
-  tdbesr_plot_evol(seq(2012,rentrée), uai, select_pkis("pki.K"),
-                   plot.type="both",
-                   colors = tdbesr_colors$K,
-                   strip_labels = NULL, scale_y_format = NULL, ...)
-}
-
-
-
+#tdbesr_plot_evol(seq(2012,2017), c(uai.guyanne), tdbesr_lfc[["K"]])
