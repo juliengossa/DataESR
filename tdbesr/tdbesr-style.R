@@ -38,7 +38,7 @@ colpurples <- rev(RColorBrewer::brewer.pal(6, "Purples"))
 
 tdbesr_lfc <- list(
   ETU = list(
-    labels   = c("Etudiants", "Cycle 1 (L)", "Cycle 2 (M)", "Cycle 3 (D)", "Diplômes\npropres"),
+    labels   = c("Etudiants", "Cycle 1 (L)", "Cycle 2 (M)", "Cycle 3 (D)", "DU"),
     factors  = c("pki.ETU.P.effectif", "pki.ETU.S.cycle.1.L", "pki.ETU.S.cycle.2.M", "pki.ETU.S.cycle.3.D", "pki.ETU.S.diplomeEtablissement"),
     colors   = colgreens,
     y_labels = number_format

@@ -145,7 +145,7 @@ tdbesr_fusion <- function(uais) {
 
 tdbesr_plot_tdb <- function(rentrée, uai, big_style=tdbesr_style,...) {
   
-  pp.k.n <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], omit.first = FALSE, style=big_style,...)
+  pp.k.n <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], norm.values=FALSE, omit.first = FALSE, style=big_style,...)
   pp.k.e <- tdbesr_plot_evol(seq(2012,rentrée),c(uai),tdbesr_lfc[["K"]],...)
   
   pp.etu <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ETU"]],...)

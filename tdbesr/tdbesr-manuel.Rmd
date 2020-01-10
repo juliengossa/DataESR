@@ -15,9 +15,9 @@ Les indicateurs clés de performance choisis sont :
 
 - Taux de ressources propres : part des ressources propres dans les ressources totales de l'établissement.
 - Taux de ressources par étudiant : rapport entre les ressources de l'établissement et le nombre d'étudiants inscrits en premier et deuxième cycle (L et M).
-- Taux de fromations sélectives : pourcentage de formations post-bac considérées comme sélective (voir plus bas).
+- Taux de formations sélectives : pourcentage de formations post-bac considérées comme sélectives (voir plus bas).
 - Taux d'encadrement : nombre d'enseignants titulaires pour 100 étudiants inscrits en premier et deuxième cycle (L et M).
-- Taux de titularité : pourcentage d'enseignants titulaires parmis tous les enseignants.
+- Taux de titularité : pourcentage d'enseignants titulaires parmi tous les enseignants.
 
 
 ## Données brutes 
@@ -45,7 +45,7 @@ Les données brutes ont été extraites des jeux de données suivants :
    - __Nombre d'inscriptions en Cycle 1 (L)__ hors étudiants inscrits en parallèle en CPGE, inclu les DUT et autres formations post-bac
    - __Nombre d'inscriptions en Cycle 2 (M)__
    - __Nombre d'inscriptions en Cycle D (D)__
-   - __Nombre d'inscriptions en diplôme d'établissement (DU)__
+   - __Nombre d'inscriptions en diplôme d'établissement__ : par exemple diplôme d'université (DU)
 
 - [Les enseignants titulaires dans les établissements publics de l'enseignement supérieur
 (lien)](https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-enseignants-titulaires-esr-public/)
