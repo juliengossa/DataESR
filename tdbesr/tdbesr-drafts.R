@@ -45,5 +45,13 @@ tdbesr_plot_norm(2017,uai,tdbesr_lfc[["K"]],norm.values=FALSE, omit.first = FALS
 
 tdbesr_plot_evol(seq(2012,2017), c(uai), tdbesr_lfc[["K"]])
 tdbesr_plot_evol(seq(2012,2017), c(uai), tdbesr_lfc[["K"]], plot.type = "norm", noscales = FALSE)
+tdbesr_plot_evol(seq(2012,2017), c(uai), tdbesr_lfc[["K"]], plot.type = "raw", noscales = FALSE)
 
 tdbesr_plot_tdb(2017,uai)
+
+
+tdbesr_classement(2017, "Université", 
+                  c("pki.K.proPres", "pki.FIN.P.ressources","pki.FIN.S.ressourcesPropres"),
+                  c("RP/R","R","RP")) 
+
+  

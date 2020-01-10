@@ -75,7 +75,7 @@ Enfin, afin de pouvoir présenter les données, les series ont été décalées 
 ### PKI : instantanés
 
 ```{r pki.raw}
-  tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], omit.first = TRUE)
+  tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], norm.values=FALSE, omit.first = TRUE)
 ```
 
 Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 étudiants dans les universités. Dans cet établissement, il y en a 3,7, ce qui le place dans le deuxième quartile ».

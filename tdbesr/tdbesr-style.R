@@ -2,16 +2,17 @@
 
 euro <- function(x,format="M") {
   if (format=="M") {
-    sca<-1/1000000
-    suf<-" M€ "
+    sca <- 1/1000000
+    suf <-" M€ "
+    lwc <- 1
   } else if (format=="k") {
     sca <- 1/1000
     suf=" k€"
+    lwc <- 1
   } else {
     suf <- " €"
-    sca <- 1
   }
-  scales::dollar(x,prefix="",suffix=suf, big.mark = " ", scale=sca)
+  scales::dollar(x,prefix="",suffix=suf, big.mark = " ", scale = sca, largest_with_cents = lwc)
 }
 
 percent_format <- function(x) {
@@ -21,6 +22,30 @@ percent_format <- function(x) {
 number_format <- function(x) {
   format(round(x), big.mark=" ", trim=TRUE)
 }
+
+
+
+value_labels <- function(pki, value) {
+  case_when(
+    grepl("pki.FIN", pki)   ~ euro(value,"M"),
+    pki == "pki.K.proPres"  ~ scales::percent(value),
+    pki == "pki.K.resPetu"  ~ euro(value,"k"),
+    pki == "pki.K.selPfor"  ~ scales::percent(value),
+    pki == "pki.K.titPetu"  ~ format(round(value,1), trim=TRUE),
+    pki == "pki.K.titPens"  ~ scales::percent(value),
+    grepl("pki.", pki)      ~ number_format(value)
+  )
+}
+
+norm_labels <- function(pki, norm) {
+  case_when(
+    grepl("pki.....P", pki)   ~ percent_format(norm),
+    grepl("pki.K", pki)       ~ percent_format(norm),
+    TRUE                      ~ scales::percent(norm) )
+}
+
+
+
 
 tdbesr_style <- list(
   point_size = 20,

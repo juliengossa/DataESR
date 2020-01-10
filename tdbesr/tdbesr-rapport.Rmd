@@ -18,7 +18,7 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center", out.h
 knitr::opts_chunk$set(pdf.options(encoding = "CP1250"))
 
 library(gridExtra)
-
+library(kableExtra)
 
 source("tdbesr.R")
 tdbesr_load()
@@ -59,7 +59,10 @@ catinfo <- function(etab) {
   cat(" ; [Décret](",strvar(etab$url.legifrance),")\n   \n")
 }
 
-
+table_classement <- function(rentrée,type,pkis,labels)
+  tdbesr_classement(rentrée, type, pkis, labels) %>%
+    kable("latex", longtable = T, booktabs = T, align = c("r","r","l",rep("r",4))) %>%
+    kable_styling(latex_options = c("striped", "repeat_header"))
 ```
 
 __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__
@@ -68,6 +71,48 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 
 
 ```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
+```
+
+# Classements
+
+## Taux de ressources propres
+
+```{r classement.RP}
+table_classement(rentrée, "Université",
+                  c("pki.K.proPres", "pki.FIN.P.ressources","pki.FIN.S.ressourcesPropres"),
+                  c("Taux","Ressources","Ressources   \nPropres"))
+```
+
+## Taux de ressources par étudiant (inscrit en cycles 1 (L) et 2 (M))
+
+```{r classement.RpE}
+table_classement(rentrée, "Université",
+                  c("pki.K.resPetu", "pki.FIN.P.ressources","pki.ETU.S.cycle.1.L","pki.ETU.S.cycle.2.M"),
+                  c("Taux","Ressources","Effectif L","Effectif M"))
+```
+
+## Taux de formations sélectives
+
+```{r classement.FS}
+table_classement(rentrée, "Université",
+                  c("pki.K.selPfor", "pki.ADM.P.formations","pki.ADM.S.sélective"),
+                  c("Taux","Formations","Formations sélectives"))
+```
+
+## Taux d'encadrement
+
+```{r classement.EpE}
+table_classement(rentrée, "Université",
+                  c("pki.K.titPetu", "pki.ENS.S.titulaires","pki.ETU.P.effectif"),
+                  c("Taux","Ens. titulaires","Etudiants"))
+```
+
+## Taux de titularité
+
+```{r classement.TpE}
+table_classement(rentrée, "Université",
+                  c("pki.K.titPens", "pki.ENS.P.effectif", "pki.ENS.S.titulaires"),
+                  c("Taux","Enseignants","Titulaires"))
 ```
 
 
@@ -111,6 +156,7 @@ for (i in seq(1,nrow(etabs))) {
   cat("  \n   \n")
 }
 ```
+
 
 
 

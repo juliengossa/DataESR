@@ -23,7 +23,7 @@ tdbesr_plot_evol <- function(rentrées, uais, lfc, type=NA,
         norm.evol = "évolution")
   }
   if (plot.type == "norm") df.evol <- df
-  if (plot.type == "both") df.evol <- rbind(df.evol,df)
+  if (plot.type == "both") df.evol <- bind_rows(df.evol,df)
   
   df.evol <<- df.evol
   

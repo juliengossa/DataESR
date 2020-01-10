@@ -13,25 +13,6 @@ source("tdbesr-style.R")
 source("tdbesr-plots-etab.R")
 source("tdbesr-plots-evol.R")
 
-value_labels <- function(pki, value) {
-  case_when(
-    grepl("pki.FIN", pki)   ~ euro(value,"M"),
-    pki == "pki.K.proPres"  ~ scales::percent(value),
-    pki == "pki.K.resPetu"  ~ euro(value,"k"),
-    pki == "pki.K.selPfor"  ~ scales::percent(value),
-    pki == "pki.K.titPetu"  ~ format(round(value,1), trim=TRUE),
-    pki == "pki.K.titPens"  ~ scales::percent(value),
-    grepl("pki.", pki)      ~ number_format(value)
-  )
-}
-
-norm_labels <- function(pki, norm) {
-  case_when(
-    grepl("pki.....P", pki)   ~ percent_format(norm),
-    TRUE                      ~ scales::percent(norm) )
-}
-
-
 select_pkis <- function(pattern){
   grep(pattern, levels(esr.pnl$pki),value=TRUE)
 }
@@ -61,7 +42,10 @@ tdbesr_pivot_norm_label <- function(rentrée, type) {
       pki = as.factor(pki),
       value_label = value_labels(pki,value),
       norm_label = norm_labels(pki,norm)
-    )
+    ) %>%
+    group_by(Rentrée, Type, pki) %>%
+    mutate(rang = dense_rank(desc(value))) %>%
+    ungroup()
 }
 
 
@@ -175,4 +159,22 @@ tdbesr_plot_tdb <- function(rentrée, uai, big_style=tdbesr_style,...) {
 
 #tdbesr_plot_tdb(2017,uai)
 
+
+
+tdbesr_classement <- function(rentrée, type, pkis, labels) {
+  
+  esr.pnl %>%
+    ungroup() %>%
+    filter(Rentrée == rentrée, Type == type, pki %in% pkis) %>%
+    select(Libellé, pki, value_label, norm_label, rang) %>%
+    mutate(pki = factor(pki,levels=pkis)) %>% arrange(pki,rang) %>%
+    pivot_wider(names_from = pki, values_from = c(value_label,norm_label,rang)) %>%
+    select(2*length(pkis)+2, length(pkis)+2, 0:length(pkis)+1) %>%
+    setNames(c("Rang","Ecart", "Libellé", labels))
+  
+}
+
+# tdbesr_classement(rentrée, "Université", 
+#                  c("pki.K.resPetu", "pki.FIN.P.ressources", "pki.ETU.S.cycle.1.L", "pki.ETU.S.cycle.2.M"),
+#                  c("Ressources par   \nétudiant","Ressources","Effectif L","Effectif M")) 
 
