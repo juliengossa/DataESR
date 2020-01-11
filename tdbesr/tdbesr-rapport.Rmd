@@ -73,6 +73,7 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 ```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
 ```
 
+\newpage
 # Classements
 
 ## Taux de ressources propres

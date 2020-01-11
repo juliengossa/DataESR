@@ -130,7 +130,15 @@ tdbesr_fusion <- function(uais) {
 tdbesr_plot_tdb <- function(rentrée, uai, big_style=tdbesr_style,...) {
   
   pp.k.n <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], norm.values=FALSE, omit.first = FALSE, style=big_style,...)
-  pp.k.e <- tdbesr_plot_evol(seq(2012,rentrée),c(uai),tdbesr_lfc[["K"]],...)
+  pp.k.e.a <- tdbesr_plot_evol_grid(rentrée, uai, peg.args,
+                                    yzooms = c(0.5, 0.5, 1, 1, 0.5),
+                                    plot.type="abs",
+                                    noscales = TRUE)
+  pp.k.e.e <- tdbesr_plot_evol_grid(rentrée, uai, peg.args, 
+                                    yzooms = c(0.6, 0.6, 0.5, 0.25, 0.25),
+                                    plot.type="evol",
+                                    noscales = TRUE, norentrées = TRUE)
+  
   
   pp.etu <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ETU"]],...)
   pp.ens <- tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ENS"]],...)  
@@ -143,15 +151,17 @@ tdbesr_plot_tdb <- function(rentrée, uai, big_style=tdbesr_style,...) {
   pn.adm <- tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ADM"]],...)
   
   pg <- 
-    plot_grid(ncol = 1, rel_heights = c(1,1,2),
-              pp.k.n,
-              pp.k.e,
+    plot_grid(ncol = 1, rel_heights = c(1,1),
+              plot_grid(ncol=1, rel_heights = c(2,1,1), align = "v",
+                pp.k.n,
+                pp.k.e.a,
+                pp.k.e.e),
               plot_grid (ncol = 2, align = "v",
                pp.etu, pn.etu,
                pp.adm, pn.adm,
                pp.ens, pn.ens,
-               pp.fin, pn.fin
-    ) ) 
+               pp.fin, pn.fin)
+    ) 
   
   return(pg)
     

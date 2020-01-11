@@ -15,6 +15,8 @@ euro <- function(x,format="M") {
   scales::dollar(x,prefix="",suffix=suf, big.mark = " ", scale = sca, largest_with_cents = lwc)
 }
 
+euro_k <- function(x) euro(x,"k")
+
 percent_format <- function(x) {
   sprintf("%+0.1f%%", round(x*100,1))
 }
@@ -99,6 +101,14 @@ tdbesr_lfc <- list(
     y_labels = identity
   )
 )
+
+peg.args <- list(
+  list(the_pki = "pki.K.proPres", labels.y = scales::percent, color.fill=tdbesr_lfc$K$colors[2]),
+  list(the_pki = "pki.K.resPetu", labels.y = euro_k         , color.fill=tdbesr_lfc$K$colors[3]),
+  list(the_pki = "pki.K.selPfor", labels.y = scales::percent, color.fill=tdbesr_lfc$K$colors[4], rentrée.base=2015),
+  list(the_pki = "pki.K.titPetu", labels.y = identity       , color.fill=tdbesr_lfc$K$colors[5]  ),
+  list(the_pki = "pki.K.titPens", labels.y = scales::percent, color.fill=tdbesr_lfc$K$colors[6]))
+
 
 tdbesr_theme <- 
   theme_excel_new() + theme(

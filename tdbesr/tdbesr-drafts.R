@@ -54,4 +54,16 @@ tdbesr_classement(2017, "Université",
                   c("pki.K.proPres", "pki.FIN.P.ressources","pki.FIN.S.ressourcesPropres"),
                   c("RP/R","R","RP")) 
 
-  
+
+
+
+tdbesr_plot_evol(seq(2012,2017), "Université", c(uai.unistra), "pki.K.resPetu",
+                 labels.y = euro_k, plot.type="abs", yzoom=0.5)
+
+
+tdbesr_plot_evol_grid(rentrée, uai, peg.args,
+                                  yzooms = c(0.5, 0.5, 1, 1, 0.5),
+                                  noscales = FALSE, plot.type="abs")
+tdbesr_plot_evol_grid(rentrée, uai, peg.args, 
+                                  yzooms = c(0.6, 0.6, 0.5, 0.25, 0.25),
+                                  noscales = FALSE, norentrées = TRUE, plot.type="evol")
