@@ -62,8 +62,6 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
   ylim[1] <- min(ylim[1],min(df.uai$value))
   ylim[2] <- max(ylim[2],max(df.uai$value))
 
-  theylim <<- ylim
-
   p <- ggplot(df.evol, aes(x=as.factor(Rentrée), y=value)) +
     geom_hline(yintercept = value.median ) +
     geom_boxplot(aes(fill=pki), fill=color.fill, alpha=bp.alpha) +
@@ -74,7 +72,7 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
     scale_x_discrete(limits=as.character(rentrées)) +
     scale_y_continuous(labels = labels.y) +
     scale_color_manual(values=c(color.line)) +
-    { if(!is.na(ylim)) coord_cartesian(ylim=ylim) } +
+    coord_cartesian(ylim=ylim)  +
     { if(length(uais)==1) guides(color=FALSE) } +
     pkiesr_theme +
     theme(axis.text.x = element_text(angle=90)) +
@@ -98,7 +96,7 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
 #' @export
 #'
 #' @examples
-pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=NA, ...) {
+pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=list(), ...) {
 
   plots <- list()
   for(i in seq(1,length(peg.args))) {
@@ -108,7 +106,7 @@ pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=NA, ..
       type=type,
       uais=c(uai)),
       peg.args[[i]])
-    if(!is.na(yzooms)) args <- append(args, list(yzoom=yzooms[i]))
+    if(i < length(yzooms)) args <- append(args, list(yzoom=yzooms[i]))
     args <- c(args, ...)
 
     plot <- do.call(pkiesr_plot_evol, args)

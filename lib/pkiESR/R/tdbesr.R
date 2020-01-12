@@ -8,7 +8,7 @@ select_pkis <- function(pattern){
   grep(pattern, levels(esr.pnl$pki),value=TRUE)
 }
 
-pkiesr_pivot_norm_label <- function(rentrée, type) {
+pkiesr_pivot_norm_label <- function() {
 
   esr %>%
     group_by(Type,Rentrée) %>%
@@ -53,6 +53,16 @@ pkiesr_add_pkis <- function (df) {
   )
 }
 
+pkiesr_get_uaisnamedlist <- function(esr) {
+  uais <- list()
+  for(type in levels(esr$Type)) {
+    df <- subset(esr, Type == type, c(UAI,Libellé)) %>% unique
+    uais[[type]] <- as.list(setNames(as.character(df$UAI),as.character(df$Libellé)))
+  }
+
+  return(uais)
+}
+
 pkiesr_ETL_and_save <- function() {
   # source("fr-esr-principaux-etablissements-enseignement-superieur.R",local = TRUE)
   # source("fr-esr-operateurs-indicateurs-financiers.R",local = TRUE)
@@ -70,7 +80,7 @@ pkiesr_ETL_and_save <- function() {
   adm <- pkiesr_read.adm()
   message("Période des données ADM : ",min(levels(adm$Rentrée)),"-",max(levels(adm$Rentrée)))
 
-  esr <<- fin %>%
+  esr <- fin %>%
     full_join(ens) %>%
     full_join(etu) %>%
     full_join(adm) %>%
@@ -80,10 +90,12 @@ pkiesr_ETL_and_save <- function() {
 
   write.csv2(esr,"tdbesr.csv",row.names = FALSE)
 
-  esr.pnl <<- pkiesr_pivot_norm_label()
+  esr.pnl <- pkiesr_pivot_norm_label()
+
+  uais <- pkiesr_get_uaisnamedlist(esr)
 
   #save(esr, esr.pnl, file = "tdbesr.RData")
-  usethis::use_data(esr, esr.pnl)
+  usethis::use_data(esr, esr.pnl, uais, overwrite = TRUE)
 }
 
 pkiesr_load <- function(...) {
