@@ -1,0 +1,6 @@
+import(tidyr)
+import(dplyr)
+import(ggplot2)
+import(ggthemes)
+import(cowplot)
+exportPattern("^[[:alpha:]]+")
