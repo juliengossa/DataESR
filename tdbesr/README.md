@@ -11,17 +11,19 @@ universités](./tdbesr-rapport.pdf)
 
 # Indicateurs clés de performance (PKI)
 
-Trois indicateurs clés de performance sont présentés :
+Les indicateurs clés de performance choisis sont :
 
   - Taux de ressources propres : part des ressources propres dans les
     ressources totales de l’établissement.
   - Taux de ressources par étudiant : rapport entre les ressources de
     l’établissement et le nombre d’étudiants inscrits en premier et
     deuxième cycle (L et M).
-  - Taux d’encadrement : le nombre d’enseignants titulaires pour 100
+  - Taux de formations sélectives : pourcentage de formations post-bac
+    considérées comme sélectives (voir plus bas).
+  - Taux d’encadrement : nombre d’enseignants titulaires pour 100
     étudiants inscrits en premier et deuxième cycle (L et M).
-  - Taux de titularité : le pourcentage d’enseignants titulaires parmis
-    tous les enseignants.
+  - Taux de titularité : pourcentage d’enseignants titulaires parmi tous
+    les enseignants.
 
 ## Données brutes
 
@@ -58,7 +60,8 @@ Les données brutes ont été extraites des jeux de données suivants :
         post-bac
       - **Nombre d’inscriptions en Cycle 2 (M)**
       - **Nombre d’inscriptions en Cycle D (D)**
-      - **Nombre d’inscriptions en diplôme d’établissement (DU)**
+      - **Nombre d’inscriptions en diplôme d’établissement** : par
+        exemple diplôme d’université (DU)
   - [Les enseignants titulaires dans les établissements publics de
     l’enseignement supérieur
     (lien)](https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-enseignants-titulaires-esr-public/)
@@ -86,12 +89,18 @@ Les données brutes ont été extraites des jeux de données suivants :
       - **Surchargées** : le nombre de formations dont le nombre d’admis
         est supérieur à la capacité d’accueil
       - **Souschargées** : le nombre de formations dont le nombre
-        d’admis est inférieur à la moitié de la capacité d’accueil
+        d’admis est inférieur à 75% de la capacité d’accueil
 
 *NB* : les données APB/Parcoursup sont particulièrement difficile à
-exploiter et comportent de nombreux trous. Les indicateurs doivent être
-traités en en tenant
-compte.
+exploiter et comportent de nombreux trous. De plus, elles concernent
+deux plateformes différentes (APB puis Parcoursup), avec des changements
+legislatifs et pratiques profonds. Les indicateurs doivent être traités
+avec les plus grandes précautions.
+
+Enfin, afin de pouvoir présenter les données, les series ont été
+décalées d’un an (i.e. les données d’admission post-bac notée à
+l’année 2017 sont celles de la rentrée
+2018).
 
 ## Exemples de lecture
 

@@ -75,7 +75,7 @@ Enfin, afin de pouvoir présenter les données, les series ont été décalées 
 ### PKI : instantanés
 
 ```{r pki.raw}
-  tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["K"]], norm.values=FALSE, omit.first = TRUE)
+  pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["K"]], norm.values=FALSE, omit.first = TRUE)
 ```
 
 Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 étudiants dans les universités. Dans cet établissement, il y en a 3,7, ce qui le place dans le deuxième quartile ».
@@ -83,9 +83,10 @@ Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 é
 ### PKI : évolution en valeur absolue
 
 ```{r pki.evol.raw, fig.width = 9, out.width="100%"}
-tdbesr_plot_evol_grid(rentrée, uai, peg.args,
+plot_grid(nrow=1, align = "hv",
+   plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args,
                                   yzooms = c(0.5, 0.5, 1, 1, 0.5),
-                                  noscales = FALSE, plot.type="abs")
+                                  noscales = FALSE, plot.type="abs") )
 ```
 
 
@@ -94,9 +95,10 @@ Exemple de lecture : « En 2012, le taux d'encadrement de l'établissement étai
 #### PKI : évolution en valeur de l'année de référence
 
 ```{r pki.evol.nor, fig.width = 9, out.width="100%"}
-tdbesr_plot_evol_grid(rentrée, uai, peg.args, 
+plot_grid(nrow=1, align = "hv",
+   plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args, 
                                   yzooms = c(0.6, 0.6, 0.5, 0.25, 0.25),
-                                  noscales = FALSE, plot.type="evol")
+                                  noscales = FALSE, plot.type="evol"))
 ```
 
 Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établissement a baissé d'environ 15%, ce qui le place dans le premier quartile inférieur des évolution de cet indicateur ».
@@ -105,7 +107,7 @@ Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établiss
 #### Données brutes 
 
 ```{r etu.raw}
-tdbesr_plot_primaire(rentrée,uai,tdbesr_lfc[["ETU"]])
+pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « l'établissement compte 47 573 étudiants hors double inscription en CPGE, dont 26 679 en 1er cycle (L, DUT, prépa, etc.) ».
@@ -113,7 +115,7 @@ Exemple de lecture : « l'établissement compte 47 573 étudiants hors double in
 #### Données normalisées
 
 ```{r etu.norm}
-tdbesr_plot_norm(rentrée,uai,tdbesr_lfc[["ETU"]])
+pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « La part moyenne des étudiants en 1er cycle dans les effectifs des universités est de 68%. L'établissement présente une part de 56%, ce qui le place dans le quartile inférieur ».

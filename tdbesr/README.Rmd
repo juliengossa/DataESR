@@ -9,8 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center", out.height="10%")
 
-source("tdbesr.R")
-tdbesr_load()
+library(pkiESR)
 ```
 
 __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__
