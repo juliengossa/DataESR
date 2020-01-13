@@ -31,7 +31,7 @@ shinyUI(fluidPage(
         ),
         column(3,
                selectInput("uai", "Etablissement", selected = "", 
-                           choices = pkiESR::uais["Université"])
+                           choices = uais["Université"])
         ),
         column(4, 
             helpText("Interface expérimentale : utiliser avec précaution"),
