@@ -61,6 +61,8 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
   ylim[1] <- min(ylim[1],min(df.uai$value))
   ylim[2] <- max(ylim[2],max(df.uai$value))
 
+  if(style$plotly) df.evol <- df.uai
+
   p <- ggplot(df.evol, aes(x=as.factor(Rentrée), y=value)) +
     geom_hline(yintercept = value.median) +
     { if(!style$plotly) geom_boxplot(aes(fill=pki), fill=color.fill, alpha=bp.alpha) } +

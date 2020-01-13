@@ -37,7 +37,7 @@ shinyUI(fluidPage(
             helpText("Interface expérimentale : utiliser avec précaution"),
             helpText("Liens :",
                 a("Manuel", href="https://github.com/juliengossa/DataESR/tree/master/tdbesr"),
-                " et ", a("Contact", href="contact@cpesr.fr"))
+                " et Contact :", a("contact@cpesr.fr", href="mailto:contact@cpesr.fr"))
         )
     ),
     fluidRow(

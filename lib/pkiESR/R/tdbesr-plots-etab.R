@@ -31,7 +31,7 @@ pkiesr_plot_primaire  <- function(rentrée, uai, lfc,
 pkiesr_pki_stats <- function(df.stats,thepki) {
   lapply(thepki,function(p) {
     d <- filter(df.stats, pki==p)
-    paste0("Max. :",first(d$max),"\nMoy. : ",first(d$mean),"\nMin. : ",first(d$min))
+    paste0("Max. : ",first(d$max),"\nMoy. : ",first(d$mean),"\nMin. : ",first(d$min))
   })
 }
 

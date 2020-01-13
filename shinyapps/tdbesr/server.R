@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
     
     pkiesr_ggly_evol <- function() { 
         renderPlotly(print(hide_legend(config(displayModeBar = F,
-            subplot(nrows = 2, margin=c(.05,.05,.1,.1), c(
+            subplot(nrows = 2, margin=c(0.08,0,.1,.1), c(
                 lapply(pkis.k, function(p) {
                     ggplotly(plots()[["k.evol.abs"]][[p]], tooltip = "text")
                 }),
