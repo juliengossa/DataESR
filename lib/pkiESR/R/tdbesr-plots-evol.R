@@ -27,8 +27,7 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
                              plot.type="abs",
                              yzoom = 1, ydecal = 0,
                              rentrée.base = NA,
-                             style = pkiesr_style,
-                             noscales = FALSE,
+                             style = pkiesr_style(),
                              norentrées = FALSE,
                              bp.alpha=0.6) {
 
@@ -63,11 +62,11 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
   ylim[2] <- max(ylim[2],max(df.uai$value))
 
   p <- ggplot(df.evol, aes(x=as.factor(Rentrée), y=value)) +
-    geom_hline(yintercept = value.median ) +
-    geom_boxplot(aes(fill=pki), fill=color.fill, alpha=bp.alpha) +
+    geom_hline(yintercept = value.median) +
+    { if(!style$plotly) geom_boxplot(aes(fill=pki), fill=color.fill, alpha=bp.alpha) } +
     geom_line(data = df.uai,
-              aes(group = Libellé, colour = Libellé),
-              size=2,
+              aes(group = Libellé, colour = Libellé, text = value_label),
+              size=style$line_size,
               arrow = arrow(length=unit(0.30,"cm"),type="closed",angle=30)) +
     scale_x_discrete(limits=as.character(rentrées)) +
     scale_y_continuous(labels = labels.y) +
@@ -76,7 +75,7 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
     { if(length(uais)==1) guides(color=FALSE) } +
     pkiesr_theme +
     theme(axis.text.x = element_text(angle=90)) +
-    { if(noscales) theme(strip.text = element_blank(), axis.text.y = element_blank(), panel.grid = element_blank()) } +
+    { if(style$noscales) theme(strip.text = element_blank(), axis.text.y = element_blank(), panel.grid = element_blank()) } +
     { if(norentrées) theme(axis.text.x = element_blank()) }
 
   return(p)
@@ -96,7 +95,8 @@ pkiesr_plot_evol <- function(rentrées, uais, the_pki, labels.y = identity, type
 #' @export
 #'
 #' @examples
-pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=list(), ...) {
+pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=list(),
+                                 style = pkiesr_style(), ...) {
 
   plots <- list()
   for(i in seq(1,length(peg.args))) {
@@ -104,7 +104,8 @@ pkiesr_plot_evol_all <- function(rentrée, uai, peg.args, type=NA, yzooms=list()
     args <- append(list(
       rentrées=seq(2012,rentrée),
       type=type,
-      uais=c(uai)),
+      uais=c(uai),
+      style=style),
       peg.args[[i]])
     if(i < length(yzooms)) args <- append(args, list(yzoom=yzooms[i]))
     args <- c(args, ...)

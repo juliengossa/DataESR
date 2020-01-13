@@ -143,30 +143,33 @@ pkiesr_fusion <- function(uais) {
 #'
 #' @examples
 pkiesr_plot_all <- function(rentrée, uai,
-                            style.pki.k=pkiesr_style, style.pki=pkiesr_style, ...) {
+                            style.pki.k=pkiesr_style(), style.pki=pkiesr_style(),
+                            lfc = pkiesr_lfc,
+                            ...) {
 
   plots <- list(
-    k.norm = pkiesr_plot_norm(rentrée, uai, pkiesr_lfc[["K"]],
+    k.norm = pkiesr_plot_norm(rentrée, uai, lfc[["K"]],
                               norm.values=FALSE, omit.first = FALSE,
                               style=style.pki.k, ...),
     k.evol.abs = pkiesr_plot_evol_all(rentrée, uai, peg.args,
                                       yzooms = c(0.5, 0.5, 1, 1, 0.5),
                                       plot.type="abs",
-                                      noscales = TRUE),
+                                      style = style.pki),
     k.evol.norm = pkiesr_plot_evol_all(rentrée, uai, peg.args,
                                       yzooms = c(0.6, 0.6, 0.5, 0.25, 0.25),
                                       plot.type="norm",
-                                      noscales = TRUE, norentrées = TRUE),
+                                      norentrées = TRUE,
+                                      style = style.pki),
 
-    etu.abs = pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["ETU"]], style=style.pki, ...),
-    ens.abs = pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["ENS"]], style=style.pki,...),
-    fin.abs = pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["FIN"]], style=style.pki,...),
-    adm.abs = pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["ADM"]], style=style.pki,...),
+    etu.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ETU"]], style=style.pki, ...),
+    ens.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
+    fin.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["FIN"]], style=style.pki,...),
+    adm.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ADM"]], style=style.pki,...),
 
-    etu.norm = pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["ETU"]], style=style.pki,...),
-    ens.norm = pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["ENS"]], style=style.pki,...),
-    fin.norm = pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["FIN_N"]], style=style.pki, omit.first = FALSE, ...),
-    adm.norm = pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["ADM"]], style=style.pki,...)
+    etu.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ETU"]], style=style.pki,...),
+    ens.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
+    fin.norm = pkiesr_plot_norm(rentrée,uai,lfc[["FIN_N"]], style=style.pki, omit.first = FALSE, ...),
+    adm.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ADM"]], style=style.pki,...)
   )
 
   return(plots)
@@ -185,7 +188,7 @@ pkiesr_plot_all <- function(rentrée, uai,
 #'
 #' @examples
 pkiesr_plot_tdb <- function(rentrée, uai,
-                            style.pki.k=pkiesr_style, style.pki=pkiesr_style, ...) {
+                            style.pki.k=pkiesr_style(), style.pki=pkiesr_style(), ...) {
 
   plots <- pkiesr_plot_all(rentrée, uai, style.pki.k, style.pki,...)
 
