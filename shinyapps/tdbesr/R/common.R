@@ -5,9 +5,9 @@ library(plotly)
 pkis.k <- c("pki.K.proPres","pki.K.resPetu","pki.K.selPfor","pki.K.titPetu","pki.K.titPens")
 pkis.set <- c("etu","ens","adm","fin")
 
-height.k <- "250"
-height.evol <- "300"
-height.set <- "550"
+height.k <- "auto"
+height.evol <- "auto"
+height.set <- "auto"
 
 shiny_lfc <- pkiesr_lfc
 shiny_lfc$ETU$labels   <- c("Etu", "L", "M", "D", "DU")

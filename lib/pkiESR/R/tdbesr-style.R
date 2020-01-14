@@ -1,21 +1,17 @@
 
 
-euro <- function(x,format="M") {
-  if (format=="M") {
-    sca <- 1/1000000
-    suf <-" M€ "
-    lwc <- 1
-  } else if (format=="k") {
-    sca <- 1/1000
-    suf=" k€"
-    lwc <- 1
-  } else {
-    suf <- " €"
-  }
-  scales::dollar(x,prefix="",suffix=suf, big.mark = " ", scale = sca, largest_with_cents = lwc)
+euro_M <- function(x) {
+  #return(scales::dollar(x, prefix="",suffix=" M€", scale = 1/1000000, largest_with_cents = 1, big.mark = " "))
+  return(paste0(round(x/1000000,0)," M€"))
 }
 
-euro_k <- function(x) euro(x,"k")
+euro_k <- function(x) {
+  return(paste0(round(x/1000,1)," k€"))
+}
+
+euro <- function(x) {
+  return(paste0(round(x,0)," €"))
+}
 
 percent_format <- function(x) {
   sprintf("%+0.1f%%", round(x*100,1))
@@ -29,9 +25,9 @@ number_format <- function(x) {
 
 value_labels <- function(pki, value) {
   case_when(
-    grepl("pki.FIN", pki)   ~ euro(value,"M"),
+    grepl("pki.FIN", pki)   ~ euro_M(value),
     pki == "pki.K.proPres"  ~ scales::percent(value),
-    pki == "pki.K.resPetu"  ~ euro(value,"k"),
+    pki == "pki.K.resPetu"  ~ euro_k(value),
     pki == "pki.K.selPfor"  ~ scales::percent(value),
     pki == "pki.K.titPetu"  ~ format(round(value,1), trim=TRUE),
     pki == "pki.K.titPens"  ~ scales::percent(value),
@@ -68,18 +64,15 @@ pkiesr_style <- function(
               primaire_plot.margin = ggplot2::unit(c(0.5,0,0,0), "cm"),
               bp_width = 0.9,
               bp_text_x = -0.25,
+              bp_alpha = 1,
               palette = "Set2",
-              noscales = FALSE,
+              x_scale = TRUE,
+              y_scale = TRUE,
+              title = FALSE,
               plotly = FALSE) {
-  return(list(point_size = point_size,
-              line_size = line_size,
-              text_size = text_size,
-              primaire_plot.margin = primaire_plot.margin,
-              bp_width = bp_width,
-              bp_text_x = bp_text_x,
-              palette = palette,
-              noscales = FALSE,
-              plotly = plotly))
+  return(
+    as.list(environment())
+    )
 }
 
 
@@ -115,7 +108,7 @@ pkiesr_lfc <- list(
     labels   = c("Ressources","Masse salariale","Ressources propres"),
     factors  = c("pki.FIN.P.ressources", "pki.FIN.S.masseSalariale", "pki.FIN.S.ressourcesPropres"),
     colors   = coloranges,
-    y_labels = euro,
+    y_labels = euro_M,
     desc     = c("Ressources totales (produits encaissables)",
                  "Masse salariale (dépenses de personnels)",
                  "Ressources propres")
@@ -126,8 +119,8 @@ pkiesr_lfc <- list(
     colors   = c(coloranges[1:3], colgreens[5]),
     y_labels = euro,
     desc     = c("Part de la masse salariale dans les ressources",
-                 "Par des ressources propres dans les ressources",
-                 "Par de l'effectif étudiant inscrit en diplôme d'établissement (DU, non-national)")
+                 "Part des ressources propres dans les ressources",
+                 "Part de l'effectif étudiant inscrit en diplôme d'établissement (DU, non-national)")
   ),
   ADM = list(
     labels    = c("Formations\nPost-Bac","Sélectives","Hyper-\nsélectives","Sur-\nchargées","Sous-\nchargées"),
@@ -149,19 +142,16 @@ pkiesr_lfc <- list(
                  "Ressources divisées par le nombre d'étudiants",
                  "Part des formations post-bac sélectives",
                  "Nombre d'enseignants titulaires pour 100 étudiants",
-                 "Par des titulaires dans les enseignants")
+                 "Part des titulaires dans les enseignants")
   )
 )
 
-
-
-
 peg.args <- list(
-  list(the_pki = "pki.K.proPres", labels.y = scales::percent, color.fill=pkiesr_lfc$K$colors[2]),
-  list(the_pki = "pki.K.resPetu", labels.y = euro_k         , color.fill=pkiesr_lfc$K$colors[3]),
-  list(the_pki = "pki.K.selPfor", labels.y = scales::percent, color.fill=pkiesr_lfc$K$colors[4], rentrée.base=2015),
-  list(the_pki = "pki.K.titPetu", labels.y = identity       , color.fill=pkiesr_lfc$K$colors[5]  ),
-  list(the_pki = "pki.K.titPens", labels.y = scales::percent, color.fill=pkiesr_lfc$K$colors[6]))
+  list(pkiesr_lfc$K, 1, y_labels = scales::percent),
+  list(pkiesr_lfc$K, 2, y_labels = euro_k         ),
+  list(pkiesr_lfc$K, 3, y_labels = scales::percent, rentrée.base=2015),
+  list(pkiesr_lfc$K, 4, y_labels = identity       ),
+  list(pkiesr_lfc$K, 5, y_labels = scales::percent))
 
 
 
@@ -171,3 +161,6 @@ pkiesr_theme <-
     panel.grid.major.x = ggplot2::element_blank()
   )
 
+pkiesr_plot_missingdata <-
+  ggplot(data.frame(c(x=1))) +
+    geom_text(x=0.5,y=0.5, label="Données\nmanquantes") + pkiesr_theme

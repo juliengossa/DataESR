@@ -1,5 +1,5 @@
 ---
-title: "Tableaux de bord des universités  \nv0.3"
+title: "Tableaux de bord des universités  \nv0.4"
 author: "Julien Gossa  \n gossa@unistra.fr"
 date: "09/01/2020"
 output: 
@@ -23,7 +23,7 @@ library(cowplot)
 
 library(pkiESR)
 
-small_style <- list(
+small_style <- pkiesr_style(
   point_size = 12,
   line_size = 2,
   text_size = 3,
@@ -31,10 +31,10 @@ small_style <- list(
   bp_width = 1,
   bp_text_x = -0.25 )
 
-big_style <- list(
+big_style <- pkiesr_style(
   point_size = 17,
   line_size = 2,
-  text_size = 5,
+  text_size = 4,
   primaire_plot.margin = ggplot2::unit(c(0.3,0,0,0), "cm"),
   bp_width = 0.9,
   bp_text_x = -0.25 )
@@ -71,6 +71,50 @@ __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifi�
 
 
 ```{r child = 'tdbesr-manuel.Rmd', echo = FALSE, warning = FALSE}
+```
+
+
+```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5, out.height="100%"}
+uai.unistra <- "0673021V"
+uai.uha <- "0681166Y"
+uai.ubm <- "0331766R"
+uai.nimes <- "0301687W"
+uai.lorraine <- "0542493S"
+uai.guyanne <- "9730429D"
+uai.bordeaux <- "0333298F"
+
+uai.ehess <- "0753742K"
+uai.dauphine <- "0750736T"
+
+
+etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), c(UAI,Libellé:url.legifrance) ) %>% unique %>% arrange(desc(Type),Académie)
+ #etabs <- filter(etabs, UAI %in% c(uai.unistra,uai.uha))
+
+aca <- ""
+type <- ""
+for (i in seq(1,nrow(etabs))) {
+  etab <- etabs[i,]
+  message("\nProcessing ",i,"/",nrow(etabs)," : ",strvar(etab$Libellé))
+  
+  if(etab$Type != type) {
+    cat("# Type d'établissement : ", strvar(etab$Type),"   \n")
+    type <- etab$Type
+  }
+  cat("\\newpage   \n")  
+  if(etab$Académie != aca) {
+    cat("## Académie : ", strvar(etab$Académie),"   \n")
+    aca <- etab$Académie
+  }
+
+  cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
+  
+  catinfo(etab)
+  
+  print(suppressWarnings(
+    pkiesr_plot_tdb(rentrée, etab$UAI, style.pki.k=big_style, style.pki=small_style)
+    ))
+  cat("  \n   \n")
+}
 ```
 
 \newpage
@@ -115,49 +159,5 @@ table_classement(rentrée, "Université",
                   c("pki.K.titPens", "pki.ENS.P.effectif", "pki.ENS.S.titulaires"),
                   c("Taux","Enseignants","Titulaires"))
 ```
-
-
-```{r etab.loop, results="asis", message=FALSE, error=FALSE, fig.width=9,fig.height=10.5, out.height="100%"}
-uai.unistra <- "0673021V"
-uai.uha <- "0681166Y"
-uai.ubm <- "0331766R"
-uai.nimes <- "0301687W"
-uai.lorraine <- "0542493S"
-uai.guyanne <- "9730429D"
-uai.bordeaux <- "0333298F"
-
-uai.ehess <- "0753742K"
-uai.dauphine <- "0750736T"
-
-
-etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), c(UAI,Libellé:url.legifrance) ) %>% unique %>% arrange(desc(Type),Académie)
-etabs <- filter(etabs, UAI %in% c(uai.unistra,uai.uha))
-
-aca <- ""
-type <- ""
-for (i in seq(1,nrow(etabs))) {
-  etab <- etabs[i,]
-  message("Processing ",strvar(etab$Libellé))
-  
-  if(etab$Type != type) {
-    cat("# Type d'établissement : ", strvar(etab$Type),"   \n")
-    type <- etab$Type
-  }
-  cat("\\newpage   \n")  
-  if(etab$Académie != aca) {
-    cat("## Académie : ", strvar(etab$Académie),"   \n")
-    aca <- etab$Académie
-  }
-
-  cat("### ", strvar(etab$Libellé),"(",strvar(etab$Sigle),")\n")
-  
-  catinfo(etab)
-  
-  print(pkiesr_plot_tdb(rentrée, etab$UAI, style.pki.k=big_style, style.pki=small_style))
-  cat("  \n   \n")
-}
-```
-
-
 
 

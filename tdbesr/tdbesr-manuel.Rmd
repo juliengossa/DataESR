@@ -83,10 +83,11 @@ Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 é
 ### PKI : évolution en valeur absolue
 
 ```{r pki.evol.raw, fig.width = 9, out.width="100%"}
-plot_grid(nrow=1, align = "hv",
+plot_grid(nrow=1, 
    plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args,
                                   yzooms = c(0.5, 0.5, 1, 1, 0.5),
-                                  noscales = FALSE, plot.type="abs") )
+                                  plot.type="abs",
+                                  style = pkiesr_style(title=TRUE)) )
 ```
 
 
@@ -95,10 +96,11 @@ Exemple de lecture : « En 2012, le taux d'encadrement de l'établissement étai
 #### PKI : évolution en valeur de l'année de référence
 
 ```{r pki.evol.nor, fig.width = 9, out.width="100%"}
-plot_grid(nrow=1, align = "hv",
+plot_grid(nrow=1,
    plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args, 
-                                  yzooms = c(0.6, 0.6, 0.5, 0.25, 0.25),
-                                  noscales = FALSE, plot.type="evol"))
+                                  yzooms = c(0.6, 0.6, 0.5, 0.2, 0.2, 1),
+                                  plot.type="norm",
+                                  style = pkiesr_style(title=TRUE)) )
 ```
 
 Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établissement a baissé d'environ 15%, ce qui le place dans le premier quartile inférieur des évolution de cet indicateur ».

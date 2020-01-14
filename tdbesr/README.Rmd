@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center", out.height="10%")
 
 library(pkiESR)
+library(cowplot)
 ```
 
 __ATTENTION : Ceci est un document de travail. Aucune donnée n'a été vérifiée.__

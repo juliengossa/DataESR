@@ -42,8 +42,7 @@ shinyUI(fluidPage(
     ),
     fluidRow(
         column(6, 
-               plotlyOutput("k.norm", height = height.k),
-               plotlyOutput("k.evols", height = height.evol)
+               plotlyOutput("k.norm", height = height.k)
                # fluidRow(plotlyOutput("k.norm", height = height.k)),
                # fluidRow(
                #     column(1),
@@ -53,5 +52,6 @@ shinyUI(fluidPage(
         column(6, 
             plotlyOutput("etab", height = height.set)
         )
-    )
+    ),
+    plotlyOutput("k.evols", height = height.evol)
 ))

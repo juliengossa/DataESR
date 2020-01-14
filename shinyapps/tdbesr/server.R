@@ -23,8 +23,15 @@ shinyServer(function(input, output, session) {
     plots <- reactiveVal()
     observeEvent(input$uai, {
         plots(pkiesr_plot_all(rentrée,input$uai, 
-                              style.pki.k = pkiesr_style(point_size=12, plotly=TRUE), 
-                              style.pki = pkiesr_style(point_size = 8,text_size = 3,line_size = 1, plotly=TRUE),
+                              style.pki.k = pkiesr_style(
+                                  point_size=12, 
+                                  bp_text_x = -0.3,
+                                  plotly=TRUE), 
+                              style.pki = pkiesr_style(
+                                  point_size = 8,
+                                  text_size = 3,
+                                  line_size = 1,
+                                  plotly=TRUE),
                               lfc = shiny_lfc))
     })
     
@@ -34,19 +41,6 @@ shinyServer(function(input, output, session) {
             plots()[[plotname]], tooltip = "text"
         ), displayModeBar = F)
         )))
-    }
-    
-    pkiesr_ggly_evol <- function() { 
-        renderPlotly(print(hide_legend(config(displayModeBar = F,
-            subplot(nrows = 2, margin=c(0.08,0,.1,.1), c(
-                lapply(pkis.k, function(p) {
-                    ggplotly(plots()[["k.evol.abs"]][[p]], tooltip = "text")
-                }),
-                lapply(pkis.k, function(p) {
-                    ggplotly(plots()[["k.evol.norm"]][[p]], tooltip = "text")
-                })
-                ))
-        ))))
     }
     
     pkiesr_ggly_etab <- function() { 
@@ -60,9 +54,25 @@ shinyServer(function(input, output, session) {
         ))))
     }
     
+    pkiesr_ggly_evol <- function() {
+        renderPlotly(print(hide_legend(config(displayModeBar = F,
+              subplot(nrows = 2, margin=c(0.02,0.02,.1,.1),  c(
+                  lapply(seq(1,5), function(p) {
+                      ggplotly(plots()[["k.evol.abs"]][[p]], tooltip = "text")
+                  }),
+                  lapply(seq(1,5), function(p) {
+                      ggplotly(plots()[["k.evol.norm"]][[p]], tooltip = "text")
+                  })
+              ))
+        ))))
+    }
+    
+    
     
     output[["k.norm"]] <- pkiesr_ggly("k.norm")
     output[["k.evols"]] <- pkiesr_ggly_evol()
     output[["etab"]] <- pkiesr_ggly_etab()
     
 })
+
+
