@@ -24,8 +24,9 @@ shinyServer(function(input, output, session) {
     observeEvent(input$uai, {
         plots(pkiesr_plot_all(rentrée,input$uai, 
                               style.pki.k = pkiesr_style(
-                                  point_size=12, 
-                                  bp_text_x = -0.3,
+                                  point_size=14, 
+                                  text_size=4,
+                                  bp_text_x = -0.4,
                                   plotly=TRUE), 
                               style.pki = pkiesr_style(
                                   point_size = 8,
