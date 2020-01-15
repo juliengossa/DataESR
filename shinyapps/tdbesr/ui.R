@@ -9,8 +9,6 @@
 
 library(shiny)
 
-source("R/common.R", local=TRUE)
-
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
@@ -34,20 +32,16 @@ shinyUI(fluidPage(
                            choices = uais["Université"])
         ),
         column(4, 
-            helpText("Interface expérimentale : utiliser avec précaution"),
+            helpText("Années : 2017-2018"),
+            helpText("Interface expérimentale : utiliser avec précaution."),
             helpText("Liens :",
                 a("Manuel", href="https://github.com/juliengossa/DataESR/tree/master/tdbesr"),
-                " et Contact :", a("contact@cpesr.fr", href="mailto:contact@cpesr.fr"))
+                " et ",a("contact@cpesr.fr", href="mailto:contact@cpesr.fr"))
         )
     ),
     fluidRow(
         column(6, 
                plotlyOutput("k.norm", height = height.k)
-               # fluidRow(plotlyOutput("k.norm", height = height.k)),
-               # fluidRow(
-               #     column(1),
-               #     column(11,plotlyOutput("k.evols", height = height.evol)))
-
         ),
         column(6, 
             plotlyOutput("etab", height = height.set)

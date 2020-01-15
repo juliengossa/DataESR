@@ -67,6 +67,7 @@ pkiesr_style <- function(
               bp_alpha = 1,
               palette = "Set2",
               x_scale = TRUE,
+              x_scale_pos = "bottom",
               y_scale = TRUE,
               title = FALSE,
               plotly = FALSE) {
@@ -134,6 +135,16 @@ pkiesr_lfc <- list(
                  "Nombre de formations post-bac sous-chargées")
   ),
   K = list(
+    labels   = c("Taux de\nressources\npropres", "Taux de\nressources\npar étudiant", "Taux\nd'encadrement", "Taux de\ntitularité"),
+    factors  = c("pki.K.proPres", "pki.K.resPetu", "pki.K.titPetu", "pki.K.titPens"),
+    colors   = c("brown4",coloranges[5],coloranges[4],colgreens[5],colblues[5]),
+    y_labels = identity,
+    desc     = c("Part des ressources propres dans les ressources",
+                 "Ressources divisées par le nombre d'étudiants",
+                 "Nombre d'enseignants titulaires pour 100 étudiants",
+                 "Part des titulaires dans les enseignants")
+  ),
+  K_ADM = list(
     labels   = c("Taux de\nressources\npropres", "Taux de\nressources\npar étudiant", "Taux de\nformations\nsélectives", "Taux\nd'encadrement", "Taux de\ntitularité"),
     factors  = c("pki.K.proPres", "pki.K.resPetu", "pki.K.selPfor", "pki.K.titPetu", "pki.K.titPens"),
     colors   = c("brown4",coloranges[5],coloranges[4],colpurples[5],colgreens[5],colblues[5]),
@@ -147,6 +158,12 @@ pkiesr_lfc <- list(
 )
 
 peg.args <- list(
+  list(pkiesr_lfc$K, 1, y_labels = scales::percent),
+  list(pkiesr_lfc$K, 2, y_labels = euro_k         ),
+  list(pkiesr_lfc$K, 3, y_labels = identity       ),
+  list(pkiesr_lfc$K, 4, y_labels = scales::percent))
+
+peg.args.adm <- list(
   list(pkiesr_lfc$K, 1, y_labels = scales::percent),
   list(pkiesr_lfc$K, 2, y_labels = euro_k         ),
   list(pkiesr_lfc$K, 3, y_labels = scales::percent, rentrée.base=2015),

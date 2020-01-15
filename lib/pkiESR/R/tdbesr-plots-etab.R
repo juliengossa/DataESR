@@ -122,11 +122,12 @@ pkiesr_plot_norm <- function(rentrée, uai, lfc,
       else
         geom_text(data = df.stats, aes(y=0, label=mean, text=paste0(lfc$desc,"\nMoyenne : ", mean)),
                   color="black", size=style$text_size-1, nudge_x=style$bp_text_x, hjust=1) } +
-    scale_x_discrete(labels=lfc$labels) +
+    scale_x_discrete(labels=lfc$labels, position = style$x_scale_pos) +
     scale_y_continuous(labels = percent_format) +
     scale_fill_manual(values=lfc$colors[-1]) +
     guides(color=FALSE, fill=FALSE) +
-    pkiesr_theme
+    pkiesr_theme +
+    { if(style$x_scale == FALSE) theme(axis.text.x = element_blank()) }
 
   return(p)
 }

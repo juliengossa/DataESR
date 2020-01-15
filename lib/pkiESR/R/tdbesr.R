@@ -143,33 +143,56 @@ pkiesr_fusion <- function(uais) {
 #'
 #' @examples
 pkiesr_plot_all <- function(rentrée, uai,
-                            style.pki.k=pkiesr_style(), style.pki=pkiesr_style(),
+                            style.pki.k=pkiesr_style(),
+                            style.pki=pkiesr_style(),
                             lfc = pkiesr_lfc,
+                            adm = FALSE,
                             ...) {
 
+  if(adm) {
+    k.norm.index <- "K_ADM"
+    zooms.abs <- c(0.5, 0.5, 1, 1, 0.5,  1)
+    zooms.evol <- c(0.6, 0.6, 0.4, 0.15, 0.15,  1)
+  }
+  else {
+    k.norm.index <- "K"
+    zooms.abs <- c(0.5, 0.5, 1, 0.5,  1)
+    zooms.evol <- c(0.6, 0.6, 0.15, 0.15,  1)
+  }
+
+  style.abs <- style.pki
+  style.abs$x_scale = TRUE
+
   plots <- list(
-    k.norm = pkiesr_plot_norm(rentrée, uai, lfc[["K"]],
+    k.norm = pkiesr_plot_norm(rentrée, uai, lfc[[k.norm.index]],
                               norm.values=FALSE, omit.first = FALSE,
                               style=style.pki.k, ...),
     k.evol.abs = pkiesr_plot_evol_all(rentrée, uai, peg.args,
-                                      yzooms = c(0.5, 0.5, 1, 1, 0.5,  1),
+                                      yzooms = zooms.abs,
                                       plot.type="abs",
-                                      style = style.pki),
+                                      style = style.abs),
     k.evol.norm = pkiesr_plot_evol_all(rentrée, uai, peg.args,
-                                      yzooms = c(0.6, 0.6, 0.4, 0.15, 0.15,  1),
+                                      yzooms = zooms.evol,
                                       plot.type="norm",
                                       style = style.pki),
 
-    etu.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ETU"]], style=style.pki, ...),
-    ens.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
-    fin.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["FIN"]], style=style.pki,...),
-    adm.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ADM"]], style=style.pki,...),
+    absnorm = list(
+      etu.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ETU"]], style=style.pki, ...),
+      etu.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ETU"]], style=style.pki,...),
 
-    etu.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ETU"]], style=style.pki,...),
-    ens.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
-    fin.norm = pkiesr_plot_norm(rentrée,uai,lfc[["FIN_N"]], style=style.pki, omit.first = FALSE, ...),
-    adm.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ADM"]], style=style.pki,...)
+      ens.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
+      ens.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
+
+      fin.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["FIN"]], style=style.pki,...),
+      fin.norm = pkiesr_plot_norm(rentrée,uai,lfc[["FIN_N"]], style=style.pki, omit.first = FALSE, ...)
+      )
   )
+
+  if(adm)
+    plots$absnorm <- append(plots$absnorm, c(
+      adm.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["ADM"]], style=style.pki,...),
+      adm.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ADM"]], style=style.pki,...)
+    ))
 
   return(plots)
 }
@@ -187,7 +210,8 @@ pkiesr_plot_all <- function(rentrée, uai,
 #'
 #' @examples
 pkiesr_plot_tdb <- function(rentrée, uai,
-                            style.pki.k=pkiesr_style(), style.pki=pkiesr_style(), ...) {
+                            style.pki.k=pkiesr_style(),
+                            style.pki=pkiesr_style(), ...) {
 
   plots <- pkiesr_plot_all(rentrée, uai, style.pki.k, style.pki,...)
 
@@ -198,11 +222,7 @@ pkiesr_plot_tdb <- function(rentrée, uai,
                 plot_grid(plotlist = plots$k.evol.abs, nrow=1, align = "hv"),
                 plot_grid(plotlist = plots$k.evol.norm, nrow=1, align = "hv")
                 ),
-              plot_grid (ncol = 2, align = "v",
-               plots$fin.abs, plots$fin.norm,
-               plots$etu.abs, plots$etu.norm,
-               plots$adm.abs, plots$adm.norm,
-               plots$ens.abs, plots$ens.norm)
+              plot_grid (ncol = 2, align = "v", plotlist = plots$absnorm)
     )
 
   return(pg)
