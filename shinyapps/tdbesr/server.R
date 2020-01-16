@@ -77,7 +77,7 @@ shinyServer(function(input, output, session) {
                                       line_size = 2,
                                       plotly=TRUE),
                                   lfc = shiny_lfc)
-            
+                
             plots <- list(
                 k.norm = pkiesr_ggly_k.norm(plots_all),
                 k.evols = pkiesr_ggly_k.evols(plots_all),

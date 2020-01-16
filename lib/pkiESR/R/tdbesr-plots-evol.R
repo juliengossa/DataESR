@@ -47,10 +47,11 @@ pkiesr_plot_evol <- function(rentrées, uais, lfc, ilfc, type=NA,
               aes(group = Libellé, colour = Libellé),
               size=style$line_size,
               arrow = arrow(length=unit(0.30,"cm"),type="closed",angle=30)) +
-    # geom_point(data = df.uai,
-    #           aes(group = Libellé, colour = Libellé,
-    #               text = paste0(lfc$desc[ilfc],"\nValeur : ",value_label," ; ",y_labels(value),
-    #                             "\nClassement : ", rang))) +
+    geom_point(data = df.uai,
+              aes(group = Libellé, colour = Libellé,
+                  text = paste0(lfc$desc[ilfc],"\nValeur : ",value_label," ; ",y_labels(value),
+                                "\nClassement : ", rang)),
+              size=style$line_size+2) +
     scale_x_discrete(limits = as.character(rentrées)) +
     scale_y_continuous(labels = y_labels) +
     scale_color_manual(values = lfc$colors) +
