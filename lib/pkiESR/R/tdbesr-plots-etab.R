@@ -78,7 +78,8 @@ pkiesr_plot_norm <- function(rentrée, uai, lfc,
     mutate(pki = factor(pki,lfc$factors)) %>%
     #filter(!is.na(value)) %>%
     group_by(pki) %>%
-    mutate(y = norm-mean(norm, na.rm = TRUE))
+    mutate(y = norm-mean(norm, na.rm = TRUE),
+           rang = rank(desc(y)))
 
   if(!norm.values) {
     df$norm_label <- df$value_label
@@ -112,7 +113,9 @@ pkiesr_plot_norm <- function(rentrée, uai, lfc,
     geom_violin(aes(fill=pki, text = pkiesr_pki_stats(df.stats,pki)),
                 color="black", width=style$bp_width) +
     geom_point(data = df.etab,
-               aes(text = paste0(lfc$desc,"\nEcart à la moyenne : ",percent_format(y),"\nClassement : ",rang,"/", df.stats[df.stats$pki==pki,]$count)),
+               aes(text = paste0(lfc$desc,
+                                 "\nEcart à la moyenne : ",percent_format(y),
+                                 "\nClassement : ",rang,"/", df.stats[df.stats$pki==pki,]$count)),
                size=style$point_size, fill=lfc$colors[1], color="black", shape=21, alpha=0.9) +
     geom_line(data = df.etab, aes(group=UAI),     color=lfc$colors[1], size=style$line_size, alpha=0.9) +
     geom_text(data = df.etab, aes(label=norm_label),     color="white",    size=style$text_size, fontface="bold") +

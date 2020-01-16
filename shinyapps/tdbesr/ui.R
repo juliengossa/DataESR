@@ -32,7 +32,7 @@ shinyUI(fluidPage(
                            choices = uais["Université"])
         ),
         column(4, 
-            helpText("Années : 2017-2018"),
+            helpText("Année : 2017-2018"),
             helpText("Interface expérimentale : utiliser avec précaution."),
             helpText("Liens :",
                 a("Manuel", href="https://github.com/juliengossa/DataESR/tree/master/tdbesr"),

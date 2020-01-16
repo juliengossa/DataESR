@@ -73,7 +73,7 @@ shinyServer(function(input, output, session) {
                         yanchor = "top",
                         yref = "paper",
                         showarrow = FALSE,
-                        y=1.1)
+                        y=1.15)
                   }),
                   lapply(seq(1,4), function(p) {
                       ggplotly(plots()[["k.evol.norm"]][[p]], tooltip = "text")
