@@ -74,7 +74,7 @@ shinyServer(function(input, output, session) {
                                   style.pki = pkiesr_style(
                                       point_size = 8,
                                       text_size = 3,
-                                      line_size = 1,
+                                      line_size = 2,
                                       plotly=TRUE),
                                   lfc = shiny_lfc)
             

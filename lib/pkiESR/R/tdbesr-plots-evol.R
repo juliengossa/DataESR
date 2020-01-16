@@ -40,8 +40,6 @@ pkiesr_plot_evol <- function(rentrées, uais, lfc, ilfc, type=NA,
   ylim[1] <- min(ylim[1],min(df.uai$value))
   ylim[2] <- max(ylim[2],max(df.uai$value))
 
-  #if(style$plotly) df.evol <- df.uai
-
   p <- ggplot(df.evol, aes(x=as.factor(Rentrée), y=value)) +
     geom_hline(yintercept = value.median) +
     geom_boxplot(aes(fill=pki), fill=lfc$colors[ilfc+1], alpha=style$bp_alpha)  +
@@ -53,7 +51,7 @@ pkiesr_plot_evol <- function(rentrées, uais, lfc, ilfc, type=NA,
               aes(group = Libellé, colour = Libellé,
                   text = paste0(lfc$desc[ilfc],"\nValeur : ",value_label," ; ",y_labels(value),
                                 "\nClassement : ", rang)),
-              size=style$line_size ) +
+              size=2 ) +
     scale_x_discrete(limits = as.character(rentrées)) +
     scale_y_continuous(labels = y_labels) +
     scale_color_manual(values = lfc$colors) +
