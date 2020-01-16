@@ -20,7 +20,7 @@ shinyServer(function(input, output, session) {
     
 
     observeEvent(input$type,
-                 output$SI.uai <- renderUI(selectInput("uai", "Etablissement", selected = sel.uai,
+                 output$SI.uai <- renderUI(selectInput("uai", "Etablissement", selected = NULL,
                                                        choices = uais[input$type]))
     )
     output$SI.type <- renderUI(selectInput("type", "Type", selected = "Université", choices = list(
@@ -32,8 +32,6 @@ shinyServer(function(input, output, session) {
 
 
     onRestore(function(state) {
-        sel.type = state$input$type
-        sel.uai = state$input$uai
         updateSelectInput(session, "type", selected = state$input$type)
         updateSelectInput(session, "uai", choices = pkiESR::uais[state$input$type], selected = state$input$uai)
     })
