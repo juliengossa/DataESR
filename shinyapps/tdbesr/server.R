@@ -18,8 +18,30 @@ shinyServer(function(input, output, session) {
     
     rentrée <- 2017
     
-    observe(updateSelectInput(session, "uai", choices =  pkiESR::uais[input$type]))
-        
+
+    observeEvent(input$type,
+                 output$SI.uai <- renderUI(selectInput("uai", "Etablissement", selected = sel.uai,
+                                                       choices = uais[input$type]))
+    )
+    output$SI.type <- renderUI(selectInput("type", "Type", selected = "Université", choices = list(
+        "Université" = "Université",
+        "Grand établissement" = "Grand établissement",
+        #"Regroupement" = "Regroupement",
+        "Autre" = "Autre"
+    )))
+
+
+    onRestore(function(state) {
+        sel.type = state$input$type
+        sel.uai = state$input$uai
+        updateSelectInput(session, "type", selected = state$input$type)
+        updateSelectInput(session, "uai", choices = pkiESR::uais[state$input$type], selected = state$input$uai)
+    })
+    
+    # onRestored(function(state) {
+    #     updateSelectInput(session, "type", selected = state$input$type)
+    #     updateSelectInput(session, "uai", choices = pkiESR::uais[state$input$type], selected = state$input$uai)
+    # })
     
     
     pkiesr_ggly_k.norm <- function(plots_all) { 

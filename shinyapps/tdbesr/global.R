@@ -2,6 +2,10 @@
 library(pkiESR)
 library(plotly)
 
+
+enableBookmarking(store = "url")
+
+
 height.k <- "auto"
 height.evol <- "auto"
 height.set <- "auto"

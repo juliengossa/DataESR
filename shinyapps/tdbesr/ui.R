@@ -11,29 +11,27 @@ library(shiny)
 
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+shinyUI(function(request) {fluidPage(
     tags$head(tags$style(HTML(mycss))),
     
     
     # Sidebar with a slider input for number of bins 
     fluidRow( 
         column(2,
-        titlePanel("TDB ESR", windowTitle="Tableaux de bord de l'ESR")
+               titlePanel("TDB ESR", windowTitle="Tableaux de bord de l'ESR")
+               
+        ),
+        column(2,
+               uiOutput("SI.type")
         ),
         column(3,
-               selectInput("type", "Type", selected = "Université", choices = list(
-                   "Université" = "Université",
-                   "Grand établissement" = "Grand établissement",
-                   #"Regroupement" = "Regroupement",
-                   "Autre" = "Autre"
-               ))
+               uiOutput("SI.uai")
         ),
-        column(3,
-               selectInput("uai", "Etablissement", selected = "", 
-                           choices = uais["Université"])
-        ),
-        column(4, 
-            helpText("Année : 2017-2018"),
+        column(2,
+               helpText("Année : 2017-2018"),
+               bookmarkButton()),
+        column(3, 
+            
             helpText("Interface expérimentale : utiliser avec précaution."),
             helpText("Liens :",
                 a("Manuel", href="https://github.com/juliengossa/DataESR/tree/master/tdbesr"),
@@ -53,4 +51,5 @@ shinyUI(fluidPage(
         )
     ),
     plotlyOutput("k.evols", height = height.evol)
-))
+)
+    })
