@@ -51,7 +51,7 @@ pkiesr_plot_evol <- function(rentrées, uais, lfc, ilfc, type=NA,
               aes(group = Libellé, colour = Libellé,
                   text = paste0(lfc$desc[ilfc],"\nValeur : ",value_label," ; ",y_labels(value),
                                 "\nClassement : ", rang)),
-              size=2 ) +
+              size=0.5 ) +
     scale_x_discrete(limits = as.character(rentrées)) +
     scale_y_continuous(labels = y_labels) +
     scale_color_manual(values = lfc$colors) +
