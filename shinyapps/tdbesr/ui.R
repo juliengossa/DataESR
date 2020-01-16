@@ -12,6 +12,7 @@ library(shiny)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
+    tags$head(tags$style(HTML(mycss))),
     
     
     # Sidebar with a slider input for number of bins 
@@ -41,7 +42,11 @@ shinyUI(fluidPage(
     ),
     fluidRow(
         column(6, 
+               div(id = "plot-container",
+                   tags$img(src = "spinner.gif",
+                            id = "loading-spinner"),
                plotlyOutput("k.norm", height = height.k)
+               )
         ),
         column(6, 
             plotlyOutput("etab", height = height.set)
