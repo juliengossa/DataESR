@@ -35,7 +35,7 @@ pkiesr_pivot_norm_label <- function() {
       norm_label = norm_labels(pki,norm)
     ) %>%
     group_by(Rentrée, Type, pki) %>%
-    mutate(rang = dense_rank(desc(value))) %>%
+    mutate(rang = dense_rank(desc(norm))) %>%
     ungroup()
 }
 
@@ -184,7 +184,7 @@ pkiesr_plot_all <- function(rentrée, uai,
       ens.norm = pkiesr_plot_norm(rentrée,uai,lfc[["ENS"]], style=style.pki,...),
 
       fin.abs = pkiesr_plot_primaire(rentrée,uai,lfc[["FIN"]], style=style.pki,...),
-      fin.norm = pkiesr_plot_norm(rentrée,uai,lfc[["FIN_N"]], style=style.pki, omit.first = FALSE, ...)
+      fin.norm = pkiesr_plot_norm(rentrée,uai,lfc[["FIN_N"]], style=style.pki,...)
       )
   )
 

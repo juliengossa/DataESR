@@ -115,13 +115,14 @@ pkiesr_lfc <- list(
                  "Ressources propres")
   ),
   FIN_N = list(
-    labels   = c("Masse salariale","Ressources propres", "DU"),
-    factors  = c("pki.FIN.S.masseSalariale", "pki.FIN.S.ressourcesPropres", "pki.ETU.S.diplomeEtablissement"),
+    labels   = c("Ressources","Masse salariale","Ressources propres", "DU"),
+    factors  = c("pki.FIN.P.ressources","pki.FIN.S.masseSalariale", "pki.FIN.S.ressourcesPropres", "pki.ETU.S.diplomeEtablissement"),
     colors   = c(coloranges[1:3], colgreens[5]),
     y_labels = euro,
-    desc     = c("Part de la masse salariale dans les ressources",
-                 "Part des ressources propres dans les ressources",
-                 "Part de l'effectif étudiant inscrit en diplôme d'établissement (DU, non-national)")
+    desc     = c("Ressources totales (produits encaissables)",
+                 "Masse salariale (dépenses de personnels)",
+                 "Ressources propres",
+                 "Effectif étudiant inscrit en diplôme d'établissement (DU, non-national)")
   ),
   ADM = list(
     labels    = c("Formations\nPost-Bac","Sélectives","Hyper-\nsélectives","Sur-\nchargées","Sous-\nchargées"),
