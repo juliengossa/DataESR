@@ -9,13 +9,13 @@ uai.unistra <- "0673021V"
 uai <- uai.unistra
 ```
 
-# Indicateurs clés de performance (PKI)
+# Indicateurs clés de performance (KPI)
 
 Les indicateurs clés de performance choisis sont :
 
 - Taux de ressources propres : part des ressources propres dans les ressources totales de l'établissement.
 - Taux de ressources par étudiant : rapport entre les ressources de l'établissement et le nombre d'étudiants inscrits en premier et deuxième cycle (L et M).
-- Taux de formations sélectives : pourcentage de formations post-bac considérées comme sélectives (voir plus bas).
+<!-- - Taux de formations sélectives : pourcentage de formations post-bac considérées comme sélectives (voir plus bas). -->
 - Taux d'encadrement : nombre d'enseignants titulaires pour 100 étudiants inscrits en premier et deuxième cycle (L et M).
 - Taux de titularité : pourcentage d'enseignants titulaires parmi tous les enseignants.
 
@@ -65,42 +65,42 @@ Les données brutes ont été extraites des jeux de données suivants :
    - __Surchargées__ : le nombre de formations dont le nombre d'admis est supérieur à la capacité d'accueil
    - __Souschargées__ : le nombre de formations dont le nombre d'admis est inférieur à 75% de la capacité d'accueil
    
-_NB_ : les données APB/Parcoursup sont particulièrement difficile à exploiter et comportent de nombreux trous. De plus, elles concernent deux plateformes différentes (APB puis Parcoursup), avec des changements legislatifs et pratiques profonds. Les indicateurs doivent être traités avec les plus grandes précautions.
+_NB_ : les données APB/Parcoursup sont particulièrement difficile à exploiter et comportent de nombreux trous. De plus, elles concernent deux plateformes différentes (APB puis Parcoursup), avec des changements legislatifs et pratiques profonds. Les indicateurs ont ne sont pas présentés dans cette version pour éviter d'induire le lecteur en erreur.
 
 Enfin, afin de pouvoir présenter les données, les series ont été décalées d'un an (i.e. les données d'admission post-bac notée à l'année 2017 sont celles de la rentrée 2018).
 
 ## Exemples de lecture
 
 
-### PKI : instantanés
+### KPI : instantanés
 
-```{r pki.raw}
-  pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["K"]], norm.values=FALSE, omit.first = TRUE)
+```{r kpi.raw}
+  kpiesr_plot_norm(rentrée,uai,kpiesr_lfc[["K"]], norm.values=FALSE, omit.first = FALSE)
 ```
 
 Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour 100 étudiants dans les universités. Dans cet établissement, il y en a 3,7, ce qui le place dans le deuxième quartile ».
 
-### PKI : évolution en valeur absolue
+### KPI : évolution en valeur absolue
 
-```{r pki.evol.raw, fig.width = 9, out.width="100%"}
+```{r kpi.evol.raw, fig.width = 9, out.width="100%"}
 plot_grid(nrow=1, 
-   plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args,
+   plotlist = kpiesr_plot_evol_all(rentrée, uai, peg.args,
                                   yzooms = c(0.5, 0.5, 1, 1, 0.5),
                                   plot.type="abs",
-                                  style = pkiesr_style(title=TRUE)) )
+                                  style = kpiesr_style(title=TRUE)) )
 ```
 
 
 Exemple de lecture : « En 2012, le taux d'encadrement de l'établissement était à 4,3, soit la médiane pour toutes les universités. Il est progressivement passé à 3,7, ce qui place maintenant l'établissement dans le deuxième quartile ».
 
-#### PKI : évolution en valeur de l'année de référence
+#### KPI : évolution en valeur de l'année de référence
 
-```{r pki.evol.nor, fig.width = 9, out.width="100%"}
+```{r kpi.evol.nor, fig.width = 9, out.width="100%"}
 plot_grid(nrow=1,
-   plotlist = pkiesr_plot_evol_all(rentrée, uai, peg.args, 
+   plotlist = kpiesr_plot_evol_all(rentrée, uai, peg.args, 
                                   yzooms = c(0.6, 0.6, 0.5, 0.2, 0.2, 1),
                                   plot.type="norm",
-                                  style = pkiesr_style(title=TRUE)) )
+                                  style = kpiesr_style(title=TRUE)) )
 ```
 
 Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établissement a baissé d'environ 15%, ce qui le place dans le premier quartile inférieur des évolution de cet indicateur ».
@@ -109,7 +109,7 @@ Exemple de lecture : « Entre 2012 et 2017, le taux d'encadrement de l'établiss
 #### Données brutes 
 
 ```{r etu.raw}
-pkiesr_plot_primaire(rentrée,uai,pkiesr_lfc[["ETU"]])
+kpiesr_plot_primaire(rentrée,uai,kpiesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « l'établissement compte 47 573 étudiants hors double inscription en CPGE, dont 26 679 en 1er cycle (L, DUT, prépa, etc.) ».
@@ -117,7 +117,7 @@ Exemple de lecture : « l'établissement compte 47 573 étudiants hors double in
 #### Données normalisées
 
 ```{r etu.norm}
-pkiesr_plot_norm(rentrée,uai,pkiesr_lfc[["ETU"]])
+kpiesr_plot_norm(rentrée,uai,kpiesr_lfc[["ETU"]])
 ```
 
 Exemple de lecture : « La part moyenne des étudiants en 1er cycle dans les effectifs des universités est de 68%. L'établissement présente une part de 56%, ce qui le place dans le quartile inférieur ».

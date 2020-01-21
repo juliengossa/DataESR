@@ -9,7 +9,7 @@ vérifiée.**
 Téléchargement : [Rapport complet sur les
 universités](./tdbesr-rapport.pdf)
 
-# Indicateurs clés de performance (PKI)
+# Indicateurs clés de performance (KPI)
 
 Les indicateurs clés de performance choisis sont :
 
@@ -18,8 +18,7 @@ Les indicateurs clés de performance choisis sont :
   - Taux de ressources par étudiant : rapport entre les ressources de
     l’établissement et le nombre d’étudiants inscrits en premier et
     deuxième cycle (L et M).
-  - Taux de formations sélectives : pourcentage de formations post-bac
-    considérées comme sélectives (voir plus bas).
+    <!-- - Taux de formations sélectives : pourcentage de formations post-bac considérées comme sélectives (voir plus bas). -->
   - Taux d’encadrement : nombre d’enseignants titulaires pour 100
     étudiants inscrits en premier et deuxième cycle (L et M).
   - Taux de titularité : pourcentage d’enseignants titulaires parmi tous
@@ -94,8 +93,9 @@ Les données brutes ont été extraites des jeux de données suivants :
 *NB* : les données APB/Parcoursup sont particulièrement difficile à
 exploiter et comportent de nombreux trous. De plus, elles concernent
 deux plateformes différentes (APB puis Parcoursup), avec des changements
-legislatifs et pratiques profonds. Les indicateurs doivent être traités
-avec les plus grandes précautions.
+legislatifs et pratiques profonds. Les indicateurs ont ne sont pas
+présentés dans cette version pour éviter d’induire le lecteur en
+erreur.
 
 Enfin, afin de pouvoir présenter les données, les series ont été
 décalées d’un an (i.e. les données d’admission post-bac notée à
@@ -104,18 +104,18 @@ l’année 2017 sont celles de la rentrée
 
 ## Exemples de lecture
 
-### PKI : instantanés
+### KPI : instantanés
 
-<img src="README_files/figure-gfm/pki.raw-1.png" height="10%" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/kpi.raw-1.png" height="10%" style="display: block; margin: auto;" />
 
 Exemple de lecture : « Il y a en moyenne 4,1 enseignants titulaires pour
 100 étudiants dans les universités. Dans cet établissement, il y en a
 3,7, ce qui le place dans le deuxième quartile
 ».
 
-### PKI : évolution en valeur absolue
+### KPI : évolution en valeur absolue
 
-<img src="README_files/figure-gfm/pki.evol.raw-1.png" width="100%" height="10%" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/kpi.evol.raw-1.png" width="100%" height="10%" style="display: block; margin: auto;" />
 
 Exemple de lecture : « En 2012, le taux d’encadrement de l’établissement
 était à 4,3, soit la médiane pour toutes les universités. Il est
@@ -123,9 +123,9 @@ progressivement passé à 3,7, ce qui place maintenant l’établissement
 dans le deuxième quartile
 ».
 
-#### PKI : évolution en valeur de l’année de référence
+#### KPI : évolution en valeur de l’année de référence
 
-<img src="README_files/figure-gfm/pki.evol.nor-1.png" width="100%" height="10%" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/kpi.evol.nor-1.png" width="100%" height="10%" style="display: block; margin: auto;" />
 
 Exemple de lecture : « Entre 2012 et 2017, le taux d’encadrement de
 l’établissement a baissé d’environ 15%, ce qui le place dans le

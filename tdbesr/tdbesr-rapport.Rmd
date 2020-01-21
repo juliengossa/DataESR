@@ -1,5 +1,5 @@
 ---
-title: "Tableaux de bord des universités  \nv0.4"
+title: "Tableaux de bord des universités  \nv0.5"
 author: "Julien Gossa  \n gossa@unistra.fr"
 date: "09/01/2020"
 output: 
@@ -21,9 +21,9 @@ library(kableExtra)
 library(tidyverse)
 library(cowplot)
 
-library(pkiESR)
+library(kpiESR)
 
-small_style <- pkiesr_style(
+small_style <- kpiesr_style(
   point_size = 12,
   line_size = 2,
   text_size = 3,
@@ -31,7 +31,7 @@ small_style <- pkiesr_style(
   bp_width = 1,
   bp_text_x = -0.25 )
 
-big_style <- pkiesr_style(
+big_style <- kpiesr_style(
   point_size = 17,
   line_size = 2,
   text_size = 4,
@@ -59,8 +59,8 @@ catinfo <- function(etab) {
   cat(" ; [Décret](",strvar(etab$url.legifrance),")\n   \n")
 }
 
-table_classement <- function(rentrée,type,pkis,labels)
-  pkiesr_classement(rentrée, type, pkis, labels) %>%
+table_classement <- function(rentrée,type,kpis,labels)
+  kpiesr_classement(rentrée, type, kpis, labels) %>%
     kable("latex", longtable = T, booktabs = T, align = c("r","r","l",rep("r",4))) %>%
     kable_styling(latex_options = c("striped", "repeat_header"))
 ```
@@ -88,7 +88,7 @@ uai.dauphine <- "0750736T"
 
 
 etabs <- subset(esr,Type %in% c("Université", "Grand établissement"), c(UAI,Libellé:url.legifrance) ) %>% unique %>% arrange(desc(Type),Académie)
- #etabs <- filter(etabs, UAI %in% c(uai.unistra,uai.uha))
+#etabs <- filter(etabs, UAI %in% c(uai.unistra,uai.uha))
 
 aca <- ""
 type <- ""
@@ -111,7 +111,7 @@ for (i in seq(1,nrow(etabs))) {
   catinfo(etab)
   
   print(suppressWarnings(
-    pkiesr_plot_tdb(rentrée, etab$UAI, style.pki.k=big_style, style.pki=small_style)
+    kpiesr_plot_tdb(rentrée, etab$UAI, style.kpi.k=big_style, style.kpi=small_style)
     ))
   cat("  \n   \n")
 }
@@ -124,7 +124,7 @@ for (i in seq(1,nrow(etabs))) {
 
 ```{r classement.RP}
 table_classement(rentrée, "Université",
-                  c("pki.K.proPres", "pki.FIN.P.ressources","pki.FIN.S.ressourcesPropres"),
+                  c("kpi.K.proPres", "kpi.FIN.P.ressources","kpi.FIN.S.ressourcesPropres"),
                   c("Taux","Ressources","Ressources   \nPropres"))
 ```
 
@@ -132,23 +132,23 @@ table_classement(rentrée, "Université",
 
 ```{r classement.RpE}
 table_classement(rentrée, "Université",
-                  c("pki.K.resPetu", "pki.FIN.P.ressources","pki.ETU.S.cycle.1.L","pki.ETU.S.cycle.2.M"),
+                  c("kpi.K.resPetu", "kpi.FIN.P.ressources","kpi.ETU.S.cycle.1.L","kpi.ETU.S.cycle.2.M"),
                   c("Taux","Ressources","Effectif L","Effectif M"))
 ```
 
-## Taux de formations sélectives
+<!-- ## Taux de formations sélectives -->
 
-```{r classement.FS}
-table_classement(rentrée, "Université",
-                  c("pki.K.selPfor", "pki.ADM.P.formations","pki.ADM.S.sélective"),
-                  c("Taux","Formations","Formations sélectives"))
-```
+<!-- ```{r classement.FS} -->
+<!-- table_classement(rentrée, "Université", -->
+<!--                   c("kpi.K.selPfor", "kpi.ADM.P.formations","kpi.ADM.S.sélective"), -->
+<!--                   c("Taux","Formations","Formations sélectives")) -->
+<!-- ``` -->
 
 ## Taux d'encadrement
 
 ```{r classement.EpE}
 table_classement(rentrée, "Université",
-                  c("pki.K.titPetu", "pki.ENS.S.titulaires","pki.ETU.P.effectif"),
+                  c("kpi.K.titPetu", "kpi.ENS.S.titulaires","kpi.ETU.P.effectif"),
                   c("Taux","Ens. titulaires","Etudiants"))
 ```
 
@@ -156,7 +156,7 @@ table_classement(rentrée, "Université",
 
 ```{r classement.TpE}
 table_classement(rentrée, "Université",
-                  c("pki.K.titPens", "pki.ENS.P.effectif", "pki.ENS.S.titulaires"),
+                  c("kpi.K.titPens", "kpi.ENS.P.effectif", "kpi.ENS.S.titulaires"),
                   c("Taux","Enseignants","Titulaires"))
 ```
 
