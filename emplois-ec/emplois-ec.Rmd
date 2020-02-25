@@ -1,7 +1,7 @@
 ---
 title: "Campagne de recrutement synchornisée des enseignants-chercheurs"
 author: "Julien Gossa"
-date: "24/02/2020"
+date: "25/02/2020"
 output: 
   html_document:
     keep_md: true
@@ -46,7 +46,7 @@ Des versions exploitables sont disponibles ici :
 
 - [Campagne 2018](emplois-ec.2018.csv)
 - [Campagne 2019](emplois-ec.2019.csv)
-- [Campagne 2020](emplois-ec.2020.csv)
+- [Campagne 2020](emplois-ec.2020.csv) (mise à jour le 25/02/2020 à 13h30)
 - [Campagnes 2018-2020](emplois-ec.csv)
 - [Effectifs 2017-2018](effectifs-ec.csv)
 - [Campagne CNU](emplois-ec.cnu.csv)
@@ -95,7 +95,7 @@ emplois.global %>%
               position = position_stack(vjust = .5),
               colour = "white", fontface="bold") +
     scale_y_continuous(labels = label_emplois) +
-    scale_fill_distiller(palette = "Reds", limits=c(0.0,0.02),direction=0) +
+    scale_fill_distiller(palette = "Reds", limits=c(0.0,0.025),direction=0) +
     ggtitle(paste("Renouvellement aux sessions synchronisées")) +
     theme_hc() + guides(fill=FALSE)
 
@@ -118,7 +118,7 @@ emplois.global %>%
               position = position_stack(vjust = .5),
               colour = "white", fontface="bold") +
     scale_y_continuous(labels = label_emplois) +
-    scale_fill_distiller(palette = "Blues",limits=c(0.0,0.017),direction=0) +
+    scale_fill_distiller(palette = "Blues",limits=c(0.0,0.019),direction=0) +
     ggtitle(paste("Promotion aux sessions synchronisées")) +
     theme_hc() + guides(fill=FALSE)
 
@@ -159,7 +159,7 @@ emplois.cnu %>% filter(Rentrée != 2020) %>% filter( !(Section == 76)) %>% # mut
     geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
     geom_point(aes(shape=Rentrée)) +
     scale_y_continuous(breaks = seq(0,0.06,0.005), labels = label_emplois) +
-    scale_fill_distiller(palette = "Reds", limits=c(0,0.042),direction=0) +
+    scale_fill_distiller(palette = "Reds", limits=c(0,0.05),direction=0) +
     coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
     ggtitle(paste("Renouvellement à la session synchronisée",rentrée)) +
     theme_excel_new() + guides(fill=FALSE)
@@ -174,7 +174,7 @@ emplois.cnu %>% filter(Rentrée != 2020) %>%
     geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
     geom_point(aes(shape=Rentrée)) +
     scale_y_continuous(breaks = seq(0,0.06,0.01), labels = label_emplois) +
-    scale_fill_distiller(palette = "Blues",limits=c(0,0.04),direction=0) +
+    scale_fill_distiller(palette = "Blues",limits=c(0,0.06),direction=0) +
     ggtitle(paste("Promotion à la session synchronisée",rentrée)) +
     coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
     theme_excel_new() + guides(fill=FALSE)
@@ -184,12 +184,16 @@ emplois.cnu %>% filter(Rentrée != 2020) %>%
 ### Tableau
 
 ```{r cnu.tableau}
-emplois.cnu %>% 
-  setNames(c("Rentrée","Section","Emplois MCF","Emplois PR","Effectif MCF","Effectif PR","Renouvellement","Promotion")) %>%
+emplois.cnu %>% ungroup() %>%
   mutate(
     Renouvellement = label_emplois(Renouvellement),
     Promotion = label_emplois(Promotion)) %>%
-  kable()%>%  kable_styling(bootstrap_options = "striped", fixed_thead = T)
+  filter(Rentrée == 2020) %>% select(2:8) %>%
+  setNames(c("Section CNU","Emplois MCF","Emplois PR","Effectif MCF","Effectif PR","Renouvellement","Promotion")) %>%
+  kable() %>%  
+    kable_styling(bootstrap_options = "striped", fixed_thead = T) %>% 
+    column_spec(1:5, width = "1em")
+
 ```
 
 

@@ -7,6 +7,7 @@ RENTREE="2020"
 WD=$PWD
 
 cd /tmp
+rm Emplois_publies_TrieParCorps.html
 wget https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/ListesPostesPublies/Emplois_publies_TrieParCorps.html
 cat Emplois_publies_TrieParCorps.html | sed 's/<th /<td /' > Emplois_publies_TrieParCorps.$RENTREE.html
 $WD/html2csv.py Emplois_publies_TrieParCorps.$RENTREE.html
