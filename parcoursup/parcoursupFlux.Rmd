@@ -22,33 +22,45 @@ library(kableExtra)
 library(ggthemes)
 library(ggalluvial)
 
-ps2018.all <- read.table("fr-esr-parcoursup.csv",
-              header=TRUE, sep=';', quote='"')
+ps2018.all <- read.table("fr-esr-parcoursup.2018.csv",
+              header=TRUE, sep=';', quote='"') %>%
+  mutate(Rentrée = 2018)
 
-ps2018.all <- ps2018.all %>%
-  mutate(Taux.de.tension =
-    Effectif.total.des.candidats.en.phase.principale /
+ps2019.all <- read.table("fr-esr-parcoursup.2019.csv",
+              header=TRUE, sep=';', quote='"')%>%
+  mutate(Rentrée = 2019)
+
+
+
+
+ps.all <- bind_rows(ps2018.all, ps2019.all) %>%
+  mutate(
+    Taux.de.tension =
+      Effectif.total.des.candidats.en.phase.principale /
+        Capacité.de.l.établissement.par.formation,
+    Taux.de.remplissage = 
+      Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis./
       Capacité.de.l.établissement.par.formation,
-  Taux.de.remplissage = 
-    Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis./
-    Capacité.de.l.établissement.par.formation,
-
-  Taux.de.sélection = Rang.du.dernier.appelé /
-    Effectif.total.des.candidats.en.phase.principale,
-  Type.de.sélection = case_when(
-    is.na(Rang.du.dernier.appelé) & Filière.de.formation.très.agrégée %in% c("Licence","PACES") ~ "Non_sélective",
-    is.na(Rang.du.dernier.appelé) ~ "Sélective",
-    Taux.de.sélection < 0.20 ~ "Hyper_sélective",
-    Taux.de.sélection < 0.95 ~ "Sélective",
-    TRUE ~ "Non_sélective"
-    ),
-  Type.de.sélection = factor(Type.de.sélection,
-                             levels=c("Hyper_sélective","Sélective","Non_sélective"))
+  
+    Taux.de.sélection = Rang.du.dernier.appelé /
+      Effectif.total.des.candidats.en.phase.principale,
+    Type.de.sélection = case_when(
+      is.na(Rang.du.dernier.appelé) & Filière.de.formation.très.agrégée %in% c("Licence","PACES") ~ "Non_sélective",
+      is.na(Rang.du.dernier.appelé) ~ "Sélective",
+      Taux.de.sélection < 0.20 ~ "Hyper_sélective",
+      Taux.de.sélection < 0.95 ~ "Sélective",
+      TRUE ~ "Non_sélective"
+      ),
+    Type.de.sélection = factor(Type.de.sélection,
+                               levels=c("Hyper_sélective","Sélective","Non_sélective"))
   )
     
-ps2018 <- subset(ps2018.all, Filière.de.formation.très.agrégée != "Autre formation")
+ps2018 <- ps.all %>% filter(Rentrée == 2018, Filière.de.formation.très.agrégée != "Autre formation")
+ps2019 <- ps.all %>% filter(Rentrée == 2019, Filière.de.formation.très.agrégée != "Autre formation")
 
-ps2018.flux <- ps2018 %>%
+ps <- ps2019
+
+ps.flux <- ps %>%
   group_by(Filière.de.formation.très.agrégée) %>%
   summarise(Général = sum(Effectif.des.admis.néo.bacheliers.généraux),
             Techno = sum(Effectif.des.admis.néo.bacheliers.technologiques),
@@ -83,7 +95,7 @@ sty <-
 Les flux de néo-bacheliers admis dans le supérieur public peuvent se modéliser ainsi :
 
 ```{r flux.actuel, echo=FALSE, warnings=FALSE}
-ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+ggplot(ps.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
   geom_alluvium(aes(fill = Bac,color=Bac), width = 1/12, alpha=1) +
   geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
@@ -97,7 +109,7 @@ ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
 L'un des problèmes actuel du supérieur public est la saturation des Licences, ainsi que leur taux de réussite.
 
 ```{r flux.actuel.L, echo=FALSE}
-ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+ggplot(ps.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
   geom_alluvium(aes(fill = Bac, alpha = (Filière == "Licence"), color=Bac), width = 1/12) +
   geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
@@ -119,7 +131,7 @@ Les filières les plus adaptées aux bacs pros sont les BTS. On va donc détourn
 
 ```{r flux.bts, echo=FALSE}
 
-flux <- ps2018.flux
+flux <- ps.flux
 flux$Modifié <- FALSE
 
 flux[12,]$Filière2 <- "BTS"
@@ -142,7 +154,7 @@ Le taux de réussite des bacs technos dans le supérieur est très bas égalemen
 
 ```{r flux.dut, echo=FALSE}
 
-flux <- ps2018.flux
+flux <- ps.flux
 flux$Modifié <- FALSE
 
 flux[12,]$Filière2 <- "BTS"
@@ -166,7 +178,7 @@ Maintenant, le problème se situe au niveau du DUT, qui doit absorber 10 millier
 
 ```{r flux.aprèsdut, echo=FALSE}
 
-flux <- ps2018.flux
+flux <- ps.flux
 flux$Modifié <- FALSE
 
 flux[12,]$Filière2 <- "BTS"
@@ -227,12 +239,12 @@ Détail amusant, cela conduit environ à 50% de bac technologiques en DUT, ce qu
 ## Les quotas de DUT
 
 ```{r dut.calculs, echo=FALSE}
-ps2018.all <- read.table("fr-esr-parcoursup.csv",
+ps.all <- read.table("fr-esr-parcoursup.csv",
               header=TRUE, sep=';', quote='"')
 
-ps2018 <- subset(ps2018.all, Filière.de.formation.très.agrégée != "Autre formation")
+ps <- subset(ps.all, Filière.de.formation.très.agrégée != "Autre formation")
 
-ps2018.dut <- ps2018 %>%
+ps.dut <- ps %>%
   mutate(
     Filière = Filière.de.formation.très.agrégée
 #    Filière = case_when(
@@ -264,7 +276,7 @@ Faisons un focus sur le DUT. En regardant les mentions des néo-bacheliers admis
 
 
 ```{r dut.actuel, echo=FALSE, warnings=FALSE}
-ggplot(ps2018.dut, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+ggplot(ps.dut, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
   geom_alluvium(aes(fill = Bac), color="grey", width = 1/12, alpha=1) +
   geom_stratum(width = 1/4, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +
@@ -275,7 +287,7 @@ ggplot(ps2018.dut, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
 ```
 
 ```{r dut.actuel.per, echo=FALSE}
-ps2018.dut %>% select(Bac,Effectif) %>% 
+ps.dut %>% select(Bac,Effectif) %>% 
   mutate(part=scales::percent(Effectif/sum(Effectif))) %>%
   kable() %>% kable_styling()
 ```
@@ -289,7 +301,7 @@ Faire passer le quota de bacheliers technologiques à 50% implique d'augmenter d
 
 ```{r dut.flux, echo=FALSE}
 
-flux <- ps2018.dut
+flux <- ps.dut
 flux$Modifié <- FALSE
 
 flux <- add_row(flux,Bac="TechnoM",Filière="BTS",Filière2="BUT",Effectif=7.0,Modifié=TRUE)
@@ -341,7 +353,7 @@ Les équipes pédagogiques en IUT estiment souvent ne pas avoir le bassin de rec
 Pourtant, le flux de bacheliers technologiques allant en DUT n'est que de 17%. Une marge de progression est indubitable. 
 
 ```{r flux.actuel.BT, echo=FALSE, warnings=FALSE}
-ggplot(ps2018.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
+ggplot(ps.flux, aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
   geom_alluvium(aes(fill = Bac,color=Bac,alpha= (Bac == "Techno")), width = 1/12) +
   geom_stratum(width = 1/6, fill = "grey30", color = "grey") +
   geom_text(stat = "stratum", label.strata = TRUE, color="white") +

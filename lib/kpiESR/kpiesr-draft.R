@@ -3,6 +3,7 @@ library(kpiESR)
 library(tidyverse)
 library(cowplot)
 library(plotly)
+library(ggthemes)
 
 kpiesr_plot_tdb(2017,"0673021V", style.kpi = kpiesr_style())
 
@@ -88,3 +89,44 @@ subplot(
 ps <- kpiesr_plot_evol_all(rentrée, uai, peg.args,
                      yzooms = c(0.6, 0.6, 0.5, 0.2, 0.2, 1),
                      plot.type="norm")
+
+
+esr %>% filter(Type == "Université", Rentrée > 2012) %>%
+  group_by(Rentrée) %>%
+  summarise(
+    Ressources = sum(kpi.FIN.P.ressources, na.rm = TRUE),
+    MasseSalariale = sum(kpi.FIN.S.masseSalariale, na.rm = TRUE) ,
+    Ratio = MasseSalariale/Ressources)  %>%
+  pivot_longer(-Rentrée) %>%
+  group_by(name) %>% arrange(Rentrée) %>%
+  mutate(Evolution = (value / first(value))) %>%
+  filter(name == "Ratio") %>%
+  ggplot(aes(x=Rentrée, y=Evolution, color=name, group=name)) +
+    geom_line(size=2) +
+    theme_hc() + guides(color=FALSE) + ggtitle("Evolution du ratio masse salariale sur produits encaissables \n des universités, en base 1.0 pour 2013")
+
+
+nat <- esr %>% filter(Type=="Université", Rentrée >= 2012, Rentrée < 2018) %>%
+  group_by(Rentrée) %>%
+  summarise(
+    enseignants = sum(kpi.ENS.P.effectif, na.rm=TRUE),
+    titulaires = sum(kpi.ENS.S.titulaires, na.rm=TRUE),
+    etudiants = sum(kpi.ETU.S.cycle.1.L+kpi.ETU.S.cycle.2.M),
+    Taux.d.encadrement = titulaires/etudiants*100) %>%
+  pivot_longer(-Rentrée, names_to = "effectif") %>%
+  group_by(effectif) %>%
+  mutate(
+    evolution = value / first(value) * 100
+  )
+
+nat %>% filter(effectif %in% c("enseignants","titulaires")) %>%
+  ggplot(aes(x=Rentrée, y=value, group=effectif, color=effectif)) +
+    geom_line(size=2)  + theme_hc()
+
+nat %>% filter(effectif %in% c("etudiants")) %>%
+  ggplot(aes(x=Rentrée, y=value, group=effectif, color=effectif)) +
+  geom_line(size=2) +  theme_hc()
+
+nat %>%
+  ggplot(aes(x=Rentrée, y=evolution, group=effectif, color=effectif)) +
+  geom_line(size=2) + ylim(90,110) + theme_hc()

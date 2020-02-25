@@ -1,0 +1,195 @@
+---
+title: "Campagne de recrutement synchornisée des enseignants-chercheurs"
+author: "Julien Gossa"
+date: "24/02/2020"
+output: 
+  html_document:
+    keep_md: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(plyr)
+library(tidyverse)
+library(ggrepel)
+library(plotly)
+library(ggthemes)
+library(kableExtra)
+
+load("emplois-ec.RData")
+
+rentrée = 2020
+
+
+label_emplois <- function(x) {
+  paste0(
+    scales::percent(x, accuracy=0.01),"\n",
+    round(1/x)," ans"
+  )
+}
+
+```
+
+## Information globales
+
+La campagne d'emplois synchronisée de recrutement des enseignants-chercheurs (EC) est la procédure principale de recrutement des EC titulaires. 
+
+Les données sont les suivantes :
+
+- [Galaxy](https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/ListesPostesPublies/Emplois_publies_TrieParCorps.html)
+- [DataESR](https://data.enseignementsup-recherche.gouv.fr/explore/dataset/fr-esr-enseignants-titulaires-esr-public/information/) (seule la dernière année 2017-2018 est utilisée pour les effectifs de référence)
+
+Des versions exploitables sont disponibles ici :
+
+- [Campagne 2018](emplois-ec.2018.csv)
+- [Campagne 2019](emplois-ec.2019.csv)
+- [Campagne 2020](emplois-ec.2020.csv)
+- [Campagnes 2018-2020](emplois-ec.csv)
+- [Effectifs 2017-2018](effectifs-ec.csv)
+- [Campagne CNU](emplois-ec.cnu.csv)
+- [Campagne Etablissements](emplois-ec.2020.csv)
+
+### Nombre d'emplois
+
+Les enseignants-chercheurs titulaires sont divisés en deux corps :
+
+- MCF : Maitres de conférences, qui représente le premier poste titulaire ;
+- PR : Professeur des universités.
+
+```{r global.emplois, fig.width=5, fig.height=3}
+emplois.global %>% 
+  pivot_longer(
+    cols = starts_with("Emplois"),
+    names_to = "Corps",
+    names_pattern = ".*_(.*)",
+    values_to = "Emplois") %>%
+  ggplot(aes(x=Rentrée,y=Emplois, fill=Corps)) +
+    geom_col(color="black") +
+    geom_text(aes(label = Emplois), position = position_stack(vjust = .5),
+              colour="white",fontface="bold") +
+    #facet_grid(.~Corps) +
+    ggtitle("Nombre d'emplois aux sessions synchronisées") +
+    theme_hc()
+```
+
+### Renouvellement
+
+Le renouvellement est défini comme le rapport entre le nombre d'emplois de Maîtres de conférences et les effectifs d'enseignants-chercheurs :
+
+<!-- $renouvellement = \frac{emplois \ MCF}{effectifs \ MCF + PR}$ -->
+renouvellement = emplois_MCF / (effectifs_MCF + effectifs_PR)
+
+
+Le renouvellement peut se lire en pourcents ou en année. Par exemple, un renouvellement de 0.05 peut se lire : « 5% des effectifs sont renouvelés » ou « Au rythme actuel, il faudra 20 ans pour renouveler les effectifs ».
+
+_Attention_ : cette lecture suppose un effectif constant (hypothèse solide à l'heure actuelle). Si on considère une absence de départs (notamment à la retraite), la lecture devient « les effectifs seront augmenté de 5% » ou « Au rythme actuel, il faudra 20 ans pour doubler les effectifs ». La vérité est entre les deux.
+
+```{r global.renouvellement, fig.width=5, fig.height=3}
+emplois.global %>% 
+  ggplot(aes(x=Rentrée,y=Renouvellement,fill=Renouvellement)) +
+    geom_col(color="black") +
+    geom_text(aes(label = label_emplois(Renouvellement)), 
+              position = position_stack(vjust = .5),
+              colour = "white", fontface="bold") +
+    scale_y_continuous(labels = label_emplois) +
+    scale_fill_distiller(palette = "Reds", limits=c(0.0,0.02),direction=0) +
+    ggtitle(paste("Renouvellement aux sessions synchronisées")) +
+    theme_hc() + guides(fill=FALSE)
+
+```
+
+### Promotion
+
+La promotion est définie comme le rapport entre le nombre d'emplois de Professeurs et les effectifs Maîtres de conférences :
+
+<!-- $promotion = \frac{emplois \ PR}{effectifs \ MCF}$ -->
+promotion = emplois_PR / effectifs_MCF
+
+La promotion peut se lire en pourcents ou en année. Par exemple, une promotion de 0.05 peut se lire : « 5% des MCF vont obtenir une promotion PR » ou « Au rythme actuel, il faudra 20 ans pour promouvoir tous les MCF ».
+
+```{r global.promotion, fig.width=5, fig.height=3}
+emplois.global %>% 
+  ggplot(aes(x=Rentrée,y=Promotion,fill=Promotion)) +
+    geom_col(color="black") +
+    geom_text(aes(label = label_emplois(Promotion)), 
+              position = position_stack(vjust = .5),
+              colour = "white", fontface="bold") +
+    scale_y_continuous(labels = label_emplois) +
+    scale_fill_distiller(palette = "Blues",limits=c(0.0,0.017),direction=0) +
+    ggtitle(paste("Promotion aux sessions synchronisées")) +
+    theme_hc() + guides(fill=FALSE)
+
+```
+
+
+
+## CNU
+
+### Nombre d'emplois
+
+```{r cnu.emplois, fig.asp=1.5}
+df <- emplois.cnu %>%
+  mutate(Emplois_PR = -Emplois_PR) %>%
+  pivot_longer(
+    cols = starts_with("Emplois"),
+    names_to = "Corps",
+    names_pattern = ".*_(.*)",
+    values_to = "Emplois")
+
+  ggplot(df %>% filter(Rentrée != 2020) , aes(x=Section,y=Emplois, fill=Corps)) +
+    geom_col(data = df %>% filter(Rentrée==rentrée)) +
+    geom_point(aes(shape = Rentrée)) +
+    #facet_grid(.~Corps) +
+    scale_y_continuous(breaks = seq(-40,90,10), labels = abs) +
+    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
+    ggtitle(paste("Nombre d'emplois aux sessions synchronisées",rentrée)) +
+    theme_excel_new()
+```
+
+### Renouvellement
+
+_Attention_ : Les données 2018 et 2019 de la section 76 (Théologie Catholique) ont été filtrée pour améliorer la présentation des données (elle présente un renouvellement de 10% en 2018, mais sur un effectif non significatif)
+
+```{r cnu.renouvellement, fig.asp=1.5}
+emplois.cnu %>% filter(Rentrée != 2020) %>% filter( !(Section == 76)) %>% # mutate(Section=fct_rev(Section)) %>%
+  ggplot(aes(x=Section,y=Renouvellement,fill=Renouvellement)) +
+    geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
+    geom_point(aes(shape=Rentrée)) +
+    scale_y_continuous(breaks = seq(0,0.06,0.005), labels = label_emplois) +
+    scale_fill_distiller(palette = "Reds", limits=c(0,0.042),direction=0) +
+    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
+    ggtitle(paste("Renouvellement à la session synchronisée",rentrée)) +
+    theme_excel_new() + guides(fill=FALSE)
+
+```
+
+### Promotion
+
+```{r cnu.promotion, fig.asp=1.5}
+emplois.cnu %>% filter(Rentrée != 2020) %>%
+  ggplot(aes(x=Section,y=Promotion,fill=Promotion)) +
+    geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
+    geom_point(aes(shape=Rentrée)) +
+    scale_y_continuous(breaks = seq(0,0.06,0.01), labels = label_emplois) +
+    scale_fill_distiller(palette = "Blues",limits=c(0,0.04),direction=0) +
+    ggtitle(paste("Promotion à la session synchronisée",rentrée)) +
+    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
+    theme_excel_new() + guides(fill=FALSE)
+
+```
+
+### Tableau
+
+```{r cnu.tableau}
+emplois.cnu %>% 
+  setNames(c("Rentrée","Section","Emplois MCF","Emplois PR","Effectif MCF","Effectif PR","Renouvellement","Promotion")) %>%
+  mutate(
+    Renouvellement = label_emplois(Renouvellement),
+    Promotion = label_emplois(Promotion)) %>%
+  kable()%>%  kable_styling(bootstrap_options = "striped", fixed_thead = T)
+```
+
+
