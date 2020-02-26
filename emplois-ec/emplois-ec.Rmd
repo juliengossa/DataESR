@@ -46,7 +46,7 @@ Des versions exploitables sont disponibles ici :
 
 - [Campagne 2018](emplois-ec.2018.csv)
 - [Campagne 2019](emplois-ec.2019.csv)
-- [Campagne 2020](emplois-ec.2020.csv) (mise à jour le 25/02/2020 à 13h30)
+- [Campagne 2020](emplois-ec.2020.csv) (mise à jour le 26/02/2020 à 16h)
 - [Campagnes 2018-2020](emplois-ec.csv)
 - [Effectifs 2017-2018](effectifs-ec.csv)
 - [Campagne CNU](emplois-ec.cnu.csv)
@@ -126,60 +126,175 @@ emplois.global %>%
 
 
 
-## CNU
+## Section CNU
+
+_Attention_ : Ces résultats ne tiennent pas compte des `r emplois %>% filter(!is.na(Section2),!is.na(Section3)) %>% nrow` postes sur plusieurs sections. Seule la première est prise en compte.
+
+```{r function}
+emplois_plot <- function(df, y_breaks, title, fill_guide=FALSE, palette=NULL, palette_limits = c(0,1)) {
+  p <- ggplot(df %>% filter(Rentrée != 2020) , aes(x=X, y=Y, fill=FILL)) +
+    geom_col(data = df %>% filter(Rentrée==rentrée)) +
+    geom_point(aes(shape = Rentrée)) +
+    scale_y_continuous(breaks = y_breaks, labels = abs) +
+    coord_flip() + scale_x_discrete(limits = rev(levels(df$X))) +
+    ggtitle(title) +
+    theme_excel_new() +
+    guides(fill=fill_guide)
+  
+  if(!is.null(palette)) p <- p + scale_fill_distiller(palette=palette, limits=palette_limits, direction=0)
+  
+  return(p)
+}
+```
 
 ### Nombre d'emplois
 
+```{r discpline.emplois, fig.asp=0.3}
+emplois.cnu %>%
+  group_by(Rentrée,Discipline) %>%
+  summarise(
+    Emplois_MCF = sum(Emplois_MCF),
+    Emplois_PR = -sum(Emplois_PR)
+  ) %>% ungroup() %>%
+  pivot_longer(
+    cols = starts_with("Emplois"),
+    names_to = "Corps",
+    names_pattern = ".*_(.*)",
+    values_to = "Emplois") %>%
+  mutate(
+    X = droplevels(Discipline),
+    Y = Emplois,
+    FILL = Corps
+  ) %>% emplois_plot(seq(-300,600,100), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
+```
+
+```{r groupe.emplois, fig.asp=0.6}
+emplois.cnu %>%
+  group_by(Rentrée,Groupe) %>%
+  summarise(
+    Emplois_MCF = sum(Emplois_MCF),
+    Emplois_PR = -sum(Emplois_PR)
+  ) %>% ungroup() %>%
+  pivot_longer(
+    cols = starts_with("Emplois"),
+    names_to = "Corps",
+    names_pattern = ".*_(.*)",
+    values_to = "Emplois") %>%
+  mutate(
+    X = droplevels(Groupe),
+    Y = Emplois,
+    FILL = Corps
+  ) %>% emplois_plot(seq(-200,200,50), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
+```
+
+
 ```{r cnu.emplois, fig.asp=1.5}
-df <- emplois.cnu %>%
+emplois.cnu %>%
   mutate(Emplois_PR = -Emplois_PR) %>%
   pivot_longer(
     cols = starts_with("Emplois"),
     names_to = "Corps",
     names_pattern = ".*_(.*)",
-    values_to = "Emplois")
-
-  ggplot(df %>% filter(Rentrée != 2020) , aes(x=Section,y=Emplois, fill=Corps)) +
-    geom_col(data = df %>% filter(Rentrée==rentrée)) +
-    geom_point(aes(shape = Rentrée)) +
-    #facet_grid(.~Corps) +
-    scale_y_continuous(breaks = seq(-40,90,10), labels = abs) +
-    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
-    ggtitle(paste("Nombre d'emplois aux sessions synchronisées",rentrée)) +
-    theme_excel_new()
+    values_to = "Emplois") %>%
+  mutate(
+    X = Code.section,
+    Y = Emplois,
+    FILL = Corps
+  ) %>% emplois_plot(seq(-40,90,10), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
 ```
 
 ### Renouvellement
 
 _Attention_ : Les données 2018 et 2019 de la section 76 (Théologie Catholique) ont été filtrée pour améliorer la présentation des données (elle présente un renouvellement de 10% en 2018, mais sur un effectif non significatif)
 
-```{r cnu.renouvellement, fig.asp=1.5}
-emplois.cnu %>% filter(Rentrée != 2020) %>% filter( !(Section == 76)) %>% # mutate(Section=fct_rev(Section)) %>%
-  ggplot(aes(x=Section,y=Renouvellement,fill=Renouvellement)) +
-    geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
-    geom_point(aes(shape=Rentrée)) +
-    scale_y_continuous(breaks = seq(0,0.06,0.005), labels = label_emplois) +
-    scale_fill_distiller(palette = "Reds", limits=c(0,0.05),direction=0) +
-    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
-    ggtitle(paste("Renouvellement à la session synchronisée",rentrée)) +
-    theme_excel_new() + guides(fill=FALSE)
-
+```{r discpline.renouvellement, fig.asp=0.3}
+emplois.cnu %>% filter( !(Code.section == 76)) %>% 
+  group_by(Rentrée,Discipline) %>%
+  summarise(
+    Renouvellement = sum(Emplois_MCF) / (sum(Effectif_MCF)+sum(Effectif_PR))
+  ) %>% ungroup() %>%
+  mutate(
+    X = droplevels(Discipline),
+    Y = Renouvellement,
+    FILL = Renouvellement
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Renouvellement à la session synchronisée",rentrée),
+                     palette="Reds", palette_limits=c(-0.01,0.05))
 ```
+
+```{r groupe.renouvellement, fig.asp=0.6}
+emplois.cnu %>% filter( !(Code.section == 76)) %>% 
+  group_by(Rentrée,Groupe) %>%
+  summarise(
+    Renouvellement = sum(Emplois_MCF) / (sum(Effectif_MCF)+sum(Effectif_PR))
+  ) %>% ungroup() %>%
+  mutate(
+    X = droplevels(Groupe),
+    Y = Renouvellement,
+    FILL = Renouvellement
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Renouvellement à la session",rentrée),
+                     palette="Reds", palette_limits=c(-0.01,0.05))
+```
+
+```{r cnu.renouvellement, fig.asp=1.5}
+emplois.cnu %>% filter( !(Code.section == 76)) %>% 
+  #mutate(Section=fct_rev(Section)) %>%
+  mutate(
+    X = Code.section,
+    Y = Renouvellement,
+    FILL = Renouvellement
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Renouvellement à la session synchronisée",rentrée),
+                     palette="Reds", palette_limits=c(-0.01,0.05))
+```
+
 
 ### Promotion
 
-```{r cnu.promotion, fig.asp=1.5}
-emplois.cnu %>% filter(Rentrée != 2020) %>%
-  ggplot(aes(x=Section,y=Promotion,fill=Promotion)) +
-    geom_col(data = emplois.cnu %>% filter(Rentrée==rentrée)) +
-    geom_point(aes(shape=Rentrée)) +
-    scale_y_continuous(breaks = seq(0,0.06,0.01), labels = label_emplois) +
-    scale_fill_distiller(palette = "Blues",limits=c(0,0.06),direction=0) +
-    ggtitle(paste("Promotion à la session synchronisée",rentrée)) +
-    coord_flip() + scale_x_discrete(limits = rev(levels(emplois.cnu$Section))) +
-    theme_excel_new() + guides(fill=FALSE)
-
+```{r discipline.promotion, fig.asp=0.3}
+emplois.cnu %>% filter(Groupe != "Théologie") %>%
+  group_by(Rentrée,Discipline) %>%
+  summarise(
+    Promotion = sum(Emplois_PR) / sum(Effectif_MCF)
+  ) %>% ungroup() %>%
+  mutate(
+    X = droplevels(Discipline),
+    Y = Promotion,
+    FILL = Promotion
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Promotion à la session synchronisée",rentrée),
+                     palette="Blues", palette_limits=c(-0.0,0.03))
 ```
+
+
+```{r groupe.promotion, fig.asp=0.6}
+emplois.cnu %>% filter(Groupe != "Théologie") %>%
+  group_by(Rentrée,Groupe) %>%
+  summarise(
+    Promotion = sum(Emplois_PR) / sum(Effectif_MCF)
+  ) %>% ungroup() %>%
+  mutate(
+    X = droplevels(Groupe),
+    Y = Promotion,
+    FILL = Promotion
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Promotion à la session synchronisée",rentrée),
+                     palette="Blues", palette_limits=c(-0.0,0.03))
+```
+
+```{r cnu.promotion, fig.asp=1.5}
+emplois.cnu %>%
+  #mutate(Section=fct_rev(Section)) %>%
+  mutate(
+    X = Code.section,
+    Y = Promotion,
+    FILL = Promotion
+  ) %>% emplois_plot(seq(0,0.06,0.005), 
+                     paste("Promotion à la session synchronisée",rentrée),
+                     palette="Blues", palette_limits=c(-0.01,0.06))
+```
+
 
 ### Tableau
 

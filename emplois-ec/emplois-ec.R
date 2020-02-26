@@ -32,7 +32,7 @@ emplois <- emplois.2018 %>%
   bind_rows(emplois.2020) %>%
   mutate(
     Rentrée = as.factor(Rentrée),
-    Section = as.factor(Section),
+    Code.section = as.factor(Section),
     Corps = factor(Corps, levels=c("PR","MCF"))
   )
 
@@ -47,9 +47,12 @@ effectifs <- read.table("fr-esr-enseignants-titulaires-esr-public.csv",
     UAI = Identifiant.établissement,
     Type = Type.établissement,
     Corps = Code.categorie.personnels,
-    Section = code_section_cnu,
+    Code.section = code_section_cnu,
+    Section = as.factor(paste0(as.numeric(code_section_cnu),"-",Sections.CNU)),
+    Groupe = Groupes.CNU,
+    Discipline = Grandes.disciplines
   ) %>% 
-  group_by(UAI, Type, Corps, Section) %>%
+  group_by(UAI, Type, Corps, Code.section, Section, Groupe, Discipline) %>%
   summarise(Effectif = sum(effectif))
 
 write.csv2(effectifs,file="effectifs-ec.csv",row.names=FALSE)
@@ -86,7 +89,7 @@ emplois.global <-
   mutate(
     Renouvellement = Emplois_MCF / (Effectif_MCF + Effectif_PR),
     Promotion = Emplois_PR / Effectif_MCF,
-  )
+  )  %>% ungroup()
 
 write.csv2(emplois.global,file="emplois-ec.global.csv",row.names=FALSE)
 
@@ -96,7 +99,7 @@ write.csv2(emplois.global,file="emplois-ec.global.csv",row.names=FALSE)
 emplois.cnu <-
  merge(
     emplois %>%
-      group_by(Rentrée, Corps, Section) %>%
+      group_by(Rentrée, Corps, Code.section) %>%
       summarise(Emplois = n()) %>%
       pivot_wider(
         names_from = Corps, 
@@ -104,7 +107,7 @@ emplois.cnu <-
         values_from = Emplois, 
         values_fill = list(Emplois = 0)),
     effectifs %>%
-      group_by(Corps, Section) %>%
+      group_by(Corps, Code.section, Section, Groupe, Discipline) %>%
       summarise(Effectif = sum(Effectif)) %>%
       pivot_wider(
         names_from = Corps, 
@@ -112,7 +115,7 @@ emplois.cnu <-
         values_from = Effectif, 
         values_fill = list(Effectif = 0))
   ) %>%
-  group_by(Rentrée, Section) %>%
+  group_by(Rentrée, Code.section, Section, Groupe, Discipline) %>%
   summarise(
     Emplois_MCF  = sum(Emplois_MCF),
     Emplois_PR   = sum(Emplois_PR),
@@ -122,7 +125,7 @@ emplois.cnu <-
   mutate(
     Renouvellement = Emplois_MCF / (Effectif_MCF + Effectif_PR),
     Promotion = Emplois_PR / Effectif_MCF,
-  )
+  ) %>% ungroup()
 
 write.csv2(emplois.cnu,file="emplois-ec.cnu.csv",row.names=FALSE)
 
@@ -160,7 +163,7 @@ emplois.etab <-
   mutate(
     Renouvellement = Emplois_MCF / (Effectif_MCF + Effectif_PR),
     Promotion = Emplois_PR / Effectif_MCF
-  )
+  )  %>% ungroup()
 
 write.csv2(emplois.etab,file="emplois-ec.etab.csv",row.names=FALSE)
 
