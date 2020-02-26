@@ -131,11 +131,11 @@ emplois.global %>%
 _Attention_ : Ces résultats ne tiennent pas compte des `r emplois %>% filter(!is.na(Section2),!is.na(Section3)) %>% nrow` postes sur plusieurs sections. Seule la première est prise en compte.
 
 ```{r function}
-emplois_plot <- function(df, y_breaks, title, fill_guide=FALSE, palette=NULL, palette_limits = c(0,1)) {
+emplois_plot <- function(df, y_breaks, title, labels = identity, fill_guide=FALSE, palette=NULL, palette_limits = c(0,1)) {
   p <- ggplot(df %>% filter(Rentrée != 2020) , aes(x=X, y=Y, fill=FILL)) +
     geom_col(data = df %>% filter(Rentrée==rentrée)) +
     geom_point(aes(shape = Rentrée)) +
-    scale_y_continuous(breaks = y_breaks, labels = abs) +
+    scale_y_continuous(breaks = y_breaks, labels = labels) +
     coord_flip() + scale_x_discrete(limits = rev(levels(df$X))) +
     ggtitle(title) +
     theme_excel_new() +
@@ -165,7 +165,7 @@ emplois.cnu %>%
     X = droplevels(Discipline),
     Y = Emplois,
     FILL = Corps
-  ) %>% emplois_plot(seq(-300,600,100), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
+  ) %>% emplois_plot(seq(-300,600,100), paste("Nombre d'emplois à la session synchronisée",rentrée), fill_guide=guide_legend(reverse = TRUE), labels=abs)
 ```
 
 ```{r groupe.emplois, fig.asp=0.6}
@@ -184,7 +184,7 @@ emplois.cnu %>%
     X = droplevels(Groupe),
     Y = Emplois,
     FILL = Corps
-  ) %>% emplois_plot(seq(-200,200,50), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
+  ) %>% emplois_plot(seq(-200,200,50), paste("Nombre d'emplois à la session",rentrée), fill_guide=guide_legend(reverse = TRUE), labels=abs)
 ```
 
 
@@ -200,7 +200,7 @@ emplois.cnu %>%
     X = Code.section,
     Y = Emplois,
     FILL = Corps
-  ) %>% emplois_plot(seq(-40,90,10), paste("Nombre d'emplois aux sessions synchronisées",rentrée), fill_guide=guide_legend(reverse = TRUE))
+  ) %>% emplois_plot(seq(-40,90,10), paste("Nombre d'emplois à la session synchronisée",rentrée), fill_guide=guide_legend(reverse = TRUE), labels=abs)
 ```
 
 ### Renouvellement
@@ -219,6 +219,7 @@ emplois.cnu %>% filter( !(Code.section == 76)) %>%
     FILL = Renouvellement
   ) %>% emplois_plot(seq(0,0.06,0.005), 
                      paste("Renouvellement à la session synchronisée",rentrée),
+                     labels = label_emplois,
                      palette="Reds", palette_limits=c(-0.01,0.05))
 ```
 
@@ -232,8 +233,9 @@ emplois.cnu %>% filter( !(Code.section == 76)) %>%
     X = droplevels(Groupe),
     Y = Renouvellement,
     FILL = Renouvellement
-  ) %>% emplois_plot(seq(0,0.06,0.005), 
+  ) %>% emplois_plot(seq(0,0.06,0.01), 
                      paste("Renouvellement à la session",rentrée),
+                     labels = label_emplois,
                      palette="Reds", palette_limits=c(-0.01,0.05))
 ```
 
@@ -246,6 +248,7 @@ emplois.cnu %>% filter( !(Code.section == 76)) %>%
     FILL = Renouvellement
   ) %>% emplois_plot(seq(0,0.06,0.005), 
                      paste("Renouvellement à la session synchronisée",rentrée),
+                     labels = label_emplois,
                      palette="Reds", palette_limits=c(-0.01,0.05))
 ```
 
@@ -264,6 +267,7 @@ emplois.cnu %>% filter(Groupe != "Théologie") %>%
     FILL = Promotion
   ) %>% emplois_plot(seq(0,0.06,0.005), 
                      paste("Promotion à la session synchronisée",rentrée),
+                     labels = label_emplois,
                      palette="Blues", palette_limits=c(-0.0,0.03))
 ```
 
@@ -280,6 +284,7 @@ emplois.cnu %>% filter(Groupe != "Théologie") %>%
     FILL = Promotion
   ) %>% emplois_plot(seq(0,0.06,0.005), 
                      paste("Promotion à la session synchronisée",rentrée),
+                     labels = label_emplois,
                      palette="Blues", palette_limits=c(-0.0,0.03))
 ```
 
@@ -292,6 +297,7 @@ emplois.cnu %>%
     FILL = Promotion
   ) %>% emplois_plot(seq(0,0.06,0.005), 
                      paste("Promotion à la session synchronisée",rentrée),
+                     labels = label_emplois,
                      palette="Blues", palette_limits=c(-0.01,0.06))
 ```
 
