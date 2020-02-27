@@ -25,12 +25,6 @@ _Attention_ : Ce jeu de données présente des incohérences :
 
 ## Statistiques nationales
 
-
-```
-## Warning in bind_rows_(x, .id): binding character and factor vector, coercing
-## into character vector
-```
-
 ![](parcoursup_files/figure-html/stat.generales-1.png)<!-- -->
 
 Le décalage entre le nombre de candidats et le nombre d'admis s'explique par l'exclusion des candidats en reprise d'étude de ce jeu de données, qui contient seulement les néo-bacheliers, contrairement aux nombre de candidats. L'augmentation de 2018 à 2019 s'explique essentiellement par la hausse du nombre de candidats en reprise d'étude, et l'intégration des EETS (Educateur technique spécialisé) et IFSI (Institut de formation en soins infirmiers).
@@ -46,10 +40,6 @@ Une différence importante entre 2018 et 2019 est la baisse des capacités d'acc
 
 ```
 ## Picking joint bandwidth of 7.66
-```
-
-```
-## Warning: Removed 550 rows containing non-finite values (stat_density_ridges).
 ```
 
 ![](parcoursup_files/figure-html/stat.capacités-1.png)<!-- -->
@@ -457,19 +447,9 @@ _NB_ :
 - Les statistiques sur les formations et les établissements se basent sur les données disponibles, celles sur les candidats considèrent BTS, CPGE et DUT comme sélectives, et Licence et PACES comme non sélectives.
 
 
-
-```
-## Warning: Removed 468 rows containing non-finite values (stat_boxplot).
-```
-
 ![](parcoursup_files/figure-html/Taux.de.selection-1.png)<!-- -->
 
-
-```
-## Warning: Removed 413 rows containing non-finite values (stat_boxplot).
-```
-
-![](parcoursup_files/figure-html/Taux.de.sélection.rentrée-1.png)<!-- -->
+![](parcoursup_files/figure-html/Taux.de.sélection.rentree-1.png)<!-- -->
 
 Entre 2018 et 2019, on constate un sensible augmentation des taux de sélection en Licence.
 
@@ -728,10 +708,6 @@ Ensuite, on constate que des CPGE, même en très faible nombre, sont également
 
 ```
 ## Picking joint bandwidth of 15.1
-```
-
-```
-## Warning: Removed 94 rows containing non-finite values (stat_density_ridges).
 ```
 
 ![](parcoursup_files/figure-html/type.de.sélection.Licence.capa-1.png)<!-- -->
@@ -1167,20 +1143,10 @@ Le taux de boursiers est défini comme le rapport entre le nombre d'admis néo-b
 <!-- $boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$ -->
 boursiers = admis néobacheliers boursiers / admis.néobacheliers
 
-
-```
-## Warning: Removed 19 rows containing non-finite values (stat_boxplot).
-```
-
 ![](parcoursup_files/figure-html/Taux.de.boursiers-1.png)<!-- -->
 
 
 ### Taux de boursier par filières de Licences
-
-
-```
-## Warning: Removed 13 rows containing non-finite values (stat_boxplot).
-```
 
 ![](parcoursup_files/figure-html/Taux.de.boursiers.densite.filiere-1.png)<!-- -->
 
@@ -1192,11 +1158,6 @@ Le taux de mentions se défini comme le rapport entre le nombre d'admis néo-bac
 <!-- $mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$ -->
 
 mention_x = admis.néobacheliers.mention_x / admis.néobacheliers
-
-
-```
-## Warning: Removed 256 rows containing non-finite values (stat_boxplot).
-```
 
 ![](parcoursup_files/figure-html/Taux.de.mentions-1.png)<!-- -->
 
@@ -1212,11 +1173,6 @@ Le taux de type du bac se défini comme le rapport entre le nombre d'admis néo-
 <!-- $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$-->
 
 bac_x = admis.néobacheliers.bac_x / admis.néobacheliers
-
-
-```
-## Warning: Removed 192 rows containing non-finite values (stat_boxplot).
-```
 
 ![](parcoursup_files/figure-html/Taux.de.bac-1.png)<!-- -->
 
