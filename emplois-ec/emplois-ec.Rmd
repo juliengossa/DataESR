@@ -314,7 +314,6 @@ emplois.cnu %>% ungroup() %>%
   kable() %>%  
     kable_styling(bootstrap_options = "striped", fixed_thead = T) %>% 
     column_spec(1:5, width = "1em")
-
 ```
 
 

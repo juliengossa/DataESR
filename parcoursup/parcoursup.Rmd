@@ -21,6 +21,7 @@ library(knitr)
 library(kableExtra)
 library(ggthemes)
 library(ggalluvial)
+library(ggridges)
 
 ps2018.all <- read.table("fr-esr-parcoursup.2018.csv",
               header=TRUE, sep=';', quote='"') %>%
@@ -40,7 +41,9 @@ nb.candidats <- data.frame(
 
 ps.all <- bind_rows(ps2018.all, ps2019.all) %>%
   mutate(
-    Rentrée = factor(Rentrée, levels=c("2019","2018")),
+    Rentrée = factor(Rentrée, levels=c("2018","2019")),
+    Filière.de.formation.très.agrégée = factor(Filière.de.formation.très.agrégée,
+        levels=c("BTS", "DUT", "Licence","PACES","CPGE","IFSI","EETS","Autre formation")),
     Taux.de.tension =
       Effectif.total.des.candidats.en.phase.principale /
         Capacité.de.l.établissement.par.formation,
@@ -60,18 +63,18 @@ ps.all <- bind_rows(ps2018.all, ps2019.all) %>%
     Type.de.sélection = factor(Type.de.sélection,
                                levels=c("Hyper_sélective","Sélective","Non_sélective"))
   )
+    
+ps2018 <- ps.all %>% filter(Rentrée == 2018, Filière.de.formation.très.agrégée != "Autre formation")
+ps2019 <- ps.all %>% filter(Rentrée == 2019, Filière.de.formation.très.agrégée != "Autre formation")
 
-rentrée <- 2019    
-ps <- ps.all %>% filter(Rentrée == 2019, Filière.de.formation.très.agrégée != "Autre formation")
+ps <- ps2019
 
-
+rentrée <- 2019
 ```
 
 Jeu de données : [Parcoursup vœux de poursuite d’études et de réorientation dans l’enseignement supérieur et réponses des établissements](https://www.data.gouv.fr/fr/datasets/parcoursup-voeux-de-poursuite-detudes-et-de-reorientation-dans-lenseignement-superieur-et-reponses-des-etablissements/)
 
-Ce jeu de données ne permet pas de percevoir les choses du côté des candidats : contrairement à ce que laisse en titre, il ne contient pas les vœux des candidats, mais seulement le nombre candidatures aux formations. 
-
-Il permet en revanche de percevoir les choses du côté des formations.
+Dans son effort de transparence, le gouvernement a publié des données nationales sur les deux premières campagnes Parcoursup, ainsi que la dernière campagne APB. Ces données présentent à la fois un immense intérêt et de sérieuses limites. 
 
 _Attention_ : Ce jeu de données présente des incohérences :
 
@@ -79,38 +82,51 @@ _Attention_ : Ce jeu de données présente des incohérences :
 - Le nombre de candidats classés par la formation peut être inférieur au nombre de candidats pour des filières non sélectives ;
 - Le nombre de candidats ayant reçu une proposition peut être inférieur au nombre de candidats classés même si la formation n'atteint pas sa capacité d'accueil.
 
+
+
 ## Statistiques nationales
 
 ```{r stat.generales, echo=FALSE}
 
 ps.all %>% # filter(Rentrée == rentrée) %>%
+  mutate(Rentrée = fct_rev(Rentrée)) %>%
   group_by(Rentrée, Filière.de.formation.très.agrégée) %>%
-  summarise(capacité = sum(Capacité.de.l.établissement.par.formation), 
-            admis = sum(Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.)) %>%
+  summarise(capacité = sum(Capacité.de.l.établissement.par.formation, na.rm = TRUE), 
+            admis = sum(Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis., na.rm = TRUE)) %>%
   pivot_longer(-c(Rentrée,Filière.de.formation.très.agrégée)) %>%
   bind_rows(nb.candidats) %>%
   mutate(
-    name = factor(name, levels=c("candidats","capacité","admis"))) %>%
+    name = factor(name, levels=c("candidats","capacité","admis")),
+    Filière.de.formation.très.agrégée =fct_rev(Filière.de.formation.très.agrégée)) %>%
   
 ggplot(aes(x=Rentrée, y=value/1000, fill=Filière.de.formation.très.agrégée)) +
   geom_bar(stat="identity",colour="black") +
   facet_grid( name ~ .) +
-  xlab("") + ylab("Nombre de formations")  + scale_fill_discrete(name="Fillère") +
+  xlab("") + ylab("Nombre de formations")  + 
+  scale_fill_brewer(name="Fillère", palette="Set1",
+                      limits=levels(ps.all$Filière.de.formation.très.agrégée)) +
   #scale_x_continuous(limits=c(2018,2019),trans = "reverse") + #c("admis","capacité","candidats")) +
   coord_flip() +
   ggtitle("Nombres de candidats, capacité et nombre d'admis (milliers)") +
   theme_hc()
 ```
 
+Le décalage entre le nombre de candidats et le nombre d'admis s'explique par l'exclusion des candidats en reprise d'étude de ce jeu de données, qui contient seulement les néo-bacheliers, contrairement aux nombre de candidats. L'augmentation de 2018 à 2019 s'explique essentiellement par la hausse du nombre de candidats en reprise d'étude, et l'intégration des EETS (Educateur technique spécialisé) et IFSI (Institut de formation en soins infirmiers).
+
+Une différence importante entre 2018 et 2019 est la baisse des capacités d'accueil en Licence, et la hausse d'admis dans cette filière. Il est fort probable que la baisse viennent d'un réajustement après la première année, où certaines capacités d'accueil ont été fixées sans grande rigueur.
+
+
 
 ```{r stat.nb.formations, echo=FALSE}
 ps.all %>% filter(Rentrée == rentrée) %>%
   ggplot(aes(x=Filière.de.formation.très.agrégée, fill=Filière.de.formation.très.agrégée)) +
     geom_bar(colour="black") +
-    xlab("Filière") + ylab("Nombre de formations")  + scale_fill_discrete(name="Fillère") +
+    xlab("Filière") + ylab("Nombre de formations")  +
+    scale_fill_brewer(name="Fillère", palette="Set1",
+                      limits=levels(ps.all$Filière.de.formation.très.agrégée)) +
     ggtitle("Nombre de formations par filière") +
     guides(fill=FALSE) +
-    theme_hc()
+    theme_hc()+ theme( axis.title.x=element_blank())
 ```
 
 ```{r stat.nb.admissions, echo=FALSE}
@@ -123,7 +139,8 @@ ps.all %>% filter(Rentrée == rentrée) %>%
 ggplot(aes(x=Filière.de.formation.très.agrégée, y=nombre/1000, fill=Filière.de.formation.très.agrégée, alpha=type)) +
   geom_bar(stat="identity",colour="black") +
   xlab("Filière") + ylab("Nombre de candidat.e.s admis.e.s (en milliers)")  +
-  scale_fill_discrete(name="Filière") +
+    scale_fill_brewer(name="Fillère", palette="Set1",
+                      limits=levels(ps.all$Filière.de.formation.très.agrégée)) +
   scale_alpha_manual(name="Phase",labels=c("Complémentaire","Principale"), values=c(0.7,1)) +
   ggtitle("Nombre d'admissions par phase et par filière") +
   guides(fill=FALSE) +
@@ -133,17 +150,21 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=nombre/1000, fill=Filière
 
 ```{r stat.capacités, echo=FALSE}
 ps.all %>% filter(Rentrée == rentrée) %>%
-  ggplot(aes(x=Capacité.de.l.établissement.par.formation, fill=Filière.de.formation.très.agrégée)) +
-    geom_density(alpha=0.8) + xlim(0,200) +
+  ggplot(aes(x=Capacité.de.l.établissement.par.formation,
+             y=Filière.de.formation.très.agrégée,
+             fill=Filière.de.formation.très.agrégée)) +
+    geom_density_ridges(alpha=0.8) + xlim(0,200) +
     #facet_grid(~ Filière.de.formation.très.agrégée) +
     xlab("Capacités d'accueil") + ylab("Densité de formations")  +
-    scale_fill_discrete(name="Capacité d'accueil") +
+    scale_fill_brewer(name="Fillère", palette="Set1",
+                      limits=levels(ps.all$Filière.de.formation.très.agrégée)) +
     ggtitle("Distribution des capacités d'accueil (<200) par filière ") +
-    theme_hc()
+    theme_hc() + guides(fill=FALSE)
   
 
 ```
 
+_Exemple de lecture : les capacités d'accueil en CPGE sont généralement autour de 40, mais quelques filières proposent autour de 100 places._
 
 ## Taux de tension
 
@@ -154,27 +175,34 @@ $tension=\frac{candidatures}{capacité}$
 Limite : une formation "choix de secours" peut apparaitre en tension avec un très grand nombre de candidatures initiales, mais tout autant de désistements.
 
 ```{r Taux.de.tension, echo=FALSE}
-ggplot(ps, aes(y=Taux.de.tension, fill=Filière.de.formation.très.agrégée)) +
+ggplot(ps, aes(y=Taux.de.tension, 
+               fill=Filière.de.formation.très.agrégée,
+               x=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
-  facet_grid(~Filière.de.formation.très.agrégée) +
+  #facet_grid(~Filière.de.formation.très.agrégée) +
+  #coord_cartesian(ylim=c(0,50)) +
   ylab("Taux de tension") + scale_fill_discrete(name="Fillère") +
-  ggtitle("Taux de tension par filière") +
+  ggtitle("Taux de tension par filière (limite à 50)") +
   guides(fill=FALSE) +
-   theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  theme_hc() + theme( axis.title.x=element_blank())
 ```
 
-```{r Taux.de.tension.densite, echo=FALSE}
-ggplot(ps, aes(x=Taux.de.tension, 
-                   fill=Filière.de.formation.très.agrégée)) +
-  geom_density(alpha=0.7) + xlim(0,30) +
-  xlab("Taux de tension") + ylab("Densité") +
-  facet_grid(~Filière.de.formation.très.agrégée) +
-  scale_fill_discrete(name="Filière") +
-  ggtitle("Densité taux de tension des formations par filière") +
+Les IFSI présentant des taux hors normes (jusqu'à 500 candidats pour une place), il convient de faire un zoom :
+
+```{r Taux.de.tension.zoom, echo=FALSE}
+ggplot(ps, aes(y=Taux.de.tension, 
+               fill=Filière.de.formation.très.agrégée,
+               x=Filière.de.formation.très.agrégée)) +
+  geom_boxplot() +
+  #facet_grid(~Filière.de.formation.très.agrégée) +
+  coord_cartesian(ylim=c(0,50)) +
+  ylab("Taux de tension") + scale_fill_discrete(name="Fillère") +
+  ggtitle("Taux de tension par filière (limite à 50)") +
   guides(fill=FALSE) +
-  theme_hc()
+  theme_hc() + theme( axis.title.x=element_blank())
 ```
+
+_Exemple de lecture : la médiane des taux de tension en BTS est de 10 ; la moitié des filières de BTS sont est entre 7 et 18 ; un quart est entre 18 et 35 ; les taux de tension hors normes en BTS montent jusqu'à presque 200._
 
 
 ```{r Taux.de.tension.mean, echo=FALSE}
@@ -187,13 +215,13 @@ ps %>%
   xlab("Filière") + ylab("Taux de tension moyen") + scale_fill_discrete(name="Fillère") +
   ggtitle("Taux de tension moyen par filière") +
   guides(fill=FALSE) +
-  theme_hc()
+  theme_hc() + theme(axis.title.x=element_blank())
 ```
 
 
 ### Filières non sélectives (Licences) en tension
 
-La Loi ORE dispose que : "lorsque le nombre de candidatures excède les capacités d'accueil d'une formation, les inscriptions sont prononcées par le président ou le directeur de l'établissement dans la limite des capacités d'accueil".
+La Loi ORE dispose que : _"lorsque le nombre de candidatures excède les capacités d'accueil d'une formation, les inscriptions sont prononcées par le président ou le directeur de l'établissement dans la limite des capacités d'accueil"_.
 
 La proportion de Licences dites "en tension" selon cette définition est :
 
@@ -218,30 +246,33 @@ $remplissage=\frac{admis}{capacité}$
 
 ```{r Taux.de.remplissage, echo=FALSE}
 ggplot(ps, aes( y=Taux.de.remplissage,
-                   fill=Filière.de.formation.très.agrégée)) +
+                x=Filière.de.formation.très.agrégée,
+                fill=Filière.de.formation.très.agrégée)) +
+  geom_boxplot() +
+  ylab("Taux de remplissage") +
+  scale_fill_discrete(name="Fillère") +
+  ggtitle("Distribution des taux de remplissage par filière") +
+  guides(fill=FALSE) +
+  #facet_grid(~Filière.de.formation.très.agrégée) +
+  theme_hc() + theme(axis.title.x=element_blank())
+```
+
+
+```{r Taux.de.remplissage.rentree, echo=FALSE}
+ps.all %>% filter(Filière.de.formation.très.agrégée %in% c("Licence","CPGE","PACES")) %>%
+ggplot(aes( y=Taux.de.remplissage,
+                x=Rentrée,
+                fill=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
   ylab("Taux de remplissage") +
   scale_fill_discrete(name="Fillère") +
   ggtitle("Distribution des taux de remplissage par filière") +
   guides(fill=FALSE) +
   facet_grid(~Filière.de.formation.très.agrégée) +
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  theme_hc()
+  theme_hc() + theme(axis.title.x=element_blank())
 ```
 
-```{r Taux.de.remplissage.densite, echo=FALSE}
-
-ggplot(ps, aes(x=Taux.de.remplissage,
-                   fill=Filière.de.formation.très.agrégée)) +
-  geom_density(alpha=0.6) +
-  xlim(0,1.3) +
-  facet_grid(~Filière.de.formation.très.agrégée) +
-  xlab("Taux de remplissage") + ylab("Densité") +
-  scale_fill_discrete(name="Fillère") +
-  ggtitle("Densité des taux de remplissage par filière") +
-  guides(fill=FALSE) +
-  theme_hc()
-```
+Une comparaison entre 2018 et 2019 montre une amélioration des taux de remplissage en Licence et PACES, mais quelques débordements nouveaux en CPGE.
 
 ```{r Taux.de.remplissage.type, echo=FALSE}
 tr.breaks <- c(-Inf,0.8,0.95,1,1.05,1.2,Inf)
@@ -254,8 +285,9 @@ ggplot(ps, aes(x=Filière.de.formation.très.agrégée, fill=fct_rev(type.de.rem
   ylab("Proportion des formations") + xlab("Filière") +
   scale_y_continuous(labels=scales::percent) + theme_hc() +
   scale_fill_manual(name="Remplissage", 
-                      labels=c("+120%", "105%-120%","100%-105%","95%-100%","80%-95%","-80%"),
-                      values=c("red3","red1","green3","green","blue4","blue")) 
+                      labels=c("+120%", "105%-120%", "100%-105%", "95%-100%", "80%-95%", "-80%"),
+                    #palette="RdBu")
+                      values=c("red3","red1","green3","green","blue","blue4")) 
   
 ```
 
@@ -346,48 +378,29 @@ ggplot(ps.L.F, aes(y=Taux.de.remplissage,
 }
 ```
 
-#### Licence - Arts-lettres-langues / Allemand
+<!-- #### Licence - Arts-lettres-langues / Allemand -->
 
-Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
+<!-- Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html). -->
 
-L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé.
+<!-- L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé. -->
 
-```{r Taux.de.remplissage.ALL.allemand, echo=FALSE}
+<!-- ```{r Taux.de.remplissage.ALL.allemandounon, echo=FALSE} -->
 
-ps %>%
-  filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>%
-  mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>%
-  filter(Allemand=="Oui") %>%
-ggplot(aes(x=Taux.de.remplissage,
-           fill=Allemand)) + 
-  geom_histogram(bins = 10,color="white",fill="#00BFC4") +
-  xlab("Taux de remplissage") +
-  ylab("Nombre de formations") +
-  #scale_y_log10() +
-  scale_x_continuous(labels=scales::percent) +
-  theme_hc() +
-  guides(fill=FALSE) +
-  ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' dans l'intitulé") +
-  theme(plot.title = element_text(hjust = 1))
-```
-
-```{r Taux.de.remplissage.ALL.allemandounon, echo=FALSE}
-
-ps %>%
-  filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>%
-  mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>%
-ggplot(aes(x=Taux.de.remplissage,
-           fill=Allemand)) + 
-  geom_histogram(bins = 10,color="white") +
-  xlab("Taux de remplissage") +
-  ylab("Nombre de formations") +
-  #scale_y_log10() +
-  scale_x_continuous(labels=scales::percent) +
-  theme_hc() +
-  #guides(fill=FALSE) +
-  ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' ou non dans l'intitulé") +
-  theme(plot.title = element_text(hjust = 1))
-```
+<!-- ps %>% -->
+<!--   filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>% -->
+<!--   mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>% -->
+<!-- ggplot(aes(x=Taux.de.remplissage, -->
+<!--            fill=Allemand)) +  -->
+<!--   geom_histogram(bins = 10,color="white") + -->
+<!--   xlab("Taux de remplissage") + -->
+<!--   ylab("Nombre de formations") + -->
+<!--   #scale_y_log10() + -->
+<!--   scale_x_continuous(labels=scales::percent) + -->
+<!--   theme_hc() + -->
+<!--   #guides(fill=FALSE) + -->
+<!--   ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' ou non dans l'intitulé") + -->
+<!--   theme(plot.title = element_text(hjust = 1)) -->
+<!-- ``` -->
 
 
 
@@ -395,18 +408,18 @@ ggplot(aes(x=Taux.de.remplissage,
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :
 
-$sélection=\frac{rang.du.dernier.appelé}{candidats}$
+<!-- $sélection=\frac{rang.du.dernier.appelé}{candidats}$ -->
+sélection = rang du dernier appelé / candidats
 
-Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective. 
+_Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective._
 
 _Attention_ : Théoriquement, une formation est considérée comme "Non-sélective" si et seulement si elle présente un taux de sélection de 100%. Cependant, les données présentent plusieurs défauts qui empêchent ce calcul :
 
 - des Licences manifestement non-sélectives présentent un nombre de candidats classés légèrement inférieur au nombre de candidats (parfois de 1 ou 2 sur des milliers), qui ne peut être assimilé à de la sélection ;
 - utiliser l'existence d'appels en phase complémentaire pour détecter les filières non-sélectives n'est pas possible puisque des places ont été ajoutées en cours de procédure ;
-- le rang du dernier appelé n'est pas disponible pour plusieurs formations, particulièrement en DUT.
+- le rang du dernier appelé n'est pas disponible pour plusieurs formations, particulièrement en BTS et DUT :
 
-
-```{r Taux.de.sélection.missing,echo=FALSE}
+```{r Taux.de.selection.missing,echo=FALSE}
   ps %>%
     mutate(rdda.na = is.na(Rang.du.dernier.appelé)) %>%
     group_by(Filière.de.formation.très.agrégée,rdda.na) %>%
@@ -426,13 +439,15 @@ C'est pourquoi, est considérée comme :
 
 _NB_ : 
 
-- Avec cette interprétation, il est possible que des formation ayant éliminé quelques candidats soient considérées comme non-sélectives.
+- Avec cette interprétation, il est possible que des formations ayant éliminé quelques candidats soient considérées comme non-sélectives.
 - Les statistiques sur les formations et les établissements se basent sur les données disponibles, celles sur les candidats considèrent BTS, CPGE et DUT comme sélectives, et Licence et PACES comme non sélectives.
 
 
-```{r Taux.de.sélection, echo=FALSE}
-ggplot(ps, aes(y=Taux.de.sélection,
-                   fill=Filière.de.formation.très.agrégée)) +
+```{r Taux.de.selection, echo=FALSE}
+ps %>% filter(! Filière.de.formation.très.agrégée %in% c("BTS","DUT")) %>%
+ggplot(aes(y=Taux.de.sélection,
+           x=Rentrée,
+           fill=Filière.de.formation.très.agrégée)) +
   geom_boxplot() +
   ylab("Taux de sélection") +
   facet_grid(~Filière.de.formation.très.agrégée) +
@@ -444,35 +459,43 @@ ggplot(ps, aes(y=Taux.de.sélection,
   theme_hc()
 ```
 
-
-```{r Taux.de.sélection.densite, echo=FALSE}
-ggplot(subset(ps, Type.de.sélection != "Non_sélective"), 
-       aes(x=Taux.de.sélection,
+```{r Taux.de.sélection.rentree, echo=FALSE}
+ps.all %>% filter(Filière.de.formation.très.agrégée %in% c("Licence","PACES","CPGE")) %>%
+ggplot(aes(y=Taux.de.sélection,
+           x=Rentrée,
            fill=Filière.de.formation.très.agrégée)) +
-  geom_density(alpha=0.7) + ylim(0,3) +
+  geom_boxplot() +
+  ylab("Taux de sélection") +
   facet_grid(~Filière.de.formation.très.agrégée) +
-  xlab("Taux de sélection") + ylab("Densité") +
-  scale_x_continuous(labels=scales::percent, breaks = c(0.25,0.75)) +
+  scale_y_continuous(labels=scales::percent) +
   scale_fill_discrete(name="Fillère") +
-  ggtitle("Densité des taux de sélection des formations sélectives\n(sur 6% des DUT et 23% des BTS)") +
+  ggtitle("Distribution des taux de sélection par filière\n(sur 6% des DUT et 23% des BTS)") +
   guides(fill=FALSE) +
+  #theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
   theme_hc()
 ```
 
+Entre 2018 et 2019, on constate un sensible augmentation des taux de sélection en Licence.
 
-```{r Taux.de.sélection.preoportion, echo=FALSE}
+```{r Taux.de.selection.proportion, echo=FALSE}
 #ps %>%
 #  group_by(Filière.de.formation.très.agrégée,Type.de.sélection) %>%
 #  summarise(nb = n()) %>%
-
-ggplot(ps,aes(x=Filière.de.formation.très.agrégée, fill=Type.de.sélection)) +
+ps.all %>% filter(Filière.de.formation.très.agrégée %in% c("Licence","PACES","CPGE","IFSI","EETS")) %>%
+ggplot(aes(x=Rentrée, fill=Type.de.sélection)) +
   geom_bar(position="fill", colour="black") +
   xlab("Filière") + ylab("") +
   scale_y_continuous(labels=scales::percent) +
+  facet_grid(.~Filière.de.formation.très.agrégée) +
   scale_fill_manual(name="Type",values=c("gold","red","green")) +
   ggtitle("Proportion des types de sélection par filière") +
   theme_hc()
 ```
+
+D'abord, il faut remarquer que les IFSI et EETS sont des filières remarquablement hyper-sélectives, et ensuite que les taux de sélection augmentent dans toutes les flilières.
+
+Ensuite, on constate que des CPGE, même en très faible nombre, sont également non sélectives. D'un autre côté, un tiers des Licences sont sélectives, voire hyper-sélectives. Cela démontre que l'appelation administrative « filière non sélective » n'a plus lieu d'être.
+
 
 ### Top 10
 
@@ -549,8 +572,10 @@ ggplot(aes(x=1, fill=Type.de.sélection)) +
 
 ```{r type.de.sélection.Licence.capa, echo=FALSE}
   ggplot(subset(ps,Filière.de.formation.très.agrégée == "Licence"), 
-         aes(x=Capacité.de.l.établissement.par.formation, fill=Type.de.sélection)) +
-  geom_density(alpha=0.7) + xlim(0,500) +
+         aes(x=Capacité.de.l.établissement.par.formation, 
+             y = Type.de.sélection,
+             fill=Type.de.sélection)) +
+  geom_density_ridges(alpha=0.7) + xlim(0,500) +
   xlab("Capacité d'accueil") + ylab("Densité du nombre de formation") +
   scale_fill_manual(name="Type", values=c("gold","red","green")) +
   ggtitle("Capacité d'accueil des Licences selon leur type") +
@@ -558,7 +583,7 @@ ggplot(aes(x=1, fill=Type.de.sélection)) +
   
 ```
 
-
+Ce graphique permet de confirmer que les Licences hyper-sélectives concernent généralement de petits groupes, alors que les filières non-sélectives ont tout type de taille de groupe.
 
 ```{r Taux.de.sélection.top10.Licences, echo=FALSE}
 ps %>% 
@@ -669,29 +694,40 @@ TSM : Taux de Sélection Moyen des Licences sélectives
 
 La sélection par candidat permet d'évaluer la sélectivité du système d'orientation supérieur.
 
-```{r Taux.de.sélection.candidats.calculs, echo=FALSE}
-ps.sel.cand <- ps %>% 
-  group_by(Type.de.sélection) %>%
+```{r Taux.de.selection.candidats.calculs, echo=FALSE}
+ps.sel.cand <- ps.all %>% 
+  group_by(Rentrée,Type.de.sélection) %>%
   summarise(Capacité = sum(Capacité.de.l.établissement.par.formation),
-          Admis = sum(Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.))
+          Admis = sum(Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.)) %>%
+  group_by(Rentrée) %>%
+  mutate(Ratio = scales::percent(Admis / sum(Admis)))
 ```
 
-```{r Taux.de.sélection.candidats, echo=FALSE}
-ggplot(ps.sel.cand, aes(x=1,y=Admis/1000,fill=Type.de.sélection)) +
-  geom_bar(stat="identity", colour="black") +
+
+```{r Taux.de.selection.candidats, echo=FALSE}
+ggplot(ps.sel.cand, aes(x=Rentrée,y=Admis/1000,fill=Type.de.sélection)) +
+  geom_bar(stat="identity", colour="black", position="Fill") +
     xlab("") + ylab("") +
-  ggtitle("Distribution des admissions\npar type de sélection (milliers)") +
-  coord_polar(theta = "y") +
+  ggtitle("Distribution des admissions par type de sélection") +
+  #coord_polar(theta = "y") +
   scale_fill_manual(name="Type", values=c("gold","red","green")) +
-  theme(axis.text.y = element_blank(), axis.title.y=element_blank(), axis.ticks.y = element_blank()) +
+  scale_y_continuous(labels=scales::percent) +
+  #theme(axis.text.y = element_blank(), axis.title.y=element_blank(), axis.ticks.y = element_blank()) +
   theme_hc()
   
 ```
 
+On constate sur ce graphique qu'un peu moins de la moitié des bacheliers ont été admis dans une filière effectivement non sélective en 2018, mais que cette proportion est tombée à un tiers en 2019. Ce taux sera amené à bouger au fil des années, selon la politique nationale d'organisation du premier cycle.
+
+
 La moyenne pondérée par le nombre d'amis des taux de sélection :
 ```{r Taux.de.sélection.candidats.moyen, echo=FALSE}
 
-scales::percent(weighted.mean(ps$Taux.de.sélection,ps$Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.,na.rm = TRUE))
+ps.all %>% 
+  group_by(Rentrée) %>%
+  summarise(
+    moyenne = scales::percent(weighted.mean(Taux.de.sélection, Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis.,na.rm = TRUE))
+  )
 ```
 
 
@@ -738,7 +774,8 @@ scales::percent(weighted.mean(ps$Taux.de.sélection,ps$Effectif.total.des.candid
 
 Le taux de boursiers est défini comme le rapport entre le nombre d'admis néo-bacheliers boursiers, et le nombre d'admis néo-bacheliers :
 
-$boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$
+<!-- $boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$ -->
+boursiers = admis néobacheliers boursiers / admis.néobacheliers
 
 ```{r Taux.de.boursiers, echo=FALSE}
 ggplot(ps, aes(y=X..d.admis.néo.bacheliers.boursiers,
@@ -755,19 +792,6 @@ ggplot(ps, aes(y=X..d.admis.néo.bacheliers.boursiers,
   theme_hc()
 ```
 
-Densité des formations ayant moins de 50% de boursiers parmis les néo-bacheliers admis :
-
-```{r Taux.de.boursiers.densite, echo=FALSE}
-ggplot(ps, aes(x=X..d.admis.néo.bacheliers.boursiers,
-                   fill=Filière.de.formation.très.agrégée)) +
-  geom_density() +  xlim(0,50) +
-  facet_grid(~Filière.de.formation.très.agrégée) +
-  ylab("Densité") + xlab("Taux de boursiers") +
-  scale_fill_discrete(name="Fillère") +
-  ggtitle("Densité des taux de boursiers (<50%) par filière") +
-  guides(fill=FALSE) +
-  theme_hc()
-```
 
 ### Taux de boursier par filières de Licences
 
@@ -787,7 +811,9 @@ ggplot(subset(ps,Filière.de.formation.très.agrégée == "Licence"),
 
 Le taux de mentions se défini comme le rapport entre le nombre d'admis néo-bacheliers ayant eu une mention au bac, et le nombre d'admis néo-bacheliers. Historiquement, les mentions n'étaient pas différenciées. Aujourd'hui, on peut faire la différence entre les différente mention $x$ :
 
-$mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$
+<!-- $mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$ -->
+
+mention_x = admis.néobacheliers.mention_x / admis.néobacheliers
 
 ```{r Taux.de.mentions, echo=FALSE, fig.asp = 1}
 
@@ -844,7 +870,9 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=effectifs,
 
 Le taux de type du bac se défini comme le rapport entre le nombre d'admis néo-bacheliers issus d'un type de bac x, et le nombre d'admis néo-bacheliers :
 
-$bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$
+<!-- $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$-->
+
+bac_x = admis.néobacheliers.bac_x / admis.néobacheliers
 
 ```{r Taux.de.bac, echo=FALSE, fig.asp = 1}
 
@@ -887,38 +915,8 @@ ggplot(aes(x=Filière.de.formation.très.agrégée, y=effectifs,
   geom_bar(stat="identity",position="fill",colour="black") +
   ylab("Proportion des admis") + xlab("Filière") +
   scale_y_continuous(labels=scales::percent) +
-  scale_fill_manual(name="Mention",values=c("gold","green","blue")) +
+  scale_fill_manual(name="Mention",values=c("orange","green","blue")) +
   ggtitle("Proportions d'admis par type de bac et par filière") +
-  theme_hc()
-```
-
-
-
-```{r Taux.de.bac.alluvial, echo=FALSE}
-ps %>%
-  group_by(Filière.de.formation.très.agrégée) %>%
-  summarise(Général = sum(Effectif.des.admis.néo.bacheliers.généraux),
-            Techno = sum(Effectif.des.admis.néo.bacheliers.technologiques),
-            Pro = sum(Effectif.des.admis.néo.bacheliers.professionnels)
-            #,
-            #Capa = Général + Techno + Pro
-            ) %>%
-  rename(Filière = Filière.de.formation.très.agrégée) %>%
-  
-  pivot_longer(-Filière, names_to="Bac", values_to="Effectif") %>%
-  mutate(
-    Bac = fct_relevel(Bac,c("Général", "Techno", "Pro")),
-    Filière = fct_relevel(Filière,c("Autre formation","CPGE", "PACES", "Licence","DUT","BTS")),
-    Effectif = Effectif/1000) %>%
-  
-  ggplot(aes(y = Effectif, axis1 = Bac, axis2 = Filière)) +
-    geom_alluvium(aes(fill = Bac), width = 1/12) +
-    geom_stratum(width = 1/12, fill = "black", color = "grey") +
-    geom_label(stat = "stratum", label.strata = TRUE) +
-    
-    ggtitle("Répartition des effectifs néo-bacheliers\nadmis dans le supérieur (milliers)") +
-  theme(axis.text.x = element_blank(), axis.title.x=element_blank(), axis.ticks.x = element_blank()) +
-  guides(fill=FALSE) +
   theme_hc()
 ```
 

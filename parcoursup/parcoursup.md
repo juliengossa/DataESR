@@ -13,15 +13,15 @@ output:
 
 Jeu de données : [Parcoursup vœux de poursuite d’études et de réorientation dans l’enseignement supérieur et réponses des établissements](https://www.data.gouv.fr/fr/datasets/parcoursup-voeux-de-poursuite-detudes-et-de-reorientation-dans-lenseignement-superieur-et-reponses-des-etablissements/)
 
-Ce jeu de données ne permet pas de percevoir les choses du côté des candidats : contrairement à ce que laisse en titre, il ne contient pas les vœux des candidats, mais seulement le nombre candidatures aux formations. 
-
-Il permet en revanche de percevoir les choses du côté des formations.
+Dans son effort de transparence, le gouvernement a publié des données nationales sur les deux premières campagnes Parcoursup, ainsi que la dernière campagne APB. Ces données présentent à la fois un immense intérêt et de sérieuses limites. 
 
 _Attention_ : Ce jeu de données présente des incohérences :
 
 - Effectif.total.des.candidats.ayant.accepté.la.proposition.de.l.établissement..admis. différent de la somme Effectif.des.admis.en.phase.principale + Effectif.des.admis.en.phase.complémentaire ;
 - Le nombre de candidats classés par la formation peut être inférieur au nombre de candidats pour des filières non sélectives ;
 - Le nombre de candidats ayant reçu une proposition peut être inférieur au nombre de candidats classés même si la formation n'atteint pas sa capacité d'accueil.
+
+
 
 ## Statistiques nationales
 
@@ -31,11 +31,12 @@ _Attention_ : Ce jeu de données présente des incohérences :
 ## into character vector
 ```
 
-```
-## Warning: Removed 1 rows containing missing values (position_stack).
-```
-
 ![](parcoursup_files/figure-html/stat.generales-1.png)<!-- -->
+
+Le décalage entre le nombre de candidats et le nombre d'admis s'explique par l'exclusion des candidats en reprise d'étude de ce jeu de données, qui contient seulement les néo-bacheliers, contrairement aux nombre de candidats. L'augmentation de 2018 à 2019 s'explique essentiellement par la hausse du nombre de candidats en reprise d'étude, et l'intégration des EETS (Educateur technique spécialisé) et IFSI (Institut de formation en soins infirmiers).
+
+Une différence importante entre 2018 et 2019 est la baisse des capacités d'accueil en Licence, et la hausse d'admis dans cette filière. Il est fort probable que la baisse viennent d'un réajustement après la première année, où certaines capacités d'accueil ont été fixées sans grande rigueur.
+
 
 
 ![](parcoursup_files/figure-html/stat.nb.formations-1.png)<!-- -->
@@ -44,11 +45,16 @@ _Attention_ : Ce jeu de données présente des incohérences :
 
 
 ```
-## Warning: Removed 550 rows containing non-finite values (stat_density).
+## Picking joint bandwidth of 7.66
+```
+
+```
+## Warning: Removed 550 rows containing non-finite values (stat_density_ridges).
 ```
 
 ![](parcoursup_files/figure-html/stat.capacités-1.png)<!-- -->
 
+_Exemple de lecture : les capacités d'accueil en CPGE sont généralement autour de 40, mais quelques filières proposent autour de 100 places._
 
 ## Taux de tension
 
@@ -60,12 +66,11 @@ Limite : une formation "choix de secours" peut apparaitre en tension avec un tr�
 
 ![](parcoursup_files/figure-html/Taux.de.tension-1.png)<!-- -->
 
+Les IFSI présentant des taux hors normes (jusqu'à 500 candidats pour une place), il convient de faire un zoom :
 
-```
-## Warning: Removed 1126 rows containing non-finite values (stat_density).
-```
+![](parcoursup_files/figure-html/Taux.de.tension.zoom-1.png)<!-- -->
 
-![](parcoursup_files/figure-html/Taux.de.tension.densite-1.png)<!-- -->
+_Exemple de lecture : la médiane des taux de tension en BTS est de 10 ; la moitié des filières de BTS sont est entre 7 et 18 ; un quart est entre 18 et 35 ; les taux de tension hors normes en BTS montent jusqu'à presque 200._
 
 
 ![](parcoursup_files/figure-html/Taux.de.tension.mean-1.png)<!-- -->
@@ -73,7 +78,7 @@ Limite : une formation "choix de secours" peut apparaitre en tension avec un tr�
 
 ### Filières non sélectives (Licences) en tension
 
-La Loi ORE dispose que : "lorsque le nombre de candidatures excède les capacités d'accueil d'une formation, les inscriptions sont prononcées par le président ou le directeur de l'établissement dans la limite des capacités d'accueil".
+La Loi ORE dispose que : _"lorsque le nombre de candidatures excède les capacités d'accueil d'une formation, les inscriptions sont prononcées par le président ou le directeur de l'établissement dans la limite des capacités d'accueil"_.
 
 La proportion de Licences dites "en tension" selon cette définition est :
 
@@ -89,11 +94,9 @@ $remplissage=\frac{admis}{capacité}$
 ![](parcoursup_files/figure-html/Taux.de.remplissage-1.png)<!-- -->
 
 
-```
-## Warning: Removed 53 rows containing non-finite values (stat_density).
-```
+![](parcoursup_files/figure-html/Taux.de.remplissage.rentree-1.png)<!-- -->
 
-![](parcoursup_files/figure-html/Taux.de.remplissage.densite-1.png)<!-- -->
+Une comparaison entre 2018 et 2019 montre une amélioration des taux de remplissage en Licence et PACES, mais quelques débordements nouveaux en CPGE.
 
 ![](parcoursup_files/figure-html/Taux.de.remplissage.type-1.png)<!-- -->
 
@@ -362,15 +365,29 @@ $remplissage=\frac{admis}{capacité}$
 
 ![](parcoursup_files/figure-html/Taux.de.remplissage.tout-1.png)<!-- -->![](parcoursup_files/figure-html/Taux.de.remplissage.tout-2.png)<!-- -->![](parcoursup_files/figure-html/Taux.de.remplissage.tout-3.png)<!-- -->![](parcoursup_files/figure-html/Taux.de.remplissage.tout-4.png)<!-- -->![](parcoursup_files/figure-html/Taux.de.remplissage.tout-5.png)<!-- -->
 
-#### Licence - Arts-lettres-langues / Allemand
+<!-- #### Licence - Arts-lettres-langues / Allemand -->
 
-Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html).
+<!-- Certaines filières peinent à recruter. C'est le cas notamment des [LLCE Allemand](https://www.lemonde.fr/campus/article/2019/11/10/facs-d-allemand-cherchent-etudiants-desesperement_6018657_4401467.html). -->
 
-L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé.
+<!-- L'étude par filière de formation très détaillée n'est pas possible du fait du trop grand nombre de mentions différentes. On peut cependant détecter la présence de mots dans l'intitulé. -->
 
-![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemand-1.png)<!-- -->
+<!-- ```{r Taux.de.remplissage.ALL.allemandounon, echo=FALSE} -->
 
-![](parcoursup_files/figure-html/Taux.de.remplissage.ALL.allemandounon-1.png)<!-- -->
+<!-- ps %>% -->
+<!--   filter(Filière.de.formation.détaillée == "Langues, littératures & civilisations étrangères et régionales") %>% -->
+<!--   mutate(Allemand=ifelse(grepl("allemand",tolower(Filière.de.formation.très.détaillée)),"Oui","Non")) %>% -->
+<!-- ggplot(aes(x=Taux.de.remplissage, -->
+<!--            fill=Allemand)) +  -->
+<!--   geom_histogram(bins = 10,color="white") + -->
+<!--   xlab("Taux de remplissage") + -->
+<!--   ylab("Nombre de formations") + -->
+<!--   #scale_y_log10() + -->
+<!--   scale_x_continuous(labels=scales::percent) + -->
+<!--   theme_hc() + -->
+<!--   #guides(fill=FALSE) + -->
+<!--   ggtitle("Distribution des taux de remplissage des filières de Licence LLCER\nayant 'Allemand' ou non dans l'intitulé") + -->
+<!--   theme(plot.title = element_text(hjust = 1)) -->
+<!-- ``` -->
 
 
 
@@ -378,16 +395,16 @@ L'étude par filière de formation très détaillée n'est pas possible du fait 
 
 Le taux de sélection est défini comme le rapport entre le nombre d'appelés (admis ou non, grâce au rang du dernier appelé), et le nombre de candidats en phase principale :
 
-$sélection=\frac{rang.du.dernier.appelé}{candidats}$
+<!-- $sélection=\frac{rang.du.dernier.appelé}{candidats}$ -->
+sélection = rang du dernier appelé / candidats
 
-Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective. 
+_Interprétation : un taux de sélection de 100% signifie que tous les candidats ont été appelés. Plus le taux est bas, plus la formation est sélective._
 
 _Attention_ : Théoriquement, une formation est considérée comme "Non-sélective" si et seulement si elle présente un taux de sélection de 100%. Cependant, les données présentent plusieurs défauts qui empêchent ce calcul :
 
 - des Licences manifestement non-sélectives présentent un nombre de candidats classés légèrement inférieur au nombre de candidats (parfois de 1 ou 2 sur des milliers), qui ne peut être assimilé à de la sélection ;
 - utiliser l'existence d'appels en phase complémentaire pour détecter les filières non-sélectives n'est pas possible puisque des places ont été ajoutées en cours de procédure ;
-- le rang du dernier appelé n'est pas disponible pour plusieurs formations, particulièrement en DUT.
-
+- le rang du dernier appelé n'est pas disponible pour plusieurs formations, particulièrement en BTS et DUT :
 
 <table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
@@ -402,20 +419,8 @@ _Attention_ : Théoriquement, une formation est considérée comme "Non-sélecti
    <td style="text-align:left;"> 8% </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> CPGE </td>
-   <td style="text-align:left;"> 92% </td>
-  </tr>
-  <tr>
    <td style="text-align:left;"> DUT </td>
    <td style="text-align:left;"> 1% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> EETS </td>
-   <td style="text-align:left;"> 90% </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> IFSI </td>
-   <td style="text-align:left;"> 75% </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Licence </td>
@@ -424,6 +429,18 @@ _Attention_ : Théoriquement, une formation est considérée comme "Non-sélecti
   <tr>
    <td style="text-align:left;"> PACES </td>
    <td style="text-align:left;"> 79% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> CPGE </td>
+   <td style="text-align:left;"> 92% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> IFSI </td>
+   <td style="text-align:left;"> 75% </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> EETS </td>
+   <td style="text-align:left;"> 90% </td>
   </tr>
 </tbody>
 </table>
@@ -436,27 +453,32 @@ C'est pourquoi, est considérée comme :
 
 _NB_ : 
 
-- Avec cette interprétation, il est possible que des formation ayant éliminé quelques candidats soient considérées comme non-sélectives.
+- Avec cette interprétation, il est possible que des formations ayant éliminé quelques candidats soient considérées comme non-sélectives.
 - Les statistiques sur les formations et les établissements se basent sur les données disponibles, celles sur les candidats considèrent BTS, CPGE et DUT comme sélectives, et Licence et PACES comme non sélectives.
 
 
 
 ```
-## Warning: Removed 5964 rows containing non-finite values (stat_boxplot).
+## Warning: Removed 468 rows containing non-finite values (stat_boxplot).
 ```
 
-![](parcoursup_files/figure-html/Taux.de.sélection-1.png)<!-- -->
-
+![](parcoursup_files/figure-html/Taux.de.selection-1.png)<!-- -->
 
 
 ```
-## Warning: Removed 5666 rows containing non-finite values (stat_density).
+## Warning: Removed 413 rows containing non-finite values (stat_boxplot).
 ```
 
-![](parcoursup_files/figure-html/Taux.de.sélection.densite-1.png)<!-- -->
+![](parcoursup_files/figure-html/Taux.de.sélection.rentrée-1.png)<!-- -->
 
+Entre 2018 et 2019, on constate un sensible augmentation des taux de sélection en Licence.
 
-![](parcoursup_files/figure-html/Taux.de.sélection.preoportion-1.png)<!-- -->
+![](parcoursup_files/figure-html/Taux.de.selection.proportion-1.png)<!-- -->
+
+D'abord, il faut remarquer que les IFSI et EETS sont des filières remarquablement hyper-sélectives, et ensuite que les taux de sélection augmentent dans toutes les flilières.
+
+Ensuite, on constate que des CPGE, même en très faible nombre, sont également non sélectives. D'un autre côté, un tiers des Licences sont sélectives, voire hyper-sélectives. Cela démontre que l'appelation administrative « filière non sélective » n'a plus lieu d'être.
+
 
 ### Top 10
 
@@ -705,12 +727,16 @@ _NB_ :
 
 
 ```
-## Warning: Removed 94 rows containing non-finite values (stat_density).
+## Picking joint bandwidth of 15.1
+```
+
+```
+## Warning: Removed 94 rows containing non-finite values (stat_density_ridges).
 ```
 
 ![](parcoursup_files/figure-html/type.de.sélection.Licence.capa-1.png)<!-- -->
 
-
+Ce graphique permet de confirmer que les Licences hyper-sélectives concernent généralement de petits groupes, alors que les filières non-sélectives ont tout type de taille de groupe.
 
 <table class="table" style="margin-left: auto; margin-right: auto;">
  <thead>
@@ -1104,12 +1130,20 @@ La sélection par candidat permet d'évaluer la sélectivité du système d'orie
 
 
 
-![](parcoursup_files/figure-html/Taux.de.sélection.candidats-1.png)<!-- -->
+
+![](parcoursup_files/figure-html/Taux.de.selection.candidats-1.png)<!-- -->
+
+On constate sur ce graphique qu'un peu moins de la moitié des bacheliers ont été admis dans une filière effectivement non sélective en 2018, mais que cette proportion est tombée à un tiers en 2019. Ce taux sera amené à bouger au fil des années, selon la politique nationale d'organisation du premier cycle.
+
 
 La moyenne pondérée par le nombre d'amis des taux de sélection :
 
 ```
-## [1] "74%"
+## # A tibble: 2 x 2
+##   Rentrée moyenne
+##   <fct>   <chr>  
+## 1 2018    84%    
+## 2 2019    72%
 ```
 
 
@@ -1130,7 +1164,8 @@ La moyenne pondérée par le nombre d'amis des taux de sélection :
 
 Le taux de boursiers est défini comme le rapport entre le nombre d'admis néo-bacheliers boursiers, et le nombre d'admis néo-bacheliers :
 
-$boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$
+<!-- $boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$ -->
+boursiers = admis néobacheliers boursiers / admis.néobacheliers
 
 
 ```
@@ -1139,14 +1174,6 @@ $boursiers=\frac{admis.néobacheliers.boursiers}{admis.néobacheliers}$
 
 ![](parcoursup_files/figure-html/Taux.de.boursiers-1.png)<!-- -->
 
-Densité des formations ayant moins de 50% de boursiers parmis les néo-bacheliers admis :
-
-
-```
-## Warning: Removed 178 rows containing non-finite values (stat_density).
-```
-
-![](parcoursup_files/figure-html/Taux.de.boursiers.densite-1.png)<!-- -->
 
 ### Taux de boursier par filières de Licences
 
@@ -1162,7 +1189,9 @@ Densité des formations ayant moins de 50% de boursiers parmis les néo-bachelie
 
 Le taux de mentions se défini comme le rapport entre le nombre d'admis néo-bacheliers ayant eu une mention au bac, et le nombre d'admis néo-bacheliers. Historiquement, les mentions n'étaient pas différenciées. Aujourd'hui, on peut faire la différence entre les différente mention $x$ :
 
-$mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$
+<!-- $mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$ -->
+
+mention_x = admis.néobacheliers.mention_x / admis.néobacheliers
 
 
 ```
@@ -1180,7 +1209,9 @@ $mention_x=\frac{admis.néobacheliers.mention_x}{admis.néobacheliers}$
 
 Le taux de type du bac se défini comme le rapport entre le nombre d'admis néo-bacheliers issus d'un type de bac x, et le nombre d'admis néo-bacheliers :
 
-$bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$
+<!-- $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$-->
+
+bac_x = admis.néobacheliers.bac_x / admis.néobacheliers
 
 
 ```
@@ -1191,18 +1222,4 @@ $bac_x=\frac{admis.néobacheliers.bac_x}{admis.néobacheliers}$
 
 
 ![](parcoursup_files/figure-html/Taux.de.bac.tot-1.png)<!-- -->
-
-
-
-
-```
-## Warning: Unknown levels in `f`: Autre formation
-```
-
-```
-## Warning: The parameter `label.strata` is deprecated.
-## Pass arguments to `infer.label` instead.
-```
-
-![](parcoursup_files/figure-html/Taux.de.bac.alluvial-1.png)<!-- -->
 
